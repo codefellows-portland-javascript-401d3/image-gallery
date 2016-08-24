@@ -1,0 +1,10 @@
+<button ng-click="$ctrl.fullPic()">Show All</button>
+<button ng-click="$ctrl.textPic()">Show All</button>
+<button ng-click="$ctrl.thumbPic()">Show All</button>
+<ul>
+  <li ng-repeat="image in $ctrl.images">
+    <full-pic image="image"></full-pic>
+    <text-pic image="image"></text-pic>
+    <thumb-pic image="image"></thumb-pic>
+  </li>
+</ul>
