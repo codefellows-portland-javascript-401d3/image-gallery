@@ -1,0 +1,7 @@
+// filename : .eslintignore
+
+**/node_modules/*
+**/vendor/*
+**/*min.js
+**/bundle.js
+**/bundle.js.map
