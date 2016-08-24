@@ -1,10 +1,8 @@
-<ul>
-  <button ng-click="$ctrl.showFull()">Show Full Description</button>
-  <button ng-click="$ctrl.showList()">Show List Description</button>
-  <button ng-click="$ctrl.showThumb()">Show Thumbnail</button>
-  <li ng-repeat="image in $ctrl.images">
-    <list-view image="image"></list-view>
-    <thumb-view image="image"></thumb-view>
-    <full-view image="image"></full-view>
-  </li>
-</ul>
+  <button ng-click="$ctrl.view = 'full'">Show Full Description</button>
+  <button ng-click="$ctrl.view = 'list'">Show List Description</button>
+  <button ng-click="$ctrl.view = 'thumb'">Show Thumbnail</button>
+  <div ng-repeat="image in $ctrl.images">
+    <list-view image="image" ng-show="$ctrl.view === 'list'"></list-view>
+    <thumb-view image="image" ng-show="$ctrl.view === 'thumb'"></thumb-view>
+    <full-view image="image" ng-show="$ctrl.view === 'full'"></full-view>
+  </div>
