@@ -1,4 +1,25 @@
 body {
-    background: darksalmon;
-    color: steelblue;
+    background: bisque;
+    color: cadetblue;
+    font-family: 'Raleway', sans-serif;
+}
+
+button {
+  background: lightgray;
+  color: steelblue;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+  margin: 15px 5px 20px 5px;
+  padding: 5px 8px;
+  border: 1px solid;
+  border-radius: 15px;
+  &:hover {
+    background: silver;
+    color: teal;
+  }
+  &:focus {
+    outline: 0;
+    background: silver;
+    color: peru;
+  }
 }
