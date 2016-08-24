@@ -29,8 +29,15 @@ module.exports = {
       loader: `style!css?sourceMap`
     },
     {
+      test: /\.scss$/,
+      loader: 'style!css?sourceMap!sass?sourceMap'
+    },
+    {
       test: /\.html$/,
       loader: `html`
     }]
+  },
+  sassLoader: {
+    includePaths: ['./src/scss/includes']
   }
 };
