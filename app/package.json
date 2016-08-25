@@ -9,12 +9,15 @@
   "scripts": {
     "start": "webpack-dev-server --inline",
     "build": "webpack",
-    "test": "exit 0"
+    "test": "karma start"
   },
   "author": "Aaron Bini",
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-aria": "^1.5.8",
+    "angular-material": "^1.1.0",
     "camelcase": "^3.0.0"
   },
   "devDependencies": {
@@ -35,6 +38,7 @@
     "karma-chrome-launcher": "^2.0.0",
     "karma-mocha": "^1.1.1",
     "karma-safari-launcher": "^1.0.0",
+    "karma-spec-reporter": "0.0.26",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
     "node-sass": "^3.8.0",

@@ -1,3 +1,6 @@
 <h3>{{$ctrl.image.title}}</h3>
 <img ng-class="$ctrl.styles.full" ng-src="{{$ctrl.image.url}}" alt="Image unavailable">
 <p>{{$ctrl.image.description}}</p>
+<p>Vote Count: {{$ctrl.image.vote}}</p>
+<button ng-click="$ctrl.submit(1)">Vote Up</button>
+<button ng-click="$ctrl.submit()">Vote Down</button>
