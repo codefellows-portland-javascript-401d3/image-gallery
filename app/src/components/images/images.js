@@ -3,24 +3,23 @@ import styles from './images.scss';
 
 export default {
   template,
-  controller: function() {
-    this.styles = styles;
-    this.view = 'list';
-    this.images = [{
-      title: 'My Dog Bill',
-      url: 'http://f.cl.ly/items/3g3J1G0w122M360w380O/3726490195_f7cc75d377_o.jpg',
-      description: 'This is my golden retriever Bill on his 6th birthday!',
-    },
-    {
-      title: 'My Cat Molly',
-      url: '../../../images/wolf.jpg',
-      description: 'This is my cat Molly when she was a puppy!',
-    },
-    {
-      title: 'My Horse Sal',
-      url: '../../../images/hedgehog.jpg',
-      description: 'This is my draft horse Sal when he was young!',
-    }];
+  controller
+};
 
-  }
+controller.$inject = ['$http'];
+function controller ($http) {
+  this.styles = styles;
+  this.view = 'list';
+
+  $http.get('http://localhost:3000/api/images')
+    .then(response => response.data)
+    .then(images => this.images = images)
+    .catch(err => console.log(err));
+
+  this.vote = (voteImage, vote) => {
+    const index = this.images.indexOf(voteImage);
+    if (index > -1) {
+      vote === 1 ? this.images[index].vote++ : this.images[index].vote--;
+    }
+  };
 };
