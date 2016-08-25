@@ -1,0 +1,16 @@
+.thumb-container {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  align-items: flex-start;
+}
+
+.thumb-pic {
+  max-width: 150px;
+  max-height: 150px;
+  padding: 10px;
+  border: 1px solid black;
+  margin: 10px;
+  background: #888;
+}
