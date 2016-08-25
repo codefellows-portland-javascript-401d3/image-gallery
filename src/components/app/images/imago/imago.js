@@ -6,6 +6,6 @@ export default {
     image: '='
   },
   controller: function() {
-    console.log('called image.js controller');
+
   }
 };

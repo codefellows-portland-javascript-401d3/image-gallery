@@ -6,6 +6,6 @@ export default {
     item: '='
   },
   controller: function() {
-    console.log('called text-list-item.js controller');
+
   }
 };
