@@ -1,0 +1,44 @@
+<!-- <md-dialog aria-label="Edit Movie"> -->
+    <md-dialog-content layout-gt-sm="row" layout-padding>
+        <md-content layout-gt-sm="row" layout-padding>
+            <div>
+
+                <form name="editImage"
+                      novalidate>
+                    <md-input-container>
+                        <label>Title:</label>
+                        <input
+                            name="title"
+                            required
+                            ng-model="$ctrl.image.title">
+                            <div ng-messages="editImage.title.$error" role="alert">
+                                <ng-message when="required">A title is required</ng-message>
+                            </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Description:</label>
+                        <textarea
+                            required
+                            ng-model="$ctrl.image.description">
+                        <div ng-messages="editImage.description.$error" role="alert">
+                            <ng-message when="required">A description is required</ng-message>
+                        </div>
+                      </textarea>
+                    </md-input-container>
+                </form>
+
+            </div>
+        </md-content>
+    </md-dialog-content>
+    <div>
+      <button>Button</button>
+    </div>
+    <md-dialog-actions>
+        <md-button ng-click="$ctrl.cancel()" class="md-primary">
+            Cancel
+        </md-button>
+        <md-button ng-click="$ctrl.save()" class="md-primary">
+            Save
+        </md-button>
+    </md-dialog-actions>
+<!-- </md-dialog> -->

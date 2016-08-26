@@ -1,3 +1,4 @@
+/* globals angular, chai */
 const assert = chai.assert;
 
 describe('image components', function() {

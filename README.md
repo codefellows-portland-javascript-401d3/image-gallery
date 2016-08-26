@@ -18,3 +18,7 @@
 2. Populate images from an array of images
 3. Modularize style with scss
 4. Display only one view at a time
+
+###Lab 4 - 8/25/2016
+
+####

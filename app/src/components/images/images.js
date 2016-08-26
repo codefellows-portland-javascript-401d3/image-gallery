@@ -16,6 +16,10 @@ function controller ($http) {
     .then(images => this.images = images)
     .catch(err => console.log(err));
 
+  this.add = imageToAdd => {
+    this.images.push(imageToAdd);
+  };
+
   this.vote = (voteImage, vote) => {
     const index = this.images.indexOf(voteImage);
     if (index > -1) {

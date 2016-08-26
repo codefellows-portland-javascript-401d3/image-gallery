@@ -1,0 +1,35 @@
+<form ng-submit="$ctrl.submit()" name="addImage"
+      novalidate>
+    <md-input-container>
+        <label>Title:</label>
+        <input
+            name="title"
+            required
+            ng-model="$ctrl.image.title">
+            <div ng-messages="addImage.description.$error" role="alert">
+                <ng-message when="required">A title is required</ng-message>
+            </div>
+    </md-input-container>
+    <md-input-container>
+        <label>url:</label>
+        <input
+            required
+            ng-model="$ctrl.image.url">
+        <div ng-messages="addImage.url.$error" role="alert">
+            <ng-message when="required">A url is required</ng-message>
+        </div>
+    </md-input-container>
+    <md-input-container>
+        <label>Description:</label>
+        <textarea
+            required
+            ng-model="$ctrl.image.description">
+          <div ng-messages="addImage.description.$error" role="alert">
+              <ng-message when="required">A description is required</ng-message>
+          </div>
+        </textarea>
+    </md-input-container>
+    <md-dialog-actions>
+      <md-button type="submit" class="md-primary">Add Image</md-button>
+    </md-dialog-actions>
+</form>
