@@ -3,13 +3,14 @@ import template from './new-image.html';
 export default {
   template,
   bindings: {
-    add: '<'
+    add: '<',
   },
   controller
 };
 
 controller.$inject = ['$scope'];
 function controller ($scope) {
+
   const resetImage = () => {
     this.image = {};
   };
@@ -21,5 +22,6 @@ function controller ($scope) {
     resetImage();
     $scope.addImage.$setPristine();
     $scope.addImage.$setUntouched();
+    // $scope.addImage.$setValidity('title', true);
   };
 };

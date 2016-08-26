@@ -1,4 +1,4 @@
-<form ng-submit="$ctrl.submit()" name="addImage"
+<form name="addImage" ng-submit="addImage.$valid && $ctrl.submit()"
       novalidate>
     <md-input-container>
         <label>Title:</label>
@@ -13,6 +13,7 @@
     <md-input-container>
         <label>url:</label>
         <input
+            name="url"
             required
             ng-model="$ctrl.image.url">
         <div ng-messages="addImage.url.$error" role="alert">
@@ -22,6 +23,7 @@
     <md-input-container>
         <label>Description:</label>
         <textarea
+            name="description"
             required
             ng-model="$ctrl.image.description">
           <div ng-messages="addImage.description.$error" role="alert">
@@ -31,5 +33,8 @@
     </md-input-container>
     <md-dialog-actions>
       <md-button type="submit" class="md-primary">Add Image</md-button>
+    </md-dialog-actions>
+    <md-dialog-actions>
+      <md-button ng-click="$ctrl.cancel()" class="md-primary">Cancel</md-button>
     </md-dialog-actions>
 </form>

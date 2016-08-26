@@ -10,6 +10,7 @@ controller.$inject = ['$http'];
 function controller ($http) {
   this.styles = styles;
   this.view = 'list';
+  this.addButton = 'add';
 
   $http.get('http://localhost:3000/api/images')
     .then(response => response.data)
@@ -17,7 +18,8 @@ function controller ($http) {
     .catch(err => console.log(err));
 
   this.add = imageToAdd => {
-    this.images.push(imageToAdd);
+    this.images.unshift(imageToAdd);
+    this.addButton = 'add';
   };
 
   this.vote = (voteImage, vote) => {

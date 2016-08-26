@@ -31,7 +31,7 @@ app.get('/api/images', (req, res) => {
       description: 'This is my draft horse Sal when he was young!',
       vote: 0
     }]);
-  }, 3000);
+  }, 1000);
 });
 
 module.exports = app;

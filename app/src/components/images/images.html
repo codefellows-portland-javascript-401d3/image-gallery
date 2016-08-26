@@ -1,15 +1,16 @@
   <button ng-click="$ctrl.view = 'full'">Show Full Description</button>
   <button ng-click="$ctrl.view = 'list'">Show List Description</button>
   <button ng-click="$ctrl.view = 'thumb'">Show Thumbnail</button>
+  <button ng-click="$ctrl.addButton = 'save'" ng-show="$ctrl.addButton === 'add'">Add Image</button>
   <section ng-if="!$ctrl.images">
     <md-progress-circular md-mode="indeterminate" value="0" md-diameter="50"></md-progress-circular>
     Loading images...
   </section>
   <section ng-if="$ctrl.images">
+    <new-image add="$ctrl.add" ng-show="$ctrl.addButton === 'save'"></new-image>
     <div ng-repeat="image in $ctrl.images">
       <list-view image="image" ng-show="$ctrl.view === 'list'"></list-view>
       <thumb-view image="image" ng-show="$ctrl.view === 'thumb'"></thumb-view>
       <full-view vote="$ctrl.vote" image="image" ng-show="$ctrl.view === 'full'"></full-view>
     </div>
   </section>
-  <new-image add="$ctrl.add"></new-image>
