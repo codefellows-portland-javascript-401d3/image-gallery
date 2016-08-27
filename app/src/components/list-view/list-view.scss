@@ -1,4 +1,17 @@
 :local(.bottom) {
   margin-bottom: 40px;
-  
+
+}
+
+:local(.inlineflexy) {
+  display: flex;
+  margin: 10px;
+  justify-content: space-around;
+
+}
+
+:local(.buttonflex) {
+  top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }

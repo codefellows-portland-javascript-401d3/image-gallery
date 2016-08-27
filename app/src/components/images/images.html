@@ -7,7 +7,7 @@
     Loading images...
   </section>
   <section ng-if="$ctrl.images">
-    <new-image add="$ctrl.add" ng-show="$ctrl.addButton === 'save'"></new-image>
+    <new-image add="$ctrl.add" add-button="$ctrl.addButton" ng-if="$ctrl.addButton === 'save'"></new-image>
     <div ng-repeat="image in $ctrl.images">
       <list-view image="image" ng-show="$ctrl.view === 'list'"></list-view>
       <thumb-view image="image" ng-show="$ctrl.view === 'thumb'"></thumb-view>

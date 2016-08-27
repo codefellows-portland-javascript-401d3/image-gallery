@@ -3,27 +3,27 @@
     <md-input-container>
         <label>Title:</label>
         <input
-            name="title"
+            name="addTitle"
             required
-            ng-model="$ctrl.image.title">
-            <div ng-messages="addImage.description.$error" role="alert">
-                <ng-message when="required">A title is required</ng-message>
+            ng-model="$ctrl.image.title"/>
+            <div ng-messages="addImage.addTitle.$error" role="alert">
+                <div ng-message="required">A title is required</div>
             </div>
     </md-input-container>
     <md-input-container>
         <label>url:</label>
         <input
-            name="url"
+            name="addUrl"
             required
-            ng-model="$ctrl.image.url">
-        <div ng-messages="addImage.url.$error" role="alert">
-            <ng-message when="required">A url is required</ng-message>
+            ng-model="$ctrl.image.url"/>
+        <div ng-messages="addImage.addUrl.$error" role="alert">
+            <div ng-message="required">A url is required</div>
         </div>
     </md-input-container>
     <md-input-container>
         <label>Description:</label>
         <textarea
-            name="description"
+            name="addDescription"
             required
             ng-model="$ctrl.image.description">
           <div ng-messages="addImage.description.$error" role="alert">
@@ -32,9 +32,9 @@
         </textarea>
     </md-input-container>
     <md-dialog-actions>
-      <md-button type="submit" class="md-primary">Add Image</md-button>
+      <md-button type="submit" class="md-primary">Save Image</md-button>
     </md-dialog-actions>
     <md-dialog-actions>
-      <md-button ng-click="$ctrl.cancel()" class="md-primary">Cancel</md-button>
+      <md-button ng-click="$ctrl.addButton = 'add'" class="md-primary">Cancel</md-button>
     </md-dialog-actions>
 </form>
