@@ -15,7 +15,9 @@ module.exports = function (config) {
     //list of files / patterns to load in the browser
     files: [
       './src/app.js',
+      './node_modules/angular_material/angular_material.js',
       './node_modules/angular-mocks/angular-mocks.js',
+      // './node_modules/angular-material/angular-material-mocks.js',
       './test/**/*.js'
     ],
     webpack: webpackConfig,

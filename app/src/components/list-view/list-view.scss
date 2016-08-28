@@ -1,17 +1,11 @@
-:local(.bottom) {
-  margin-bottom: 40px;
-
-}
-
 :local(.inlineflexy) {
   display: flex;
+  margin-bottom: 40px;
   margin: 10px;
-  justify-content: space-around;
-
 }
 
-:local(.buttonflex) {
-  top: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+:local(.innermargins)  {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 0;
 }
