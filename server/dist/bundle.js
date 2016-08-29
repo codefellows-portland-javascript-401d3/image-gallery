@@ -31955,7 +31955,7 @@
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = "<h1>Image Gallery</h1>\n<h4>Choose your view below</h4>\n<main>\n  <picker collection=\"app.collection\" view=\"app.view\"></picker>\n  <new-item></new-item>\n</main>\n";
+	module.exports = "<h1>Image Gallery</h1>\n<h4>Choose your view below</h4>\n<main>\n  <picker collection=\"app.collection\" view=\"app.view\"></picker>\n  <new-item collection=\"app.collection\"></new-item>\n</main>\n";
 
 /***/ },
 /* 7 */
@@ -32488,7 +32488,6 @@
 	    collection: '='
 	  },
 	  controller: function controller() {
-	    console.log('thumb coll', this.collection);
 	    this.styles = _thumb4.default;
 	  }
 	};
@@ -32568,7 +32567,7 @@
 	  controller: function controller() {
 	    var _this = this;
 	
-	    console.log('full', this.collection);
+	    // console.log('this', this);
 	    this.styles = _full4.default;
 	    this.index = 0;
 	
@@ -32674,7 +32673,6 @@
 	        link: _this.link
 	      };
 	      _this.collection.push(image);
-	      console.log('collection after push', _this.collection);
 	      _this.reset();
 	    };
 	  }
@@ -32684,7 +32682,7 @@
 /* 28 */
 /***/ function(module, exports) {
 
-	module.exports = "<section>\n  <h1>New Image</h1>\n  <form name=\"new\" ng-submit=\"newItem.addNew()\">\n    <input type=\"text\" ng-model=\"newItem.title\" placeholder=\"image title\">\n    <input type=\"text\" ng-model=\"newItem.caption\" placeholder=\"image caption\">\n    <input type=\"text\" ng-model=\"newItem.link\" placeholder=\"image link\">\n    <button type=\"submit\">Add</button>\n  </form>\n</section>\n";
+	module.exports = "<section>\n  <h1>New Image</h1>\n  <form name=\"new\" ng-submit=\"newItem.addNew(newItem)\">\n    <input type=\"text\" ng-model=\"newItem.image.title\" placeholder=\"image title\">\n    <input type=\"text\" ng-model=\"newItem.image.caption\" placeholder=\"image caption\">\n    <input type=\"text\" ng-model=\"newItem.image.link\" placeholder=\"image link\">\n    <button type=\"submit\">Add</button>\n  </form>\n</section>\n";
 
 /***/ },
 /* 29 */

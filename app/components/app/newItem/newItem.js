@@ -9,6 +9,7 @@ export default {
   },
   controller() {
     this.styles = styles;
+    this.image = {};
 
     this.reset = () => {
       this.title = '';
@@ -22,6 +23,7 @@ export default {
         caption: this.caption,
         link: this.link
       };
+      console.log('image', image);
       this.collection.push(image);
       this.reset();
     };

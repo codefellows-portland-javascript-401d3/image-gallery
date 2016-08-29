@@ -5,8 +5,8 @@ export default {
   template,
   controllerAs: 'picker',
   bindings: {
-    collection: '=',
-    view: '=',
+    collection: '='
+    // view: '=',
   },
   controller() {
     this.styles = styles;
