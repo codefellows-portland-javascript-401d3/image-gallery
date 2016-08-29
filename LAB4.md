@@ -13,8 +13,9 @@ Test your service components.
 Handle multiple albums (w/ tests) **3pts**
 
 ## Rubric
-Server API: 1pt
-Angular Services: 3pts
-Test Services: 3pts
-Consume services in components: 3pts
+
+* Server API: 1pt
+* Angular Services: 3pts
+* Test Services: 3pts
+* Consume services in components: 3pts
   
