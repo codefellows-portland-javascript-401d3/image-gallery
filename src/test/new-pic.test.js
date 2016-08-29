@@ -1,4 +1,4 @@
-const {assert} = chai;
+// let {assert} = chai;
 
 describe('new-pic', () => {
 
@@ -10,11 +10,9 @@ describe('new-pic', () => {
   }));
 
   it('has has a value for view', () => {
-    const component = $component('new-pic');
+    const component = $component('newPic');
     const save = component.save;
-    assert.isOk(view);
+    assert.isOk(save);
   });
-
-
 
 });

@@ -10,8 +10,8 @@ export default {
 };
   
   
-controller.inject = ['$mdDialog'];
-function controller($mdDialog) {
+// controller.inject = ['$mdDialog'];
+function controller() {
   // this.image = angular.copy(this.form);
 
   // const resetImage = () => {

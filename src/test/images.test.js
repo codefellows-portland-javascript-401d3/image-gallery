@@ -1,4 +1,4 @@
-const {assert} = chai;
+let {assert} = chai;
 
 describe('images', () => {
 
