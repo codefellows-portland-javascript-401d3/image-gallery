@@ -1,14 +1,19 @@
-<button ng-click="$ctrl.view = 'text'">Show Text</button>
-<button ng-click="$ctrl.view = 'thumb'">Show Thumbnail</button>
-<button ng-click="$ctrl.view = 'full'">Show Full</button>
-<button ng-click="$ctrl.view = 'new'">Add Image</button>
+<div layout-md="row">
+  <md-button class="md-primary" ng-click="$ctrl.view = 'text'">Show Text</md-button>
+  <md-button class="md-primary" ng-click="$ctrl.view = 'thumb'">Show Thumbnail</md-button>
+  <md-button class="md-primary" ng-click="$ctrl.view = 'full'">Show Full</md-button>
+  <md-button class="md-primary" ng-click="$ctrl.view = 'new'">Add Image</md-button>
+</div>
 
-<ul ng-if="$ctrl.view !== 'new'">
-  <li ng-repeat="image in $ctrl.images">
-    <full-pic ng-if="$ctrl.view === 'full'" image="image"></full-pic>
-    <text-pic ng-if="$ctrl.view === 'text'" image="image"></text-pic>
-    <thumb-pic ng-if="$ctrl.view === 'thumb'" image="image"></thumb-pic>
-  </li>
-</ul>
+<div layout-md="row" layout-padding>
+  <ul class="md-background" ng-if="$ctrl.view !== 'new'">
+    <li ng-repeat="image in $ctrl.images">
+      <full-pic ng-if="$ctrl.view === 'full'" image="image"></full-pic>
+      <text-pic ng-if="$ctrl.view === 'text'" image="image"></text-pic>
+      <thumb-pic ng-if="$ctrl.view === 'thumb'" image="image"></thumb-pic>
+    </li>
+  </ul>
+</div>
+
 
 <new-pic ng-if="$ctrl.view === 'new'" form="form" add="$ctrl.add"></new-pic>

@@ -1,10 +1,41 @@
-<form name="newPic"
-  novalidate>
-  <label>Title:</label>
-  <input name="title" required ng-model="$ctrl.image.title">
-  <label>URL:</label>
-  <input name="title" required ng-model="$ctrl.image.url">
-  <label>Description:</label>
-  <input name="title" ng-model="$ctrl.image.description">
-  <button ng-click="$ctrl.save()">Submit</button>
-</form>
+<!--<md-dialog aria-label="Add Image">
+  <md-dialog-content layout-md="row" layout-padding>
+    <md-content layout-md="row" layout-padding>-->
+      <div>
+        <form name="newPic"
+          novalidate>
+          <md-input-container>
+            <label>Title:</label>
+            <input name="title" required ng-model="$ctrl.image.title">
+          </md-input-container>
+          <md-input-container>
+            <label>URL:</label>
+            <input name="url" required ng-model="$ctrl.image.url">
+          </md-input-container>
+          <md-input-container>
+            <label>Description:</label>
+            <input name="description" ng-model="$ctrl.image.description">
+          </md-input-container>
+          <md-button ng-click="$ctrl.save()">Submit</md-button>
+        </form>
+      <!--</div>
+    </md-content>
+  </md-dialog-content>
+  <md-dialog-actions>
+  </md-dialog-actions>
+</md-dialog>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

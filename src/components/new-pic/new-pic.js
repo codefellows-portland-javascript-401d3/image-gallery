@@ -10,22 +10,18 @@ export default {
 };
   
   
-controller.inject = ['$timeout'];
-function controller($timeout) {
+controller.inject = ['$mdDialog'];
+function controller($mdDialog) {
   // this.image = angular.copy(this.form);
 
-  const resetImage = () => {
-    this.image = {};
-  };
+  // const resetImage = () => {
+  //   this.image = {};
+  // };
 
-  resetImage();
+  // resetImage();
 
   this.save = () => {
-    // $timeout(() => {
-      console.log('This is a new pic:', this.image);
-      this.add(this.image);
-      resetImage();
-
-    // });
+    this.add(this.image);
+    $mdDialog.hide();
   };
 };
