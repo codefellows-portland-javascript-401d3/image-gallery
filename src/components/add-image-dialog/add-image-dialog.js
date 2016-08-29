@@ -1,24 +1,28 @@
-import template from './new-pic.html';
+import template from './add-image-dialog.html';
 import angular from 'angular';
 
 export default {
   template,
   bindings: {
-    add: '<'
+    add: '<',
+    newImage : '<image'
   },
   controller
 };
   
   
-// controller.inject = ['$mdDialog'];
-function controller() {
-  // this.image = angular.copy(this.form);
+controller.inject = ['$mdDialog'];
+function controller($mdDialog) {
+  this.image = angular.copy(this.newImage);
 
   // const resetImage = () => {
   //   this.image = {};
   // };
 
   // resetImage();
+  this.cancel = () => {
+    $md.$mdDialog.hide();
+  };
 
   this.save = () => {
     this.add(this.image);
