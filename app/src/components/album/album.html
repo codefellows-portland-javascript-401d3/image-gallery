@@ -1,18 +1,31 @@
 <div ng-class="$ctrl.styles.album">
+  <h1>Cute Dog Gallery</h1>
+  
   <!-- Radio buttons -->
-  <section id="radioButtons">
-    <label for="list">List </label>
-      <input ng-model="$ctrl.view" type="radio" name="view" id="list" value="list">
-    <label for="thumbnail">Thumbnail </label>
-      <input ng-model="$ctrl.view" type="radio" name="view" id="thumbnail" value="thumbnail">
-    <label for="gallery">Gallery </label>
-      <input ng-model="$ctrl.view" type="radio" name="view" id="gallery" value="gallery">
-  </section>
+  <md-radio-group ng-model="$ctrl.view" layout="row" layout-align="center center">
+    <md-radio-button class="md-primary" value="list" aria-label="list">
+      List
+    </md-radio-button>
+    <md-radio-button class="md-primary" value="thumbnail" aria-label="thumbnail">
+      Thumbnail
+    </md-radio-button>
+    <md-radio-button class="md-primary" value="gallery" aria-label="gallery">
+      Gallery
+    </md-radio-button>
+  </md-radio-group>
 
   <!-- Image and image info -->
-  <span ng-repeat="image in $ctrl.images">
-    <list ng-if="$ctrl.view === 'list'" info="image"></list>
-    <thumbnail ng-if="$ctrl.view === 'thumbnail'" info="image"></thumbnail>
-    <gallery ng-if="$ctrl.view === 'gallery'" info="image"></gallery>
-  </span>
+  <section>
+    <span ng-repeat="image in $ctrl.images">
+      <list ng-if="$ctrl.view === 'list'" info="image"></list>
+      <thumbnail ng-if="$ctrl.view === 'thumbnail'" info="image"></thumbnail>
+      <gallery ng-if="$ctrl.view === 'gallery'" info="image"></gallery>
+    </span>
+  </section>
+
+  <!-- Form to add more images -->
+  <section>
+    <add-image-form add="$ctrl.add"></add-image-form>
+  </section>
+
 </div>

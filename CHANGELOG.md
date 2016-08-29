@@ -1,6 +1,10 @@
 # Change log
 All notable changes to this project will be documented in this file
 
+## 1.2.0 - 2016-08-25
+Added
+- Form to add new images to the gallery (not persistent yet)
+
 ## 1.1.0 - 2016-08-24
 Added
 - Radio button to change views

@@ -17,3 +17,7 @@ Alt server instructions
 
 ### Tests
 `cd app` and `npm run test`
+
+### Add image form
+- All three fields must be filled out
+- Not persistent yet

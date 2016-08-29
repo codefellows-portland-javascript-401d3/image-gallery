@@ -1,0 +1,19 @@
+<section ng-class="$ctrl.styles.addImage">
+  <!-- Error Message -->
+  <div id="error" ng-show="$ctrl.isInvalid">
+    <p>Please fill out all fields.</p>
+  </div>
+  <!-- Form -->
+  <form ng-submit="$ctrl.submit()">
+    <md-input-container>
+      <input placeholder="Title" ng-model="$ctrl.image.title">
+    </md-input-container>
+    <md-input-container>
+      <input placeholder="Description" ng-model="$ctrl.image.description">
+    </md-input-container>
+    <md-input-container>
+      <input placeholder="Image URL" ng-model="$ctrl.image.link">
+    </md-input-container>
+    <md-button type="submit">ADD</md-button>
+  </form>
+</section>

@@ -6,6 +6,9 @@ export default{
   controller(){
     this.styles = styles;
     this.view = 'list';
+    this.add = imageToAdd=>{
+      this.images.push(imageToAdd);
+    };
     this.images = [
       {
         title: 'Vet Visit',
