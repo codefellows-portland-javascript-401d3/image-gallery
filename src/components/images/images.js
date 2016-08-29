@@ -39,5 +39,10 @@ export default {
       description: "Martian Manhunter, aka J'onn J'onzz"
     }];
     this.view = 'full';
+
+    this.add = newPic => {
+      console.log(newPic);
+      this.images.push(newPic);
+    };
   }
 };
