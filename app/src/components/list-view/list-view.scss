@@ -1,4 +1,11 @@
-:local(.bottom) {
+:local(.inlineflexy) {
+  display: flex;
   margin-bottom: 40px;
-  
+  margin: 10px;
+}
+
+:local(.innermargins)  {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 0;
 }
