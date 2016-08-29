@@ -3,8 +3,8 @@ import app from './app';
 import './scss/main.scss';
 
 angular.module(app)
-.run(['$rootScope', function($rootScope) {
-  console.log('$rootScope', $rootScope);
+.run(['$rootScope', function() {
+
 }]);
 
 angular.bootstrap(document, [app]);

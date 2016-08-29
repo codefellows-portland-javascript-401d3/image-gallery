@@ -14,7 +14,6 @@ const components = angular.module('components', [] );
 reqContext.keys().forEach( key => {
   const name = camelcase(path.basename(key, '.js'));
   components.component(name, reqContext(key).default);
-  console.log('component:',name);
 });
 
 export default components.name;

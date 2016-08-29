@@ -1,4 +1,4 @@
-import template from './imago.html';
+import template from './thumb.html';
 
 export default {
   template,
@@ -6,6 +6,6 @@ export default {
     image: '='
   },
   controller: function() {
-    console.log('called image.js controller');
+
   }
 };

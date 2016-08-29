@@ -1,0 +1,32 @@
+.text-list {
+  margin: 2%;
+}
+
+.list-item-container {
+  width: 100%;
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+}
+
+.text-title, .text-desc, .text-url {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: .5rem;
+}
+
+.text-title {
+  width: 15%;
+  background: #fcc;
+}
+
+.text-desc {
+  width: 50%;
+  background: #aaa;
+}
+
+.text-url {
+  width: auto;
+  background: #bab;
+}
