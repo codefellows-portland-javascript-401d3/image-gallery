@@ -18,21 +18,31 @@ function controller($http) {
     this.list = false;
     this.thumb = false;
     this.full = false;
+    this.addForm = false;
     this[selection] = true;
   };
 
-  $http.get('http://localhost:3000/api/images')
-  .then( response => response.data )
-  .then( images => this.images = images )
-  .catch( err => console.log(err) );
+  this.getImages = () => {
+    $http.get('http://localhost:3000/api/images')
+    .then( response => response.data )
+    .then( images => this.images = images )
+    .catch( err => console.log(err) );
+  };
+  this.getImages();
 
-  // this.add = imageToAdd => {
-  //   this.images.push(imageToAdd);
-  // };
-
-  // this.remove = imageToRemove => {
-  //   const index = this.images.indexOf(imageToRemove);
-  //   if(index > -1) this.images.splice(index, 1);
-  // };
-
+  this.submitImage = data => {
+    $http({
+      method: 'POST',
+      data,
+      url: 'http://localhost:3000/api/images'
+    })
+    .then( () => {
+      this.getImages();
+    })
+    .catch( response => {
+      console.log('Error getting images:',response);
+      this.result = true;
+      this.message = 'Error: ' + response;
+    });
+  };
 };
