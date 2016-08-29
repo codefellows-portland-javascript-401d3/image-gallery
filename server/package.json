@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server for image gallery",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Danielle Heberling",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

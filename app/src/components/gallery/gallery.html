@@ -1,7 +1,5 @@
-<div>
-  <h3>Gallery View</h3>
-  <p>{{$ctrl.info.title}}</p>
+<section ng-class="$ctrl.styles.gallery">
+  <img ng-src="{{$ctrl.info.link}}">
+  <h2>{{$ctrl.info.title}}</h2>
   <p>{{$ctrl.info.description}}</p>
-  <p><img ng-src="{{$ctrl.info.link}}"></p>
-</div>
-<hr>
+</section>

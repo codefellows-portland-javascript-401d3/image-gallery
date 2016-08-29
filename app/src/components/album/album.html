@@ -1,0 +1,18 @@
+<div ng-class="$ctrl.styles.album">
+  <!-- Radio buttons -->
+  <section id="radioButtons">
+    <label for="list">List </label>
+      <input ng-model="$ctrl.view" type="radio" name="view" id="list" value="list">
+    <label for="thumbnail">Thumbnail </label>
+      <input ng-model="$ctrl.view" type="radio" name="view" id="thumbnail" value="thumbnail">
+    <label for="gallery">Gallery </label>
+      <input ng-model="$ctrl.view" type="radio" name="view" id="gallery" value="gallery">
+  </section>
+
+  <!-- Image and image info -->
+  <span ng-repeat="image in $ctrl.images">
+    <list ng-if="$ctrl.view === 'list'" info="image"></list>
+    <thumbnail ng-if="$ctrl.view === 'thumbnail'" info="image"></thumbnail>
+    <gallery ng-if="$ctrl.view === 'gallery'" info="image"></gallery>
+  </span>
+</div>
