@@ -9,11 +9,11 @@ const reqContext = require.context(
     /^\.\/(?!index).+?\.js$/ //regex match any .js except this one
 );
 
-const factories = angular.module( 'factories', [] );
+const services = angular.module( 'services', [] );
 
 reqContext.keys().forEach( key => {
   const name = camelcase( path.basename( key, '.js' ) );
-  factories.factory( name, reqContext( key ).default );
+  services.factory( name, reqContext( key ).default );
 });
 
-export default factories.name;
+export default services.name;
