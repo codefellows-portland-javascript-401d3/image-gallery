@@ -1,11 +1,11 @@
 import template from './text.html';
-import styles from './text.css';
+import styles from './text.scss';
 
 export default {
   template,
   controllerAs: 'text',
-  require: {
-    app:'^^'
+  bindings: {
+    collection: '='
   },
   controller() {
     this.styles = styles;

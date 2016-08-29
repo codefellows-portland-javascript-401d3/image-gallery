@@ -3,14 +3,14 @@
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 
 module.exports = {
-  entry: './app/src/main.js',
+  entry: './app/main.js',
   output: {
     path: './server/dist',
     filename: 'bundle.js'
   },
   devtool: 'source-map',
   plugins: [new HtmlWebpackPlugin({
-    template: './app/src/index.html'
+    template: './app/index.html'
   })],
   module: {
     preLoaders: [{
@@ -29,6 +29,10 @@ module.exports = {
     {
       test: /\.css$/,
       loader: 'style!css?sourceMap'
+    },
+    {
+      test: /\.scss$/,
+      loader: 'style!css?sourceMap!sass?sourceMap'
     },
     {
       test: /\.html$/,

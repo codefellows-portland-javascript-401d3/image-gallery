@@ -1,0 +1,18 @@
+.indivImg {
+  padding: 30px 0;
+  border-bottom : 1px solid #ddd;
+}
+
+.indivImg:last-child{
+  border-bottom: none;
+}
+
+a, a:link, a:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  color: #666;
+  text-decoration: none;
+}

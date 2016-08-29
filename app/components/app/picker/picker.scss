@@ -1,0 +1,28 @@
+picker {
+  width: 100%;
+}
+
+section {
+  background-color: white;
+}
+
+label {
+  width: 33%;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 5px 20px;
+  text-align: center;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+}
+
+.pickerInner {
+  display: inline-block;
+  width: 336px;
+  position: relative;
+  top: 0;
+  left: calc(50% - 168px);
+  margin-bottom: 30px;
+}
