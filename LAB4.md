@@ -7,7 +7,15 @@ Write angular services that encapsulate API calls and use those in your componen
 
 Make your API url configured via an angular value (you can make your services providers if you'd rather).
 
-Test your service components.
+Test your service components:
+
+* Unit test your components and services.
+
+* Use angular.mocks to isolate the particular component or service being tested.
+
+* Use $httpBackend to test $http in your data service components.
+
+* All major functional areas of component or service should be tested.
 
 ## Bonus
 Handle multiple albums (w/ tests) **3pts**
