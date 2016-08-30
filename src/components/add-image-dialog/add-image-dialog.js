@@ -21,7 +21,7 @@ function controller($mdDialog) {
 
   // resetImage();
   this.cancel = () => {
-    $md.$mdDialog.hide();
+    $mdDialog.hide();
   };
 
   this.save = () => {
