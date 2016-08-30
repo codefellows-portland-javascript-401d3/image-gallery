@@ -1,0 +1,9 @@
+<div class="displays">
+	<label ng-repeat="display in $ctrl.displays">
+		{{display}}
+		<input type="radio" name="display" 
+			ng-model="$ctrl.display"
+			ng-value="display"
+			ng-change="$ctrl.change()">
+	</label>
+</div>

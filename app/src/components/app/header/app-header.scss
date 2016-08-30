@@ -1,0 +1,16 @@
+:local(.app-header) {
+  a {
+    color: cornflowerblue;
+    &:active {
+      color: chocolate;
+      text-decoration: underline;
+    }
+  }
+
+  displays {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 25px;
+  }
+}
