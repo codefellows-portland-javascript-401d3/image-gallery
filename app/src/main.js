@@ -2,9 +2,8 @@ import angular from 'angular';
 import app from './app';
 import './scss/main.scss';
 
-angular.module( app )
-.run(function() {
-  //do nothing
-});
+const module = angular.module(app);
 
-angular.bootstrap( document, [ app ] );
+module.value('apiUrl', process.env.API_URL || '/api');
+
+angular.bootstrap( document, [app] );

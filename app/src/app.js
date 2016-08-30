@@ -2,11 +2,11 @@ import angular from 'angular';
 import angularMaterial from 'angular-material';
 import 'angular-material/angular-material.css';
 import components from './components';
-import factories from './factories';
+import services from './services';
 import messages from 'angular-messages';
 
 const app = angular.module( 'myApp', [
-  components, angularMaterial, factories, messages
+  components, angularMaterial, services, messages
 ]);
 
 export default app.name;

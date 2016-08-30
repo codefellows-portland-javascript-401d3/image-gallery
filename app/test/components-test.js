@@ -6,35 +6,11 @@ describe('image components', function() {
   beforeEach(angular.mock.module('components', 'ngMaterial'));
 
   let $component, $scope;
-  // let mdDialogMock;
-  // let qMock;
 
   beforeEach(angular.mock.inject( ($rootScope, _$componentController_) => {
     $component = _$componentController_;
     $scope = $rootScope.$new();
   }));
-
-  // beforeEach(() => {
-  //
-  //   inject((_$mdDialog_, $q) => {
-  //     mdDialogMock = _$mdDialog_;
-  //     qMock = $q;
-  //   });
-  //
-  //   angular.extend(mdDialogMock, {
-  //     show: function() {
-  //       // let deferred = Promise.resolve({
-  //       //   then: function(onFulfill, onReject) { onFulfill('Fulfilled'); }
-  //       // });
-  //       // new Promise((resolve, reject) => {
-  //       //   resolve('Resolved');
-  //       // });
-  //       // return deferred;
-  //       return Promise.resolve('resolved');
-  //
-  //     }
-  //   });
-  // });
 
   it('the images component initializes with $ctrl.view set to list', () => {
     const component = $component('images');
@@ -80,35 +56,6 @@ describe('image components', function() {
     });
 
   });
-
-  // describe('list view component', () => {
-  //   // console.log($rootScope);
-  //   it('list view component edits image title and description', () => {
-  //
-  //     /* Not sure how to run test for this component that requires
-  //     material design dialog box */
-  //
-  //     const $mdDialog = mdDialogMock;
-  //     const $q = qMock;
-  //
-  //     const component = $component('listView', {$q, $mdDialog}, {});
-  //     console.log($mdDialog.show().then(value => {
-  //       return value;
-  //     }));
-  //
-  //     angular.extend(component, {
-  //       edit: function edit() {
-  //         return $mdDialog.show().then(value => {
-  //           console.log(value);
-  //         });
-  //       }
-  //     });
-  //
-  //     console.log(component.edit());
-  //
-  //   });
-  //
-  // });
 
   describe('new image component', () => {
 
