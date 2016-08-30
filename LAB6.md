@@ -12,7 +12,7 @@ At a minimum, you should have:
 
 User should be able to CRUD albums and images in albums
 
-TBD - E2E Testing???
+Test routes with protractor
 
 # Rubric
 TBD
