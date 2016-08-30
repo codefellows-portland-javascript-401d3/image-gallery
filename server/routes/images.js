@@ -10,7 +10,7 @@ module.exports = router
 .get('', (req,res,next) => {
   Image.find()
   .lean()
-  .then ( images => res.send(images) )
+  .then( images => res.send(images) )
   .catch( err => {
     console.log('error getting full image list');
     console.log(err);

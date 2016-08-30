@@ -4,7 +4,7 @@
   "description": "Code Fellows 401 Backend Test",
   "main": "index.js",
   "scripts": {
-    "pretest": "eslint **/*.js",
+    "pretest": "eslint **/*.js --quiet",
     "test": "mocha",
     "watch": "mocha -w",
     "start": "nodemon index.js"
