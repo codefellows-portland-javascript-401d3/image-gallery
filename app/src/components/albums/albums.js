@@ -3,6 +3,9 @@ import styles from './albums.scss';
 
 export default {
   template,
+  bindings: {
+    display: '<'
+  },
   controller
 };
 
@@ -22,6 +25,6 @@ function controller (albumService) {
       .catch(err => console.log(err));
   };
 
-  
+
 
 };

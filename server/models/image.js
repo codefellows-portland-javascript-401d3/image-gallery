@@ -17,6 +17,10 @@ const Image = new Schema({
   vote: {
     type: Number,
     default: 0
+  },
+  album: {
+    type: Schema.Types.ObjectId,
+    ref: 'Album'
   }
 }, {
   timestamps: true
