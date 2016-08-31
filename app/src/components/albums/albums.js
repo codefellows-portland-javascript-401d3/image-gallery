@@ -22,6 +22,4 @@ function controller (albumService) {
       .catch(err => console.log(err));
   };
 
-  
-
 };

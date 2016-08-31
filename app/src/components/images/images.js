@@ -6,7 +6,6 @@ export default {
   controller
 };
 
-
 controller.$inject = ['imageService'];
 function controller (imageService) {
   this.styles = styles;
