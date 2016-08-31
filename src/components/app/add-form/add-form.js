@@ -12,23 +12,22 @@ export default {
 function controller() {
   this.result = false;
   this.styles = styles;
+  this.image = {};
 
   this.submit = () => {
-
-    let data = {
+    const data = {
       'title': this.image.title,
-      'url': this.image.link,
-      'description': this.image.desc
+      'url': this.image.url,
+      'description': this.image.description
     };
-    
     this.submitImage(data);
-
-    this.image.title = '';
-    this.image.link = '';
-    this.image.desc = '';
+    clearForm();
     this.result = true;
     this.message = 'Image saved';
-
   };
 
+  const clearForm = () => {
+    this.image = {};
+  };
+  clearForm(); // init the image object for testing purposes
 }

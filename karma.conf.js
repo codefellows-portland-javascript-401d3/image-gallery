@@ -8,7 +8,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai', 'browserify'],
+    frameworks: ['mocha', 'chai'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -23,7 +23,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       './src/app.js': ['webpack'],
-      './test/**/*.js': ['babel', 'browserify']
+      './test/**/*.js': ['babel']
     },
 
     // start these browsers
@@ -46,11 +46,11 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+    singleRun: false,
 
     // Concurrency level
     // how many browser should be started simultaneous
