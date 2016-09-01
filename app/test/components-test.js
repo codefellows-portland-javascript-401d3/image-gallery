@@ -3,7 +3,9 @@ const assert = chai.assert;
 
 describe('image components', function() {
 
-  beforeEach(angular.mock.module('components', 'ngMaterial'));
+  const imageSvc = {};
+
+  beforeEach(angular.mock.module('components', {imageService: imageSvc}));
 
   let $component, $scope;
 
@@ -13,12 +15,25 @@ describe('image components', function() {
   }));
 
   it('the images component initializes with $ctrl.view set to list', () => {
-    const component = $component('images');
+    const images = [];
+    imageSvc.getAll = () => {
+      return Promise.resolve(images);
+    };
+    const component = $component('images', null, ({images}));
+
     assert.equal(component.view, 'list');
   });
 
-  it('images component properly increases and decreases vote count', function() {
+  it('images component properly calls imageService vote function', function() {
     const images = [{vote: 0},{vote: 0}];
+    imageSvc.vote = (voteImage, vote) => {
+      if (vote) {
+        voteImage.vote++;
+      } else {
+        voteImage.vote--;
+      }
+      return Promise.resolve(images);
+    };
 
     const component = $component('images', null, {images});
 
@@ -28,9 +43,15 @@ describe('image components', function() {
     assert.deepEqual(component.images[1].vote, -1);
   });
 
-  it('images component adds image to images array', () => {
+  it('images component properly calls imageService add function', () => {
     const images = [{vote: 0}];
     const image = {vote: 0};
+
+    imageSvc.add = (imageToAdd) => {
+      images.unshift(imageToAdd);
+      this.addButton = 'add';
+      return Promise.resolve(imageToAdd);
+    };
 
     const component = $component('images', null, {images});
 
@@ -94,16 +115,29 @@ describe('image components', function() {
   });
 
   describe('edit image component', () => {
-    it('calls the mdDialog.hide() method', done => {
+    it('save calls imageService.update and then the mdDialog.hide() method', done => {
+      const imageToAdd = {title: 'oldImage', _id: 123, description: 'old description.'};
+      // const updatedImage = {title: 'image', _id: 123, description: 'This is the description.'};
+
       const $mdDialog = {
         hide: function (obj) {
-          Promise.resolve(obj);
+          assert.equal(image, imageToAdd);
+          return Promise.resolve(obj);
         }
       };
-      const testObj = {title: 'new title', description: 'new description'};
-      const component = $component( 'editImage', {$mdDialog, testObj});
-      //get testing from previous branch
-      // component.
+
+      imageSvc.update = (image) => {
+        assert.equal(image, imageToAdd);
+        return Promise.resolve(image);
+      };
+
+      const component = $component( 'editImageDialog', {$mdDialog, image: imageToAdd});
+
+      component.save().then(image => {
+        assert.equal(image, imageToAdd);
+        done();
+      })
+      .catch(done);
 
     });
   });
