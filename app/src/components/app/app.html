@@ -3,11 +3,8 @@
 </app-header>
 
 <main>
-  <ui-view name="main">
-    Loading...<md-progress-circular md-mode="indeterminate" value="0" md-diameter="50"></md-progress-circular>
-  </ui-view>
+  <ui-view name="main">Loading...</ui-view>
+  {{ $ctrl.albums | json }}
 </main>
-<!-- <h1>Image Gallery</h1> -->
-<!-- <images></images> -->
 
-<footer>$copy; Aaron Bini  |  <a href="https://github.com/codefellows-portland-javascript-401d3/image-gallery/tree/aaronbini"><span>GitHub Page</span></a>
+<footer>&copy; Aaron Bini  |  <a href="https://github.com/codefellows-portland-javascript-401d3/image-gallery/tree/aaronbini"><span>GitHub Page</span></a></footer>

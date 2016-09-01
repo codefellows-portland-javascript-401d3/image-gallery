@@ -93,4 +93,19 @@ describe('image components', function() {
     });
   });
 
+  describe('edit image component', () => {
+    it('calls the mdDialog.hide() method', done => {
+      const $mdDialog = {
+        hide: function (obj) {
+          Promise.resolve(obj);
+        }
+      };
+      const testObj = {title: 'new title', description: 'new description'};
+      const component = $component( 'editImage', {$mdDialog, testObj});
+      //get testing from previous branch
+      // component.
+
+    });
+  });
+
 });

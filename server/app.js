@@ -1,6 +1,7 @@
 const express = require( 'express' );
 const app = express();
 const images = require('./routes/images-route');
+const albums = require('./routes/album-routes');
 const errorHandler = require('./errorHandler');
 const notFound = require('./notFound');
 
@@ -15,6 +16,7 @@ app.use( ( req, res, next ) => {
 });
 
 app.use('/api/images', images);
+app.use('/api/albums', albums);
 app.use(notFound);
 app.use(errorHandler);
 

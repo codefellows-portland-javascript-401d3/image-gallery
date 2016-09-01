@@ -10,9 +10,10 @@ function controller ($state) {
   this.user = {
     username: 'aaronbini'
   };
+  console.log($state);
 
-  this.goTo = () => {
-    $state.go('account');
-  };
+  // this.goTo = () => {
+  //   $state.go('account');
+  // };
 
 };

@@ -1,9 +1,9 @@
 <section>
   <h4>Albums: {{$ctrl.display}} View</h4>
   <ul>
-    <li ng-repeat="album in $ctrl.albums">
-      <a ui-sref="images({albumId: album._id})">{{album.name}}</a>
+    <li ng-repeat="album in albums.albums">
+      <!-- <a ui-sref="images({albumId: album._id})">{{album.name}}</a> -->
     </li>
   </ul>
-  <new-album add="$ctrl.add(album)"></new-album>
+  <new-album add="albums.add(album)"></new-album>
 </section>

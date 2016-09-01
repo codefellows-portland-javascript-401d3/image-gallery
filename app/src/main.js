@@ -13,4 +13,4 @@ app.config(routes);
 
 app.value('apiUrl', process.env.API_URL || '/api');
 
-angular.bootstrap( document, [app] );
+angular.bootstrap( document, [app.name] );

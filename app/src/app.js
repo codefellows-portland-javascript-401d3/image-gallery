@@ -10,4 +10,4 @@ const app = angular.module( 'myApp', [
   components, angularMaterial, services, messages, router
 ]);
 
-export default app.name;
+export default app;
