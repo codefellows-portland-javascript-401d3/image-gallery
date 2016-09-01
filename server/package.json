@@ -38,6 +38,7 @@
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
     "node-sass": "^3.8.0",
+    "nodemon": "^1.10.2",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",

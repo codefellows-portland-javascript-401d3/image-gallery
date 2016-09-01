@@ -2,7 +2,7 @@ const mongoose = require( 'mongoose' );
 const debug = require( 'debug' )( 'myapp.dbconnect' );
 
 //SETTING URI
-const dbURI = process.env.MONGODB_URI || 'mongodb://localhost/user'; 
+const dbURI = process.env.MONGODB_URI || 'mongodb://localhost/heroes'; 
 
 mongoose.Promise = Promise;
 mongoose.connect( dbURI ); 
