@@ -24,6 +24,22 @@ describe('image components', function() {
     assert.equal(component.view, 'list');
   });
 
+  it('images component properly calls imageService remove function', () => {
+    const images = [{vote: 1}];
+
+    imageSvc.remove = (imageToRemove) => {
+      images.splice(0, 1);
+      return Promise.resolve(imageToRemove);
+    };
+
+    const component = $component('images', null, {images});
+    console.log(component.images[0]);
+
+    assert.deepEqual(component.images.length, 1);
+    component.remove(component.images[0]);
+    assert.deepEqual(component.images.length, 0);
+  });
+
   it('images component properly calls imageService vote function', function() {
     const images = [{vote: 0},{vote: 0}];
     imageSvc.vote = (voteImage, vote) => {
@@ -115,29 +131,34 @@ describe('image components', function() {
   });
 
   describe('edit image component', () => {
+
     it('save calls imageService.update and then the mdDialog.hide() method', done => {
-      const imageToAdd = {title: 'oldImage', _id: 123, description: 'old description.'};
-      // const updatedImage = {title: 'image', _id: 123, description: 'This is the description.'};
+      const image = {title: 'oldImage', _id: 215, description: 'old description.'};
 
       const $mdDialog = {
         hide: function (obj) {
-          assert.equal(image, imageToAdd);
-          return Promise.resolve(obj);
+          console.log('got to mdDialog');
+          assert.ok(obj);
+          return obj;
         }
       };
 
-      imageSvc.update = (image) => {
-        assert.equal(image, imageToAdd);
-        return Promise.resolve(image);
+      imageSvc.update = (imageToUpdate) => {
+        console.log('got to imageSvc.update');
+        assert.deepEqual(image, imageToUpdate);
+        return Promise.resolve(imageToUpdate);
       };
 
-      const component = $component( 'editImageDialog', {$mdDialog, image: imageToAdd});
+      const component = $component('editImageDialog', {$mdDialog});
 
-      component.save().then(image => {
-        assert.equal(image, imageToAdd);
+      component.image = {title: 'oldImage', _id: 215, description: 'old description.'};
+
+      component.save();
+
+      setTimeout( () => {
+        assert.deepEqual(component.image, image);
         done();
-      })
-      .catch(done);
+      }, 100);
 
     });
   });

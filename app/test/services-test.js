@@ -22,7 +22,7 @@ describe('image components', function() {
     const images = [1,2,3,4];
 
     $httpBackend
-      .expectGet('/api/images')
+      .expectGET('/api/images')
       //mock response that will get set on the
       //.data property of $http response object
       .respond(images);
@@ -38,7 +38,46 @@ describe('image components', function() {
     $httpBackend.flush();
   });
 
+  it('images service gets image by id', done => {
+
+    const imageToGet = {_id: 1, title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
+    const mockReturnObject = {_v: 0, _id: 1, title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
+
+    $httpBackend
+      .expectGET('/api/images/1')
+      .respond(mockReturnObject);
+
+    imageService.get(imageToGet)
+      .then(returnedImage => {
+        assert.deepEqual(returnedImage, mockReturnObject);
+        done();
+      })
+      .catch(done);
+
+    $httpBackend.flush();
+  });
+
+  it('images service removes image by id', done => {
+
+    const imageToRemove = {_id: 1, title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
+    const mockReturnObject = {_v: 0, _id: 1, title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
+
+    $httpBackend
+      .expectGET('/api/images/1')
+      .respond(mockReturnObject);
+
+    imageService.get(imageToRemove)
+      .then(removedImage => {
+        assert.deepEqual(removedImage, mockReturnObject);
+        done();
+      })
+      .catch(done);
+
+    $httpBackend.flush();
+  });
+
   it('images service POST new movie', done => {
+
     const newImage = {title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
     const mockReturnObject = {_v: 0, title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
 
