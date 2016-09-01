@@ -15,7 +15,7 @@ module.exports = app
 .use(express.static(publicPath))
 .get('/', (req,res) => res.sendFile(indexHtml))
 
-.use( ( req, res, next ) => {
+.use( (req, res, next) => {
   const url = '*';
   res.header( 'Access-Control-Allow-Origin', url );
   res.header( 'Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE' );

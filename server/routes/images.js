@@ -18,6 +18,17 @@ module.exports = router
   });
 })
 
+.get('/count', (req,res,next) => {
+  Image.find()
+  .lean()
+  .then( images => res.send(images) )
+  .catch( err => {
+    console.log('error getting image list length');
+    console.log(err);
+    next(err);
+  });
+})
+
 .get('/:id', (req,res,next) => {
   Image.findById(req.params.id)
   .lean()

@@ -44,34 +44,205 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var _angular = __webpack_require__(1);
+	var _angular = __webpack_require__(2);
 	
 	var _angular2 = _interopRequireDefault(_angular);
 	
-	var _app = __webpack_require__(3);
+	var _app = __webpack_require__(4);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	__webpack_require__(31);
+	__webpack_require__(38);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	_angular2.default.module(_app2.default).run(['$rootScope', function () {}]);
+	var _module = _angular2.default.module(_app2.default);
+	
+	// .run(['$rootScope', function() {}]); // this is an init method that could be used if we had init data
+	
+	_module.value('apiUrl', process.env.API_URL || '/api');
 	
 	_angular2.default.bootstrap(document, [_app2.default]);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	__webpack_require__(2);
-	module.exports = angular;
+	// shim for using process in browser
+	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	(function () {
+	    try {
+	        cachedSetTimeout = setTimeout;
+	    } catch (e) {
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
+	    }
+	    try {
+	        cachedClearTimeout = clearTimeout;
+	    } catch (e) {
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+	
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+	
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+	
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+	
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+	
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+	
+	function noop() {}
+	
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+	
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+	
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
 
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(3);
+	module.exports = angular;
+
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
 	/**
@@ -31844,30 +32015,6 @@
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _angular = __webpack_require__(1);
-	
-	var _angular2 = _interopRequireDefault(_angular);
-	
-	var _components = __webpack_require__(4);
-	
-	var _components2 = _interopRequireDefault(_components);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var app = _angular2.default.module('myApp', [_components2.default]);
-	
-	exports.default = app.name;
-
-/***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31877,15 +32024,43 @@
 	  value: true
 	});
 	
-	var _angular = __webpack_require__(1);
+	var _angular = __webpack_require__(2);
 	
 	var _angular2 = _interopRequireDefault(_angular);
 	
-	var _camelcase = __webpack_require__(5);
+	var _components = __webpack_require__(5);
+	
+	var _components2 = _interopRequireDefault(_components);
+	
+	var _services = __webpack_require__(35);
+	
+	var _services2 = _interopRequireDefault(_services);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var app = _angular2.default.module('myApp', [_components2.default, _services2.default]);
+	
+	exports.default = app.name;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _angular = __webpack_require__(2);
+	
+	var _angular2 = _interopRequireDefault(_angular);
+	
+	var _camelcase = __webpack_require__(6);
 	
 	var _camelcase2 = _interopRequireDefault(_camelcase);
 	
-	var _path = __webpack_require__(6);
+	var _path = __webpack_require__(7);
 	
 	var _path2 = _interopRequireDefault(_path);
 	
@@ -31904,7 +32079,7 @@
 	exports.default = components.name;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -31966,7 +32141,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -32194,186 +32369,21 @@
 	    }
 	;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	// shim for using process in browser
-	var process = module.exports = {};
-	
-	// cached from whatever global is present so that test runners that stub it
-	// don't break things.  But we need to wrap it in a try catch in case it is
-	// wrapped in strict mode code which doesn't define any globals.  It's inside a
-	// function because try/catches deoptimize in certain engines.
-	
-	var cachedSetTimeout;
-	var cachedClearTimeout;
-	
-	(function () {
-	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
-	        }
-	    }
-	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
-	        }
-	    }
-	} ())
-	function runTimeout(fun) {
-	    if (cachedSetTimeout === setTimeout) {
-	        //normal enviroments in sane situations
-	        return setTimeout(fun, 0);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedSetTimeout(fun, 0);
-	    } catch(e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-	            return cachedSetTimeout.call(null, fun, 0);
-	        } catch(e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-	            return cachedSetTimeout.call(this, fun, 0);
-	        }
-	    }
-	
-	
-	}
-	function runClearTimeout(marker) {
-	    if (cachedClearTimeout === clearTimeout) {
-	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedClearTimeout(marker);
-	    } catch (e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-	            return cachedClearTimeout.call(null, marker);
-	        } catch (e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-	            return cachedClearTimeout.call(this, marker);
-	        }
-	    }
-	
-	
-	
-	}
-	var queue = [];
-	var draining = false;
-	var currentQueue;
-	var queueIndex = -1;
-	
-	function cleanUpNextTick() {
-	    if (!draining || !currentQueue) {
-	        return;
-	    }
-	    draining = false;
-	    if (currentQueue.length) {
-	        queue = currentQueue.concat(queue);
-	    } else {
-	        queueIndex = -1;
-	    }
-	    if (queue.length) {
-	        drainQueue();
-	    }
-	}
-	
-	function drainQueue() {
-	    if (draining) {
-	        return;
-	    }
-	    var timeout = runTimeout(cleanUpNextTick);
-	    draining = true;
-	
-	    var len = queue.length;
-	    while(len) {
-	        currentQueue = queue;
-	        queue = [];
-	        while (++queueIndex < len) {
-	            if (currentQueue) {
-	                currentQueue[queueIndex].run();
-	            }
-	        }
-	        queueIndex = -1;
-	        len = queue.length;
-	    }
-	    currentQueue = null;
-	    draining = false;
-	    runClearTimeout(timeout);
-	}
-	
-	process.nextTick = function (fun) {
-	    var args = new Array(arguments.length - 1);
-	    if (arguments.length > 1) {
-	        for (var i = 1; i < arguments.length; i++) {
-	            args[i - 1] = arguments[i];
-	        }
-	    }
-	    queue.push(new Item(fun, args));
-	    if (queue.length === 1 && !draining) {
-	        runTimeout(drainQueue);
-	    }
-	};
-	
-	// v8 likes predictible objects
-	function Item(fun, array) {
-	    this.fun = fun;
-	    this.array = array;
-	}
-	Item.prototype.run = function () {
-	    this.fun.apply(null, this.array);
-	};
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	process.version = ''; // empty string to avoid regexp issues
-	process.versions = {};
-	
-	function noop() {}
-	
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-	
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-	
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-	process.umask = function() { return 0; };
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./app/app.js": 9,
-		"./app/images/images.js": 11,
-		"./app/images/imago/imago.js": 17,
-		"./app/text-list/text-list-item/text-list-item.js": 19,
-		"./app/text-list/text-list.js": 21,
-		"./app/thumbs/thumb/thumb.js": 25,
-		"./app/thumbs/thumbs.js": 27
+		"./app/add-form/add-form.js": 9,
+		"./app/app.js": 15,
+		"./app/images/images.js": 17,
+		"./app/images/imago/imago.js": 21,
+		"./app/text-list/text-list-item/text-list-item.js": 23,
+		"./app/text-list/text-list.js": 25,
+		"./app/thumbs/thumb/thumb.js": 29,
+		"./app/thumbs/thumbs.js": 31
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -32399,113 +32409,74 @@
 	  value: true
 	});
 	
-	var _app = __webpack_require__(10);
+	var _addForm = __webpack_require__(10);
 	
-	var _app2 = _interopRequireDefault(_app);
+	var _addForm2 = _interopRequireDefault(_addForm);
+	
+	var _addForm3 = __webpack_require__(11);
+	
+	var _addForm4 = _interopRequireDefault(_addForm3);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = {
-	  template: _app2.default,
+	  template: _addForm2.default,
+	  bindings: {
+	    submitImage: '='
+	  },
 	  controller: controller
 	};
 	
 	
-	controller.$inject = ['$http'];
-	function controller($http) {
+	function controller() {
 	  var _this = this;
 	
-	  // this.images = [
-	  //   { title: 'Starfury', description: 'A Starfury type space fighter from Babylon 5.', url: 'http://i.imgur.com/rTrk6ib.jpg' },
-	  //   { title: 'X-Wing Fighter', description: 'An X-Wing Fighter from Star Wars.', url: 'http://i.imgur.com/R1wMXmC.jpg' },
-	  //   { title: 'Colonial Viper', description: 'A Colonial Viper from Battlestar Galactica.', url: 'http://i.imgur.com/DsXpPYy.jpg' }
-	  // ];
+	  this.result = false;
+	  this.styles = _addForm4.default;
+	  this.image = {};
 	
-	  this.chooseFrame = function (selection) {
-	    _this.list = false;
-	    _this.thumb = false;
-	    _this.full = false;
-	    _this[selection] = true;
+	  this.submit = function () {
+	    var data = {
+	      'title': _this.image.title,
+	      'url': _this.image.url,
+	      'description': _this.image.description
+	    };
+	    _this.submitImage(data);
+	    clearForm();
+	    _this.result = true;
+	    _this.message = 'Image saved';
 	  };
 	
-	  $http.get('http://localhost:3000/api/images').then(function (response) {
-	    return response.data;
-	  }).then(function (images) {
-	    return _this.images = images;
-	  }).catch(function (err) {
-	    return console.log(err);
-	  });
-	
-	  // this.add = imageToAdd => {
-	  //   this.images.push(imageToAdd);
-	  // };
-	
-	  // this.remove = imageToRemove => {
-	  //   const index = this.images.indexOf(imageToRemove);
-	  //   if(index > -1) this.images.splice(index, 1);
-	  // };
-	};
+	  var clearForm = function clearForm() {
+	    _this.image = {};
+	  };
+	  clearForm(); // init the image object for testing purposes
+	}
 
 /***/ },
 /* 10 */
 /***/ function(module, exports) {
 
-	module.exports = "<h1 class=\"gallery-title\">Image Gallery</h1>\n\n<div class=\"choice-buttons\">\n  <button id=\"list-button\" ng-click=\"$ctrl.chooseFrame('list')\">List View</button>\n  <button id=\"thumbnail-button\" ng-click=\"$ctrl.chooseFrame('thumb')\">Thumbnails</button>\n  <button id=\"fullsize-button\" ng-click=\"$ctrl.chooseFrame('full')\">Full Images</button>\n  <button id=\"add-image-button\" ng-click=\"$ctrl.showAddForm()\">Add Image</button>\n</div>\n\n<div ng-show=\"$ctrl.list\">\n  <text-list images=\"$ctrl.images\"></text-list>\n</div>\n<div ng-show=\"$ctrl.thumb\">\n  <thumbs images=\"$ctrl.images\"></thumbs>\n</div>\n<div ng-show=\"$ctrl.full\">\n  <images images=\"$ctrl.images\"></images>\n</div>\n";
+	module.exports = "<div class=\"add-form\">\n  <h3>Add New Image</h3>\n  <form>\n    <div>\n      <label>Title:</label>\n      <input ng-model=\"$ctrl.image.title\">\n    </div>\n    <div>\n      <label>Description:</label>\n      <input ng-model=\"$ctrl.image.description\">\n    </div>\n    <div>\n      <label>Link:</label>\n      <input ng-model=\"$ctrl.image.url\">\n    </div>\n  </form>\n  <button ng-click=\"$ctrl.submit()\" class=\"add-image-button\">Submit</button>\n  <div id=\"add-result\" ng-show=\"$ctrl.result\">{{$ctrl.message}}</div>\n</div>\n";
 
 /***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _images = __webpack_require__(12);
-	
-	var _images2 = _interopRequireDefault(_images);
-	
-	var _images3 = __webpack_require__(13);
-	
-	var _images4 = _interopRequireDefault(_images3);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-	  template: _images2.default,
-	  bindings: {
-	    images: '='
-	  },
-	  controller: function controller() {
-	    this.styles = _images4.default;
-	  }
-	};
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	module.exports = "<ul class=\"image-list\">\n  <li ng-repeat=\"image in $ctrl.images\" class=\"image-list-item\">\n      <imago image=\"image\"></imago>\n  </li>\n</ul>\n";
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(14);
+	var content = __webpack_require__(12);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(14)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js?sourceMap!./../../../../node_modules/sass-loader/index.js?sourceMap!./images.scss", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js?sourceMap!./../../../../node_modules/sass-loader/index.js?sourceMap!./images.scss");
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js?sourceMap!./../../../../node_modules/sass-loader/index.js?sourceMap!./add-form.scss", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js?sourceMap!./../../../../node_modules/sass-loader/index.js?sourceMap!./add-form.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -32515,21 +32486,21 @@
 	}
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(13)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, ".image-list {\n  margin: 0;\n  padding: 0;\n  text-decoration: none; }\n\n.imago {\n  max-width: 95%;\n  border: 1px solid black;\n  margin: 3rem 0;\n  padding: 1rem;\n  background-color: #dcd; }\n\n.img-title {\n  font-size: 3rem;\n  margin-bottom: 1rem; }\n\n.img-desc {\n  padding: 1rem 0; }\n", "", {"version":3,"sources":["/./src/components/app/images/src/components/app/images/images.scss"],"names":[],"mappings":"AAAA;EACE,UAAU;EACV,WAAW;EACX,sBAAsB,EACvB;;AAED;EACE,eAAe;EACf,wBAAwB;EACxB,eAAe;EACf,cAAc;EACd,uBAAuB,EACxB;;AAED;EACE,gBAAgB;EAChB,oBAAoB,EACrB;;AAED;EACE,gBAAgB,EACjB","file":"images.scss","sourcesContent":[".image-list {\n  margin: 0;\n  padding: 0;\n  text-decoration: none;\n}\n\n.imago {\n  max-width: 95%;\n  border: 1px solid black;\n  margin: 3rem 0;\n  padding: 1rem;\n  background-color: #dcd;\n}\n\n.img-title {\n  font-size: 3rem;\n  margin-bottom: 1rem;\n}\n\n.img-desc {\n  padding: 1rem 0;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"add-form.scss","sourceRoot":"webpack://"}]);
 	
 	// exports
 
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports) {
 
 	/*
@@ -32585,7 +32556,7 @@
 
 
 /***/ },
-/* 16 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -32837,6 +32808,77 @@
 
 
 /***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _app = __webpack_require__(16);
+	
+	var _app2 = _interopRequireDefault(_app);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _app2.default,
+	  controller: controller
+	};
+	
+	
+	controller.$inject = ['imageService'];
+	function controller(imageService) {
+	  var _this = this;
+	
+	  console.log('imageService count', imageService.getCount());
+	
+	  imageService.getAll().then(function (images) {
+	    return _this.images = images;
+	  }).catch(function (err) {
+	    return console.log(err);
+	  });
+	
+	  this.chooseFrame = function (selection) {
+	    _this.list = false;
+	    _this.thumb = false;
+	    _this.full = false;
+	    _this.addForm = false;
+	    _this[selection] = true;
+	  };
+	
+	  // this.getImages = () => {
+	  //   $http.get('http://localhost:3000/api/images')
+	  //   .then( response => response.data )
+	  //   .then( images => this.images = images )
+	  //   .catch( err => console.log(err) );
+	  // };
+	  // this.getImages();
+	
+	  this.submitImage = function (data) {
+	    $http({
+	      method: 'POST',
+	      data: data,
+	      url: 'http://localhost:3000/api/images'
+	    }).then(function () {
+	      _this.getImages();
+	    }).catch(function (response) {
+	      console.log('Error getting images:', response);
+	      _this.result = true;
+	      _this.message = 'Error: ' + response;
+	    });
+	  };
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	module.exports = "<h1 class=\"gallery-title\">Image Gallery</h1>\n\n<div class=\"choice-buttons\">\n  <button id=\"list-button\" ng-click=\"$ctrl.chooseFrame('list')\">List View</button>\n  <button id=\"thumbnail-button\" ng-click=\"$ctrl.chooseFrame('thumb')\">Thumbnails</button>\n  <button id=\"fullsize-button\" ng-click=\"$ctrl.chooseFrame('full')\">Full Images</button>\n  <button id=\"add-image-button\" ng-click=\"$ctrl.chooseFrame('addForm')\">Add Image</button>\n</div>\n\n<div ng-show=\"$ctrl.list\">\n  <text-list images=\"$ctrl.images\"></text-list>\n</div>\n<div ng-show=\"$ctrl.thumb\">\n  <thumbs images=\"$ctrl.images\"></thumbs>\n</div>\n<div ng-show=\"$ctrl.full\">\n  <images images=\"$ctrl.images\"></images>\n</div>\n<div ng-show=\"$ctrl.addForm\">\n  <add-form submit-image=\"$ctrl.submitImage\"></add-form>\n</div>\n";
+
+/***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32846,7 +32888,83 @@
 	  value: true
 	});
 	
-	var _imago = __webpack_require__(18);
+	var _images = __webpack_require__(18);
+	
+	var _images2 = _interopRequireDefault(_images);
+	
+	var _images3 = __webpack_require__(19);
+	
+	var _images4 = _interopRequireDefault(_images3);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _images2.default,
+	  bindings: {
+	    images: '='
+	  },
+	  controller: function controller() {
+	    this.styles = _images4.default;
+	  }
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	module.exports = "<ul class=\"image-list\">\n  <li ng-repeat=\"image in $ctrl.images\" class=\"image-list-item\">\n      <imago image=\"image\"></imago>\n  </li>\n</ul>\n";
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(20);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(14)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js?sourceMap!./../../../../node_modules/sass-loader/index.js?sourceMap!./images.scss", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js?sourceMap!./../../../../node_modules/sass-loader/index.js?sourceMap!./images.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(13)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".image-list {\n  margin: 0;\n  padding: 0;\n  text-decoration: none; }\n\n.imago {\n  max-width: 95%;\n  border: 1px solid black;\n  margin: 3rem 0;\n  padding: 1rem;\n  background-color: #dcd; }\n\n.img-title {\n  font-size: 3rem;\n  margin-bottom: 1rem; }\n\n.img-desc {\n  padding: 1rem 0; }\n", "", {"version":3,"sources":["/./src/components/app/images/src/components/app/images/images.scss"],"names":[],"mappings":"AAAA;EACE,UAAU;EACV,WAAW;EACX,sBAAsB,EACvB;;AAED;EACE,eAAe;EACf,wBAAwB;EACxB,eAAe;EACf,cAAc;EACd,uBAAuB,EACxB;;AAED;EACE,gBAAgB;EAChB,oBAAoB,EACrB;;AAED;EACE,gBAAgB,EACjB","file":"images.scss","sourcesContent":[".image-list {\n  margin: 0;\n  padding: 0;\n  text-decoration: none;\n}\n\n.imago {\n  max-width: 95%;\n  border: 1px solid black;\n  margin: 3rem 0;\n  padding: 1rem;\n  background-color: #dcd;\n}\n\n.img-title {\n  font-size: 3rem;\n  margin-bottom: 1rem;\n}\n\n.img-desc {\n  padding: 1rem 0;\n}\n"],"sourceRoot":"webpack://"}]);
+	
+	// exports
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _imago = __webpack_require__(22);
 	
 	var _imago2 = _interopRequireDefault(_imago);
 	
@@ -32861,13 +32979,13 @@
 	};
 
 /***/ },
-/* 18 */
+/* 22 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"imago\">\n  <div class=\"img-title\">{{$ctrl.image.title}}</div>  \n  <div class=\"img-container\"><img class=\"full-pic\" ng-src=\"{{$ctrl.image.url}}\"><div>\n  <div class=\"img-desc\">{{$ctrl.image.description}}</div>\n</div>\n";
 
 /***/ },
-/* 19 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32876,7 +32994,7 @@
 	  value: true
 	});
 	
-	var _textListItem = __webpack_require__(20);
+	var _textListItem = __webpack_require__(24);
 	
 	var _textListItem2 = _interopRequireDefault(_textListItem);
 	
@@ -32891,13 +33009,13 @@
 	};
 
 /***/ },
-/* 20 */
+/* 24 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"list-item-container\">\n  <span class=\"text-title\">{{$ctrl.item.title}}</span>  \n  <span class=\"text-desc\">{{$ctrl.item.description}}</span>\n  <span class=\"text-url\">{{$ctrl.item.url}}<span>\n</div>\n";
 
 /***/ },
-/* 21 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32906,11 +33024,11 @@
 	  value: true
 	});
 	
-	var _textList = __webpack_require__(22);
+	var _textList = __webpack_require__(26);
 	
 	var _textList2 = _interopRequireDefault(_textList);
 	
-	var _textList3 = __webpack_require__(23);
+	var _textList3 = __webpack_require__(27);
 	
 	var _textList4 = _interopRequireDefault(_textList3);
 	
@@ -32927,22 +33045,22 @@
 	};
 
 /***/ },
-/* 22 */
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"text-list\">\n  <div ng-repeat=\"image in $ctrl.images\" class=\"text-list-item\">\n    <text-list-item item=\"image\"></text-list-item>\n  </div>\n</div>\n";
 
 /***/ },
-/* 23 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(24);
+	var content = __webpack_require__(28);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(14)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -32959,10 +33077,10 @@
 	}
 
 /***/ },
-/* 24 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(13)();
 	// imports
 	
 	
@@ -32973,7 +33091,7 @@
 
 
 /***/ },
-/* 25 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32982,7 +33100,7 @@
 	  value: true
 	});
 	
-	var _thumb = __webpack_require__(26);
+	var _thumb = __webpack_require__(30);
 	
 	var _thumb2 = _interopRequireDefault(_thumb);
 	
@@ -32997,13 +33115,13 @@
 	};
 
 /***/ },
-/* 26 */
+/* 30 */
 /***/ function(module, exports) {
 
 	module.exports = "<img class=\"thumb-pic\" ng-src=\"{{$ctrl.image.url}}\">\n";
 
 /***/ },
-/* 27 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33012,11 +33130,11 @@
 	  value: true
 	});
 	
-	var _thumbs = __webpack_require__(28);
+	var _thumbs = __webpack_require__(32);
 	
 	var _thumbs2 = _interopRequireDefault(_thumbs);
 	
-	var _thumbs3 = __webpack_require__(29);
+	var _thumbs3 = __webpack_require__(33);
 	
 	var _thumbs4 = _interopRequireDefault(_thumbs3);
 	
@@ -33033,22 +33151,22 @@
 	};
 
 /***/ },
-/* 28 */
+/* 32 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"thumb-container\">\n  <div ng-repeat=\"thumb in $ctrl.images\">\n      <thumb image=\"thumb\"></thumb>\n  </div>\n</div>\n";
 
 /***/ },
-/* 29 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(30);
+	var content = __webpack_require__(34);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(14)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -33065,10 +33183,10 @@
 	}
 
 /***/ },
-/* 30 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(13)();
 	// imports
 	
 	
@@ -33079,16 +33197,116 @@
 
 
 /***/ },
-/* 31 */
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _angular = __webpack_require__(2);
+	
+	var _angular2 = _interopRequireDefault(_angular);
+	
+	var _camelcase = __webpack_require__(6);
+	
+	var _camelcase2 = _interopRequireDefault(_camelcase);
+	
+	var _path = __webpack_require__(7);
+	
+	var _path2 = _interopRequireDefault(_path);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// this is a webpack specific require construct
+	var reqContext = __webpack_require__(36);
+	
+	var services = _angular2.default.module('services', []);
+	
+	reqContext.keys().forEach(function (key) {
+	    var name = (0, _camelcase2.default)(_path2.default.basename(key, '.js'));
+	    services.factory(name, reqContext(key).default);
+	});
+	
+	exports.default = services.name;
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./image-service.js": 37
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 36;
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = listService;
+	listService.$inject = ['$http', 'apiUrl'];
+	
+	function listService($http, apiUrl) {
+	
+	  return {
+	    getAll: function getAll() {
+	      return $http.get(apiUrl + '/images').then(function (response) {
+	        return response.data;
+	      });
+	    },
+	    getCount: function getCount() {
+	      return $http.get(apiUrl + '/images/count').then(function (response) {
+	        return response.data;
+	      });
+	    },
+	    add: function add(image) {
+	      return $http.post(apiUrl + '/images', image).then(function (response) {
+	        return response.data;
+	      });
+	    },
+	    remove: function remove(image) {
+	      return $http.delete(apiUrl + '/images/' + image._id).then(function (response) {
+	        return response.data;
+	      });
+	    },
+	    update: function update(image) {
+	      return $http.put(apiUrl + '/images/' + image._id, image).then(function (response) {
+	        return response.data;
+	      });
+	    }
+	  };
+	}
+
+/***/ },
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(32);
+	var content = __webpack_require__(39);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(14)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -33105,10 +33323,10 @@
 	}
 
 /***/ },
-/* 32 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(13)();
 	// imports
 	
 	

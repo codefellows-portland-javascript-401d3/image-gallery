@@ -1,5 +1,16 @@
-<div class="text-list">
-  <div ng-repeat="image in $ctrl.images" class="text-list-item">
-    <text-list-item item="image"></text-list-item>
-  </div>
-</div>
+<table class="u-full-width">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="image in $ctrl.images">
+      <td>{{image.title}}</td>  
+      <td>{{image.description}}</td>
+      <td>{{image.url}}<td>
+    </tr>
+  </tbody>
+</table>

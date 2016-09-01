@@ -1,21 +1,26 @@
-<h1 class="gallery-title">Image Gallery</h1>
+<div class="container">
 
-<div class="choice-buttons">
-  <button id="list-button" ng-click="$ctrl.chooseFrame('list')">List View</button>
-  <button id="thumbnail-button" ng-click="$ctrl.chooseFrame('thumb')">Thumbnails</button>
-  <button id="fullsize-button" ng-click="$ctrl.chooseFrame('full')">Full Images</button>
-  <button id="add-image-button" ng-click="$ctrl.chooseFrame('addForm')">Add Image</button>
-</div>
+  <h1 class="twelve columns">Image Gallery</h1>
 
-<div ng-show="$ctrl.list">
-  <text-list images="$ctrl.images"></text-list>
-</div>
-<div ng-show="$ctrl.thumb">
-  <thumbs images="$ctrl.images"></thumbs>
-</div>
-<div ng-show="$ctrl.full">
-  <images images="$ctrl.images"></images>
-</div>
-<div ng-show="$ctrl.addForm">
-  <add-form submit-image="$ctrl.submitImage"></add-form>
+  <section class="row twelve columns">
+    <button class="button-primary" ng-click="$ctrl.chooseFrame('list')">List View</button>
+    <button class="button-primary" ng-click="$ctrl.chooseFrame('thumb')">Thumbnails</button>
+    <button class="button-primary" ng-click="$ctrl.chooseFrame('full')">Full Images</button>
+    <button class="button-primary" ng-click="$ctrl.chooseFrame('addForm')">Add Image</button>
+  </section>
+
+  <section class="row twelve columns">
+    <div ng-show="$ctrl.list">
+      <text-list images="$ctrl.images"></text-list>
+    </div>
+    <div ng-show="$ctrl.thumb">
+      <thumbs images="$ctrl.images"></thumbs>
+    </div>
+    <div ng-show="$ctrl.full">
+      <images images="$ctrl.images"></images>
+    </div>
+    <div ng-show="$ctrl.addForm">
+      <add-form submit-image="$ctrl.submitImage"></add-form>
+    </div>
+  </section>
 </div>
