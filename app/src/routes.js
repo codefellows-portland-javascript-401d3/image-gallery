@@ -44,9 +44,6 @@ export default function configRoutes ($stateProvider, $urlRouterProvider) {
       header: {
         component: 'appHeader'
       },
-      // sideheader: {
-      //   component: 'displayHeader'
-      // },
       main: {
         component: 'images'
       }

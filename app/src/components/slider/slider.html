@@ -1,0 +1,9 @@
+<div ng-if="$ctrl.image.current" class="$ctrl.styles.slider">
+    <h3>{{$ctrl.image.title}}</h3>
+    <img ng-class="$ctrl.styles.slider" ng-src="{{$ctrl.image.url}}" alt="Image unavailable">
+    <p>{{$ctrl.image.description}}</p>
+  <div class="arrows">
+    <button ng-click="$ctrl.next()">Next Image</button>
+    <button ng-click="$ctrl.last()">Previous Image</button>
+  </div>
+</div>

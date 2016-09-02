@@ -11,9 +11,10 @@ export default {
 controller.$inject = ['$state'];
 
 function controller ($state) {
-  this.displays = ['full', 'list', 'thumb'];
+  this.displays = ['full', 'list', 'thumb', 'slideshow'];
 
   this.change = () => {
+    console.log($state.current.name);
     $state.go( $state.current.name, { display: this.display } );
 
   };
