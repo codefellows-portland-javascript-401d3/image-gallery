@@ -6,26 +6,27 @@ export default {
   bindings: {
     display: '<'
   },
-  controllerAs: 'albums',
   controller
 };
 
 
-controller.$inject = ['albumService', '$state'];
-function controller (albumService, $state) {
+controller.$inject = ['albumService'];
+function controller (albumService) {
   this.styles = styles;
-  console.log($state);
+  this.addButton = 'add';
   albumService.getAll()
     .then(albums => {
       this.albums = albums;
-      console.log(this.albums);
     })
     .catch(err => console.log(err));
 
 
   this.add = albumToAdd => {
     albumService.add(albumToAdd)
-      .then(album => this.albums.unshift(album))
+      .then(album => {
+        this.albums.unshift(album);
+        this.addButton = 'add';
+      })
       .catch(err => console.log(err));
   };
 

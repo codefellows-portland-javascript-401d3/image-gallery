@@ -3,22 +3,33 @@ import styles from './images.scss';
 
 export default {
   template,
+  bindings: {
+    albumListId: '<',
+    display: '<'
+  },
   controller
 };
 
 
-controller.$inject = ['imageService'];
-function controller (imageService) {
+controller.$inject = ['imageService', '$state'];
+function controller (imageService, $state) {
   this.styles = styles;
-  this.view = 'list';
+  // this.view = 'list';
   this.addButton = 'add';
 
-  imageService.getAll()
+  this.albumName = $state.params.albumName;
+  this.albumListId = $state.params.albumId;
+
+  imageService.getByAlbum(this.albumListId)
     .then(images => this.images = images)
     .catch(err => console.log(err));
 
+  this.uiOnParamsChanged = params => {
+    this.display = params.display;
+  };
+
   this.add = imageToAdd => {
-    imageService.add(imageToAdd)
+    imageService.add(this.albumListId, imageToAdd)
       .then(addedImage => {
         this.images.unshift(addedImage);
         this.addButton = 'add';

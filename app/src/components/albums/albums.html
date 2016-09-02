@@ -1,9 +1,10 @@
 <section>
-  <h4>Albums: {{$ctrl.display}} View</h4>
   <ul>
-    <li ng-repeat="album in albums.albums">
-      <!-- <a ui-sref="images({albumId: album._id})">{{album.name}}</a> -->
+    <li ng-repeat="album in $ctrl.albums">
+      <a ui-sref="images({albumId: album._id, albumName: album.name})">{{album.name}}</a>
     </li>
   </ul>
-  <new-album add="albums.add(album)"></new-album>
+  <button ng-click="$ctrl.addButton = 'save'" ng-show="$ctrl.addButton === 'add'">Add Album</button>
+
+  <new-album add="$ctrl.add" add-button="$ctrl.addButton" ng-if="$ctrl.addButton === 'save'"></new-album>
 </section>

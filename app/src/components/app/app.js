@@ -5,15 +5,9 @@ export default {
   controller
 };
 
-controller.$inject = ['$state'];
-function controller ($state) {
+function controller () {
   this.user = {
     username: 'aaronbini'
   };
-  console.log($state);
-
-  // this.goTo = () => {
-  //   $state.go('account');
-  // };
 
 };

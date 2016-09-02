@@ -14,6 +14,7 @@ function controller ($state) {
   this.displays = ['full', 'list', 'thumb'];
 
   this.change = () => {
-    $state.go($state.current.name, {display: this.display});
+    $state.go( $state.current.name, { display: this.display } );
+
   };
 };

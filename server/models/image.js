@@ -37,4 +37,12 @@ Image.statics.changeVote = function (id, vote) {
     });
 };
 
+Image.statics.findByAlbum = function (albumId) {
+  return this.find({album: albumId})
+    .then(images => {
+      if (!images) throw {status: 400, message: 'No images in that album.'};
+      return images;
+    });
+};
+
 module.exports = mongoose.model('Image', Image);

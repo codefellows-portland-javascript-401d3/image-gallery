@@ -15,7 +15,13 @@ module.exports = router
       .then(image => res.send(image))
       .catch(next);
   })
-  .post('/', bodyParser, (req, res, next) => {
+  .get('/album/:albumId', (req, res, next) => {
+    Image.findByAlbum(req.params.albumId)
+      .then(images => res.send(images))
+      .catch(next);
+  })
+  .post('/:albumId', bodyParser, (req, res, next) => {
+    req.body.album = req.params.albumId;
     new Image(req.body).save()
       .then(saved => res.send(saved))
       .catch(next);

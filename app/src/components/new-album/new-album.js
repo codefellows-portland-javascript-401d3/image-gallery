@@ -2,17 +2,23 @@ import template from './new-album.html';
 
 export default {
   template,
-  controllerAs: 'newAlbum',
   bindings: {
-    add: '&'
+    add: '<',
+    addButton: '='
   },
-  controller: function(){
-    this.item = '';
-    this.submit = function(){
-      const item = this.item;
-      if ( !item ) return;
-      this.add({ item });
-      this.item = '';
+  controller: function($scope){
+
+    const resetAlbum = () => {
+      this.album = {};
+    };
+
+    resetAlbum();
+
+    this.submit = () => {
+      this.add(this.album);
+      resetAlbum();
+      $scope.addAlbum.$setPristine();
+      $scope.addAlbum.$setUntouched();
     };
   }
 };

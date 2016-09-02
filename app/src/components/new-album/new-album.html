@@ -1,4 +1,19 @@
-<form name="form" ng-submit="newAlbum.submit()">
-	<input ng-model="newAlbum.item">
-	<button type="submit">Add Album</button>
+<form name="addAlbum" ng-submit="addAlbum.$valid && $ctrl.submit()"
+      novalidate>
+    <md-input-container>
+        <label>Name:</label>
+        <input
+            name="addName"
+            required
+            ng-model="$ctrl.album.name"/>
+            <div ng-messages="addAlbum.addName.$error" role="alert">
+                <div ng-message="required">A name is required</div>
+            </div>
+    </md-input-container>
+    <md-dialog-actions>
+      <md-button type="submit" class="md-primary">Save Album</md-button>
+    </md-dialog-actions>
+    <md-dialog-actions>
+      <md-button ng-click="$ctrl.addButton = 'add'" class="md-primary">Cancel</md-button>
+    </md-dialog-actions>
 </form>

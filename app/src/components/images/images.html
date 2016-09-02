@@ -1,7 +1,12 @@
-  <button ng-click="$ctrl.view = 'full'">Show Full Description</button>
+  <h3>{{$ctrl.albumName}}</h3>
+  <h4>{{$ctrl.display | uppercase}} View</h4>
+  <h4 ng-if="$ctrl.images.length === 0">No Images in this Album</h4>
+  <display-header></display-header>
+  <!-- <button ng-click="$ctrl.view = 'full'">Show Full Description</button>
   <button ng-click="$ctrl.view = 'list'">Show List Description</button>
-  <button ng-click="$ctrl.view = 'thumb'">Show Thumbnail</button>
+  <button ng-click="$ctrl.view = 'thumb'">Show Thumbnail</button> -->
   <button ng-click="$ctrl.addButton = 'save'" ng-show="$ctrl.addButton === 'add'">Add Image</button>
+
   <section ng-if="!$ctrl.images">
     <md-progress-circular md-mode="indeterminate" value="0" md-diameter="50"></md-progress-circular>
     Loading images...
@@ -9,8 +14,8 @@
   <section ng-if="$ctrl.images">
     <new-image add="$ctrl.add" add-button="$ctrl.addButton" ng-if="$ctrl.addButton === 'save'"></new-image>
     <div ng-repeat="image in $ctrl.images">
-      <list-view image="image" ng-show="$ctrl.view === 'list'"></list-view>
-      <thumb-view image="image" ng-show="$ctrl.view === 'thumb'"></thumb-view>
-      <full-view vote="$ctrl.vote" image="image" ng-show="$ctrl.view === 'full'"></full-view>
+      <list-view image="image" ng-show="$ctrl.display === 'list'"></list-view>
+      <thumb-view image="image" ng-show="$ctrl.display === 'thumb'"></thumb-view>
+      <full-view vote="$ctrl.vote" image="image" ng-show="$ctrl.display === 'full'"></full-view>
     </div>
   </section>
