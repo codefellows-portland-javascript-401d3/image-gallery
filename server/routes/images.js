@@ -51,4 +51,15 @@ module.exports = router
   });
 })
 
+.delete('/:id', (req,res,next) => {
+  Image.findByIdAndRemove(req.params.id)
+  .lean()
+  .then( deleted => res.send(deleted) )
+  .catch( err => {
+    console.log('error deleting an image by id');
+    console.log(err);
+    next(err);
+  });
+})
+
 ;

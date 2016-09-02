@@ -15,6 +15,9 @@ export default function listService($http, apiUrl) {
 
     remove(image) {
       return $http.delete(`${apiUrl}/images/${image._id}`)
+      .then( () => {
+        return $http.get(`${apiUrl}/images`);
+      })
       .then( response => response.data );
     },
 

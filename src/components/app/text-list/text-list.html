@@ -4,13 +4,15 @@
       <th>Title</th>
       <th>Description</th>
       <th>Link</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="image in $ctrl.images">
       <td>{{image.title}}</td>  
       <td>{{image.description}}</td>
-      <td>{{image.url}}<td>
+      <td>{{image.url}}</td>
+      <td><button ng-click="$ctrl.removeImage(image)">X</button></td>
     </tr>
   </tbody>
 </table>

@@ -6,7 +6,16 @@ export default {
   bindings: {
     images: '='
   },
-  controller: function() {
-    this.styles = styles;
-  }
+  controller
+};
+
+controller.$inject = ['imageService'];
+function controller(imageService) {
+  this.styles = styles;
+
+  this.removeImage = imageId => {
+    imageService.remove(imageId)
+    .then( imagesRemaining => this.images = imagesRemaining )
+    .catch( err => console.log(err) );
+  };
 };
