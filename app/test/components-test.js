@@ -1,11 +1,18 @@
 /* globals angular, chai */
 const assert = chai.assert;
 
-describe('image components', function() {
+//test new images component methods: next, last, slideTimer
+//test album component
+//test new album component
+
+describe('App Components', function() {
 
   const imageSvc = {};
+  const $state = {
+    params: {}
+  };
 
-  beforeEach(angular.mock.module('components', {imageService: imageSvc}));
+  beforeEach(angular.mock.module('components', {imageService: imageSvc, $state}));
 
   let $component, $scope;
 
@@ -14,14 +21,18 @@ describe('image components', function() {
     $scope = $rootScope.$new();
   }));
 
-  it('the images component initializes with $ctrl.view set to list', () => {
-    const images = [];
-    imageSvc.getAll = () => {
-      return Promise.resolve(images);
+  it('the images component initializes with correct inital data', () => {
+    const images = [{album: 123}, {album: 456}];
+    const albumListId = 123;
+    //need to change this to getByAlbum now
+    imageSvc.getByAlbum = (id) => {
+      const byAlbum = images.filter(e => e.album === id);
+      return Promise.resolve(byAlbum);
     };
-    const component = $component('images', null, ({images}));
+    const component = $component('images', null, ({images, albumListId}));
 
-    assert.equal(component.view, 'list');
+    assert.equal(component.addButton, 'add');
+    assert.equal(component.count, 0);
   });
 
   it('images component properly calls imageService remove function', () => {
@@ -74,6 +85,37 @@ describe('image components', function() {
     assert.deepEqual(component.images.length, 1);
     component.add(image);
     assert.deepEqual(component.images.length, 2);
+  });
+
+  it('images component calls imagerService remove function', () => {
+
+    const images = [{vote: 0}];
+    const image = {vote: 0};
+
+    imageSvc.remove = (imageToRemove) => {
+      const index = images.indexOf(imageToRemove);
+      images.splice(index,1);
+      return Promise.resolve(imageToRemove);
+    };
+
+    const component = $component('images', null, {images});
+
+    assert.deepEqual(component.images.length, 1);
+    component.remove(image);
+    assert.deepEqual(component.images.length, 0);
+
+  });
+
+  it('images component next function increments count by 1 and sets current image', () => {
+    const images = [{vote: 0, current: true}, {vote: 1, current: false}, {vote: 2, current: false}];
+
+    const component = $component('images', null, {images});
+
+    assert.ok(component.images[0].current);
+    component.next();
+    assert.ok(component.images[1].current);
+    assert.ok(!component.images[0].current);
+
   });
 
   describe('full view component', () => {

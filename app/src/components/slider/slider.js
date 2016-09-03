@@ -7,16 +7,6 @@ export default {
     image: '<',
     next: '<',
     last: '<',
-    slideTimer: '<'
   },
-  controller
+  controller: function () {this.styles = styles;}
 };
-
-controller.$inject = ['$state', '$timeout'];
-function controller ($state, $timeout) {
-  this.styles = styles;
-  // console.log(this.next);
-  // console.log(this.last);
-  // console.log(this.slideTimer);
-  // if ($state.params.display === 'slideshow') this.slideTimer();
-}
