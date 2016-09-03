@@ -5,6 +5,7 @@ const app = express();
 const morgan = require('morgan'); // middleware to show api requests in console
 
 const images = require('./routes/images');
+const galleries = require('./routes/galleries');
 const errorhandler = require('./errorhandler');
 const path = require('path');
 const publicPath = path.resolve( __dirname, './public' );
@@ -24,5 +25,6 @@ module.exports = app
 })
 
 .use('/api/images', images)
+.use('/api/galleries', galleries)
 .use(errorhandler)
 ;
