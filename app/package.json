@@ -1,6 +1,6 @@
 {
   "name": "image-gallery-app",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "source code for my image gallery",
   "main": "src/main.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --inline",
+    "start": "API_URL=http://localhost:3000/api webpack-dev-server --inline",
     "test": "karma start"
   },
   "author": "Danielle Heberling",
@@ -29,6 +29,7 @@
     "css-loader": "^0.23.1",
     "eslint": "^3.3.1",
     "eslint-loader": "^1.5.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.22.0",
     "karma": "^1.2.0",

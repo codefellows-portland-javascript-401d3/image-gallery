@@ -1,6 +1,10 @@
 # Change log
 All notable changes to this project will be documented in this file
 
+## 1.3.0 - 2016-08-31
+Added
+- Adding image is now persistent and connected to a DB
+
 ## 1.2.0 - 2016-08-25
 Added
 - Form to add new images to the gallery (not persistent yet)

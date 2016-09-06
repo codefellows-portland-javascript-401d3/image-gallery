@@ -1,4 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const EnvironmentPlugin = require('webpack').EnvironmentPlugin;
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
   entry: './src/main.js',
   output: {
@@ -6,9 +9,13 @@ module.exports = {
     filename: 'bundle.js'
   },
   devtool: 'source-map',
-  plugins: [new HtmlWebpackPlugin({
-    template: './src/index.html'
-  })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    }),
+    new EnvironmentPlugin(['API_URL']),
+    new ExtractTextPlugin('/styles/bundle.css')
+  ],
   module: {
     preLoaders: [{
       test: /\.js$/,
@@ -24,12 +31,12 @@ module.exports = {
       }
     },
     {
-      test: /\.css$/,
-      loader: 'style!css?sourceMap'
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract('style!', 'css?sourceMap!sass?sourceMap'),
     },
     {
-      test: /\.scss$/,
-      loader: 'style!css?sourceMap!sass?sourceMap'
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract('style!', 'css?sourceMap'),
     },
     {
       test: /\.html$/,
