@@ -1,0 +1,33 @@
+<div class="add-gallery-form">
+  <h3>Add New Gallery</h3>
+  <form>
+    <div>
+      <label>Name:</label>
+      <input ng-model="$ctrl.gallery.name">
+    </div>
+    <div>
+      <label>Description:</label>
+      <input ng-model="$ctrl.gallery.description">
+    </div>
+  </form>
+  <button ng-click="$ctrl.submit()" class="add-gallery-button">Submit</button>
+  <div id="add-result" ng-show="$ctrl.result">{{$ctrl.message}}</div>
+</div>
+<section class="row twelve columns">
+  <table class="u-full-width">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="gallery in $ctrl.galleries">
+        <td>{{gallery.name}}</td>  
+        <td>{{gallery.description}}</td>
+        <td><button ng-click="$ctrl.removeGallery(gallery)">X</button></td>
+      </tr>
+    </tbody>
+  </table>
+</section>

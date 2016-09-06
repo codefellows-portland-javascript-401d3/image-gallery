@@ -12,7 +12,8 @@ function controller(imageService, galleryService) {
     this.list = false;
     this.thumb = false;
     this.full = false;
-    this.addForm = false;
+    this.addImageForm = false;
+    this.addGalleryForm = false;
     this[selection] = true;
   };
 
@@ -25,7 +26,6 @@ function controller(imageService, galleryService) {
       .then( images => {
         this.images = images;
         this.galleryName = 'All Images';
-        console.log('this.images',this.images);
       } )
       .catch( err => console.log(err) );
     } else {
@@ -33,12 +33,10 @@ function controller(imageService, galleryService) {
       .then( gallery => {
         this.galleryName = `"${gallery.name}" Gallery`;
         this.images = gallery.images;
-        console.log('this.images',this.images);
       })
       .catch( err => console.log(err) );
     }
   };
-  //this.getImages(); // init on load // Now handled by gallery method
 
   this.submitImage = data => {
     imageService.add(data)
@@ -50,13 +48,11 @@ function controller(imageService, galleryService) {
     });
   };
 
-  this.remove = imageToRemove => {
-    imageService.remove( imageToRemove )
-    .then( deleted => {
-      const index = this.images.findIndex( m => m._id === deleted._id );
-      if ( index > -1 ) this.images.splice( index, 1 );
-    });
-  };
+  // this.removeImage = imageToRemove => {
+  //   imageService.remove( imageToRemove )
+  //   .then( () => this.getImages() )
+  //   .catch( err => console.log(err) );
+  // };
 
 // Handling gallery methods //
 
@@ -81,4 +77,14 @@ function controller(imageService, galleryService) {
     this.getImages();
   };
   this.selectGallery(); // init on load
+
+  this.submitGallery = data => {
+    galleryService.add(data)
+    .then( () => this.getGalleries() )
+    .catch( response => {
+      console.log('Error adding gallery:',response);
+      this.result = true;
+      this.message = 'Error: ' + response;
+    });
+  };
 };

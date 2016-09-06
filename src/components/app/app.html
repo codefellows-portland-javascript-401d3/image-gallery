@@ -6,7 +6,8 @@
     <button class="button-primary" ng-click="$ctrl.chooseFrame('list')">List View</button>
     <button class="button-primary" ng-click="$ctrl.chooseFrame('thumb')">Thumbnails</button>
     <button class="button-primary" ng-click="$ctrl.chooseFrame('full')">Full Images</button>
-    <button class="button-primary" ng-click="$ctrl.chooseFrame('addForm')">Add Image</button>
+    <button class="button-primary" ng-click="$ctrl.chooseFrame('addImageForm')">Add Image</button>
+    <button class="button-primary" ng-click="$ctrl.chooseFrame('addGalleryForm')">Add Gallery</button>
     <select ng-model="$ctrl.gallery" ng-change="$ctrl.selectGallery()">
       <option value="all">{{$ctrl.defaulChoiceText}}</option>
       <option ng-repeat="gallery in $ctrl.galleries" value="{{gallery._id}}">{{gallery.name}}</option>
@@ -14,18 +15,23 @@
   </section>
 
   <section class="row twelve columns">
-    <h3>Showing {{$ctrl.galleryName}}</h3>
     <div ng-show="$ctrl.list">
+      <h3>Showing {{$ctrl.galleryName}}</h3>
       <text-list images="$ctrl.images"></text-list>
     </div>
     <div ng-show="$ctrl.thumb">
+      <h3>Showing {{$ctrl.galleryName}}</h3>
       <thumbs images="$ctrl.images"></thumbs>
     </div>
     <div ng-show="$ctrl.full">
+      <h3>Showing {{$ctrl.galleryName}}</h3>
       <images images="$ctrl.images"></images>
     </div>
-    <div ng-show="$ctrl.addForm">
-      <add-form submit-image="$ctrl.submitImage"></add-form>
+    <div ng-show="$ctrl.addImageForm">
+      <add-image-form submit-image="$ctrl.submitImage"></add-image-form>
+    </div>
+    <div ng-show="$ctrl.addGalleryForm">
+      <add-gallery-form submit-gallery="$ctrl.submitGallery" galleries="$ctrl.galleries"></add-gallery-form>
     </div>
   </section>
 </div>
