@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "webpack-dev-server --inline",
+    "start": "env $(cat .env) webpack-dev-server --inline",
     "build": "webpack",
     "test": "karma start"
   },
@@ -19,6 +19,7 @@
     "angular-aria": "^1.5.8",
     "angular-material": "^1.1.0",
     "angular-messages": "^1.5.8",
+    "angular-ui-router": "^0.3.1",
     "camelcase": "^3.0.0"
   },
   "devDependencies": {

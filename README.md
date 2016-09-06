@@ -19,6 +19,10 @@
 3. Modularize style with scss
 4. Display only one view at a time
 
-###Lab 4 - 8/25/2016
+###Lab 4 - 8/30/2016
 
-####
+####Add services, test services and components
+
+1. Add services
+2. Build out back-end API
+3. Implement services and component testing

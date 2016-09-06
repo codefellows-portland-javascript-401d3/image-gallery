@@ -10,6 +10,12 @@
   "author": "Aaron Bini",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.14.0"
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.10",
+    "nodemon": "^1.10.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.10.2"
   }
 }

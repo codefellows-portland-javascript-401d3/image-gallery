@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const EnvironmentPlugin = require('webpack').EnvironmentPlugin;
 
 module.exports = {
   entry: './src/main.js',
@@ -10,7 +11,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html'
-    })
+    }),
+    new EnvironmentPlugin(['API_URL'])
   ],
   module: {
     preLoaders: [{

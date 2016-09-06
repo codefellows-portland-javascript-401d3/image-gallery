@@ -3,46 +3,37 @@ const assert = chai.assert;
 
 describe('image components', function() {
 
-  beforeEach(angular.mock.module('components', 'ngMaterial'));
+  const imageSvc = {};
+
+  beforeEach(angular.mock.module('components', {imageService: imageSvc}));
 
   let $component, $scope;
-  // let mdDialogMock;
-  // let qMock;
 
   beforeEach(angular.mock.inject( ($rootScope, _$componentController_) => {
     $component = _$componentController_;
     $scope = $rootScope.$new();
   }));
 
-  // beforeEach(() => {
-  //
-  //   inject((_$mdDialog_, $q) => {
-  //     mdDialogMock = _$mdDialog_;
-  //     qMock = $q;
-  //   });
-  //
-  //   angular.extend(mdDialogMock, {
-  //     show: function() {
-  //       // let deferred = Promise.resolve({
-  //       //   then: function(onFulfill, onReject) { onFulfill('Fulfilled'); }
-  //       // });
-  //       // new Promise((resolve, reject) => {
-  //       //   resolve('Resolved');
-  //       // });
-  //       // return deferred;
-  //       return Promise.resolve('resolved');
-  //
-  //     }
-  //   });
-  // });
-
   it('the images component initializes with $ctrl.view set to list', () => {
-    const component = $component('images');
+    const images = [];
+    imageSvc.getAll = () => {
+      return Promise.resolve(images);
+    };
+    const component = $component('images', null, ({imageService: imageSvc}));
+
     assert.equal(component.view, 'list');
   });
 
-  it('images component properly increases and decreases vote count', function() {
+  it('images component properly calls imageService vote function', function() {
     const images = [{vote: 0},{vote: 0}];
+    imageSvc.vote = (voteImage, vote) => {
+      if (vote) {
+        voteImage.vote++;
+      } else {
+        voteImage.vote--;
+      }
+      return Promise.resolve(images);
+    };
 
     const component = $component('images', null, {images});
 
@@ -52,9 +43,15 @@ describe('image components', function() {
     assert.deepEqual(component.images[1].vote, -1);
   });
 
-  it('images component adds image to images array', () => {
+  it('images component properly calls imageService add function', () => {
     const images = [{vote: 0}];
     const image = {vote: 0};
+
+    imageSvc.add = (imageToAdd) => {
+      images.unshift(imageToAdd);
+      this.addButton = 'add';
+      return Promise.resolve(imageToAdd);
+    };
 
     const component = $component('images', null, {images});
 
@@ -80,35 +77,6 @@ describe('image components', function() {
     });
 
   });
-
-  // describe('list view component', () => {
-  //   // console.log($rootScope);
-  //   it('list view component edits image title and description', () => {
-  //
-  //     /* Not sure how to run test for this component that requires
-  //     material design dialog box */
-  //
-  //     const $mdDialog = mdDialogMock;
-  //     const $q = qMock;
-  //
-  //     const component = $component('listView', {$q, $mdDialog}, {});
-  //     console.log($mdDialog.show().then(value => {
-  //       return value;
-  //     }));
-  //
-  //     angular.extend(component, {
-  //       edit: function edit() {
-  //         return $mdDialog.show().then(value => {
-  //           console.log(value);
-  //         });
-  //       }
-  //     });
-  //
-  //     console.log(component.edit());
-  //
-  //   });
-  //
-  // });
 
   describe('new image component', () => {
 

@@ -6,26 +6,46 @@ export default {
   controller
 };
 
-controller.$inject = ['$http'];
-function controller ($http) {
+controller.$inject = ['imageService'];
+function controller (imageService) {
   this.styles = styles;
   this.view = 'list';
   this.addButton = 'add';
 
-  $http.get('http://localhost:3000/api/images')
-    .then(response => response.data)
+  imageService.getAll()
     .then(images => this.images = images)
     .catch(err => console.log(err));
 
   this.add = imageToAdd => {
-    this.images.unshift(imageToAdd);
-    this.addButton = 'add';
+    imageService.add(imageToAdd)
+      .then(addedImage => {
+        this.images.unshift(addedImage);
+        this.addButton = 'add';
+      })
+      .catch(err => console.log(err));
   };
 
   this.vote = (voteImage, vote) => {
-    const index = this.images.indexOf(voteImage);
-    if (index > -1) {
-      vote === 1 ? this.images[index].vote++ : this.images[index].vote--;
-    }
+    imageService.vote(voteImage, vote)
+      .then(updatedImage => {
+        const index = this.images.findIndex(img => img._id === updatedImage._id);
+        if (index > -1) {
+          this.images.splice(index, 1, updatedImage);
+        }
+      })
+      .catch(err => console.log(err));
   };
+
+  //this method is not used yet, but will be when user roles are incorporated
+  this.remove = imageToRemove => {
+    imageService.remove(imageToRemove)
+      .then(removedImage => {
+        const index = this.images.findIndex(img => img._id === removedImage._id);
+        if (index > -1) {
+          this.images.splice(index, 1);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
 };
