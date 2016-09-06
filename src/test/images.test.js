@@ -32,4 +32,15 @@ describe('images', () => {
     assert.deepEqual(component.images, images);
   });
 
+  it('removes the selected pic', () => {
+    const images = [{_id: 0, title: 'Wonder Woman', url: 'blah.com', description: 'Diana Prince'}];
+    const newImages = [];
+    heroesService.remove = () => {
+      this.images.pop();
+    };
+    const component = $component('images');
+    component.remove();
+    assert.deepEqual(component.images, newImages);
+  });
+
 });

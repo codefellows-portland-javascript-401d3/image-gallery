@@ -32,4 +32,40 @@ describe('heroesService', ()=> {
 
     $httpBackend.flush();
   });
+
+  it('GET all superhero pics', done => {
+    const sampleHero = {title: 'Wonder Woman', url: 'wonder-woman.png'};
+    const returnedHeroMock = {__v: 0, title: 'Wonder Woman', url: 'wonder-woman.png'};
+
+    $httpBackend
+      .expectGET('/api/heroes')
+      .respond(returnedHeroMock);
+
+    heroesService.getAll()
+      .then(heroes => {
+        assert.deepEqual(heroes, returnedHeroMock);
+        done();
+      })
+      .catch(done);
+
+    $httpBackend.flush();
+  });
+
+  it('DELETE a superhero pics', done => {
+    // const sampleHero = {title: 'Wonder Woman', url: 'wonder-woman.png'};
+    const returnedHeroMock = {_id: 0, __v: 0, title: 'Wonder Woman', url: 'wonder-woman.png'};
+
+    $httpBackend
+      .expectDELETE('/api/heroes/0')
+      .respond(returnedHeroMock);
+
+    heroesService.remove(0)
+      .then(deletedImg => {
+        assert.deepEqual(deletedImg, returnedHeroMock);
+        done();
+      })
+      .catch(done);
+
+    $httpBackend.flush();
+  });
 });

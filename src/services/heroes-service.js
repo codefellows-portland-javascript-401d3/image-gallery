@@ -9,8 +9,13 @@ export default function heroesService($http, apiUrl) {
     },
 
     add(hero) {
-      console.log(hero);
       return $http.post(`${apiUrl}/heroes`, hero)
+        .then(res => res.data)
+        .catch(err => console.log(err));
+    },
+
+    remove(heroId) {
+      return $http.delete(`${apiUrl}/heroes/${heroId}`)
         .then(res => res.data)
         .catch(err => console.log(err));
     }

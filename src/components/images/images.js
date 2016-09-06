@@ -25,6 +25,16 @@ function controller($mdDialog, heroesService) {
       .catch(err => console.log(err));
   };
 
+  this.remove = imageId => {
+    heroesService.remove(imageId)
+      .then(() => {
+        heroesService.getAll()
+          .then(heroes => this.images = heroes)
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  };
+
   this.newPic = ($event) => {
     var parentEl = angular.element(document.body);
     $mdDialog.show({
