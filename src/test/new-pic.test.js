@@ -1,6 +1,6 @@
-let {assert} = chai;
+// let {assert} = chai;
 
-describe('images', () => {
+describe('new-pic', () => {
 
   beforeEach(angular.mock.module('components'));
 
@@ -10,11 +10,9 @@ describe('images', () => {
   }));
 
   it('has has a value for view', () => {
-    const component = $component('images');
-    const view = component.view;
-    assert.isOk(view);
+    const component = $component('newPic');
+    const save = component.save;
+    assert.isOk(save);
   });
-
-
 
 });

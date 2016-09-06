@@ -1,5 +1,10 @@
-@import 'colors';
+li {
+  list-style-type: none;
+  display: inline-block;
+  padding: 1rem;
+  text-align: center;
+}
 
-body {
-  background-color: gray;
+img {
+  border-radius: 1rem;
 }
