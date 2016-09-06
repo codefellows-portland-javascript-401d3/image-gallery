@@ -2,7 +2,7 @@
   <md-button class="md-primary" ng-click="$ctrl.view = 'text'">Show Text</md-button>
   <md-button class="md-primary" ng-click="$ctrl.view = 'thumb'">Show Thumbnail</md-button>
   <md-button class="md-primary" ng-click="$ctrl.view = 'full'">Show Full</md-button>
-  <md-button class="md-primary" ng-click="$ctrl.view = 'new'">Add Image</md-button>
+  <md-button class="md-primary" ng-click="$ctrl.newPic($event)">Add Image</md-button>
 </div>
 
 <div layout-md="row" layout-padding>
@@ -15,5 +15,3 @@
   </ul>
 </div>
 
-
-<new-pic ng-if="$ctrl.view === 'new'" form="form" add="$ctrl.add"></new-pic>

@@ -1,11 +1,16 @@
-let {assert} = chai;
+
 
 describe('images', () => {
 
-  beforeEach(angular.mock.module('components'));
+  const heroesService = {};
+  const $mdDialog = {};
+
+  beforeEach(angular.mock.module('components', 'ngMaterial', {heroesServiceMock:heroesService}));
+  beforeEach(angular.mock.module('services', {apiUrl: '/api'}));
 
   let $component;
-  beforeEach(angular.mock.inject($componentController => {
+  
+  beforeEach(angular.mock.inject(($componentController) => {
     $component = $componentController;
   }));
 
@@ -15,6 +20,16 @@ describe('images', () => {
     assert.isOk(view);
   });
 
+  it('adds pic to this.images', () => {
 
+    let newPic = {title: 'Wonder Woman'};
+    const images = [];
+    heroesService.add = image => {
+      images.push(image);
+    };
+    const component = $component('images');
+    component.add(newPic);
+    assert.deepEqual(component.images, images);
+  });
 
 });
