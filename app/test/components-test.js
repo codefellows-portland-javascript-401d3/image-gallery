@@ -1,48 +1,94 @@
 /* globals angular, chai */
 const assert = chai.assert;
 
-describe('image components', function() {
+//test new images component methods: next, last, slideTimer
+//test album component
+//test new album component
 
-  beforeEach(angular.mock.module('components', 'ngMaterial'));
+describe('App Components', function() {
+
+  const imageSvc = {};
+  const $state = {
+    params: {}
+  };
+  const albumSvc = {};
+
+  beforeEach(angular.mock.module('components', {imageService: imageSvc, albumService: albumSvc, $state}));
 
   let $component, $scope;
-  // let mdDialogMock;
-  // let qMock;
 
   beforeEach(angular.mock.inject( ($rootScope, _$componentController_) => {
     $component = _$componentController_;
     $scope = $rootScope.$new();
   }));
 
-  // beforeEach(() => {
-  //
-  //   inject((_$mdDialog_, $q) => {
-  //     mdDialogMock = _$mdDialog_;
-  //     qMock = $q;
-  //   });
-  //
-  //   angular.extend(mdDialogMock, {
-  //     show: function() {
-  //       // let deferred = Promise.resolve({
-  //       //   then: function(onFulfill, onReject) { onFulfill('Fulfilled'); }
-  //       // });
-  //       // new Promise((resolve, reject) => {
-  //       //   resolve('Resolved');
-  //       // });
-  //       // return deferred;
-  //       return Promise.resolve('resolved');
-  //
-  //     }
-  //   });
-  // });
+  it('the images component initializes with correct inital data', () => {
+    const images = [{album: 123}, {album: 456}];
+    const albumListId = 123;
+    //need to change this to getByAlbum now
+    imageSvc.getByAlbum = (id) => {
+      const byAlbum = images.filter(e => e.album === id);
+      return Promise.resolve(byAlbum);
+    };
+    const component = $component('images', null, ({images, albumListId}));
 
-  it('the images component initializes with $ctrl.view set to list', () => {
-    const component = $component('images');
-    assert.equal(component.view, 'list');
+    assert.equal(component.addButton, 'add');
+    assert.equal(component.count, 0);
   });
 
-  it('images component properly increases and decreases vote count', function() {
+  it('images component increments count by one when next is called', () => {
+    const images = [{album: 123}, {album: 456}];
+    const component = $component('images', null, ({images}));
+    assert.equal(component.count, 0);
+    component.next();
+    assert.equal(component.count, 1);
+  });
+
+  it('images component decrements count by one when last is called', () => {
+    const images = [{album: 123}, {album: 456}];
+    const component = $component('images', null, ({images}));
+
+    component.count++;
+    assert.equal(component.count, 1);
+    component.last();
+    assert.equal(component.count, 0);
+  });
+
+  it('images component slideTimer function sets this.timer to $timeout function', () => {
+    const images = [{album: 123}, {album: 456}];
+    const component = $component('images', null, ({images}));
+    component.timer = null;
+    assert.notOk(component.timer);
+    component.slideTimer();
+    assert.ok(component.timer);
+  });
+
+  it('images component properly calls imageService remove function', () => {
+    const images = [{vote: 1}];
+
+    imageSvc.remove = (imageToRemove) => {
+      images.splice(0, 1);
+      return Promise.resolve(imageToRemove);
+    };
+
+    const component = $component('images', null, {images});
+    console.log(component.images[0]);
+
+    assert.deepEqual(component.images.length, 1);
+    component.remove(component.images[0]);
+    assert.deepEqual(component.images.length, 0);
+  });
+
+  it('images component properly calls imageService vote function', function() {
     const images = [{vote: 0},{vote: 0}];
+    imageSvc.vote = (voteImage, vote) => {
+      if (vote) {
+        voteImage.vote++;
+      } else {
+        voteImage.vote--;
+      }
+      return Promise.resolve(images);
+    };
 
     const component = $component('images', null, {images});
 
@@ -52,15 +98,52 @@ describe('image components', function() {
     assert.deepEqual(component.images[1].vote, -1);
   });
 
-  it('images component adds image to images array', () => {
+  it('images component properly calls imageService add function', () => {
     const images = [{vote: 0}];
     const image = {vote: 0};
+
+    imageSvc.add = (imageToAdd) => {
+      images.unshift(imageToAdd);
+      this.addButton = 'add';
+      return Promise.resolve(imageToAdd);
+    };
 
     const component = $component('images', null, {images});
 
     assert.deepEqual(component.images.length, 1);
     component.add(image);
     assert.deepEqual(component.images.length, 2);
+  });
+
+  it('images component calls imagerService remove function', () => {
+
+    const images = [{vote: 0}];
+    const image = {vote: 0};
+
+    imageSvc.remove = (imageToRemove) => {
+      const index = images.indexOf(imageToRemove);
+      images.splice(index,1);
+      return Promise.resolve(imageToRemove);
+    };
+
+    const component = $component('images', null, {images});
+
+    assert.deepEqual(component.images.length, 1);
+    component.remove(image);
+    assert.deepEqual(component.images.length, 0);
+
+  });
+
+  it('images component next function increments count by 1 and sets current image', () => {
+    const images = [{vote: 0, current: true}, {vote: 1, current: false}, {vote: 2, current: false}];
+
+    const component = $component('images', null, {images});
+
+    assert.ok(component.images[0].current);
+    component.next();
+    assert.ok(component.images[1].current);
+    assert.ok(!component.images[0].current);
+
   });
 
   describe('full view component', () => {
@@ -80,35 +163,6 @@ describe('image components', function() {
     });
 
   });
-
-  // describe('list view component', () => {
-  //   // console.log($rootScope);
-  //   it('list view component edits image title and description', () => {
-  //
-  //     /* Not sure how to run test for this component that requires
-  //     material design dialog box */
-  //
-  //     const $mdDialog = mdDialogMock;
-  //     const $q = qMock;
-  //
-  //     const component = $component('listView', {$q, $mdDialog}, {});
-  //     console.log($mdDialog.show().then(value => {
-  //       return value;
-  //     }));
-  //
-  //     angular.extend(component, {
-  //       edit: function edit() {
-  //         return $mdDialog.show().then(value => {
-  //           console.log(value);
-  //         });
-  //       }
-  //     });
-  //
-  //     console.log(component.edit());
-  //
-  //   });
-  //
-  // });
 
   describe('new image component', () => {
 
@@ -143,6 +197,119 @@ describe('image components', function() {
       component.submit();
       assert.deepEqual(addedImage, image);
       testResetImage(component.image);
+    });
+  });
+
+  describe('edit image component', () => {
+
+    it('save calls imageService.update and then the mdDialog.hide() method', done => {
+      const image = {title: 'oldImage', _id: 215, description: 'old description.'};
+
+      const $mdDialog = {
+        hide: function (obj) {
+          console.log('got to mdDialog');
+          assert.ok(obj);
+          return obj;
+        }
+      };
+
+      imageSvc.update = (imageToUpdate) => {
+        console.log('got to imageSvc.update');
+        assert.deepEqual(image, imageToUpdate);
+        return Promise.resolve(imageToUpdate);
+      };
+
+      const component = $component('editImageDialog', {$mdDialog});
+
+      component.image = {title: 'oldImage', _id: 215, description: 'old description.'};
+
+      component.save();
+
+      setTimeout( () => {
+        assert.deepEqual(component.image, image);
+        done();
+      }, 100);
+
+    });
+  });
+
+  describe('album components', () => {
+    it('initializes with correct component data', ()=> {
+      const albums = [{name: 'album1'}, {name: 'album2'}];
+      albumSvc.getAll = function () {
+        return Promise.resolve(albums);
+      };
+      const component = $component('albums', null, {albums});
+      assert.equal(component.addButton, 'add');
+    });
+
+    it('album component add calls albumService.add', () => {
+      const albums = [{name: 'album1'}];
+      const album = {name: 'album2'};
+      albumSvc.add = (albumToAdd) => {
+        albums.unshift(albumToAdd);
+        this.addButton = 'add';
+        return Promise.resolve(albumToAdd);
+      };
+      const component = $component('albums', null, {albums});
+      assert.equal(component.albums.length, 1);
+      component.add(album);
+      assert.equal(component.albums.length, 2);
+    });
+  });
+
+  describe('new album component', () => {
+
+    function testResetAlbum(album) {
+      assert.ok(album, 'album object should exist');
+      assert.notOk(album.title, 'album should not have title');
+      assert.notOk(album.description, 'album should not have description');
+    };
+
+    it( 'calls add with new album and clears out local album', () => {
+      let addedAlbum = null;
+      const add = album => {
+        addedAlbum = album;
+      };
+
+      const component = $component( 'newAlbum', {$scope}, {add});
+      testResetAlbum(component.album);
+
+      $scope.addAlbum = {
+        $setPristine: function () {
+          console.log('setPristine');
+        },
+        $setUntouched: function () {
+          console.log('setUntouched');
+        }
+      };
+
+      const album = component.album;
+      album.title = 'new album';
+      album.description = 'some description';
+
+      component.submit();
+      assert.deepEqual(addedAlbum, album);
+      testResetAlbum(component.album);
+    });
+  });
+
+  describe('header components', () => {
+    it('display header calls $state.go', () => {
+      let count = 0;
+      $state.go = function (location, params) {
+        console.log(params);
+        count++;
+      };
+      $state.current = {
+        name: 'albums'
+      };
+
+      const component = $component('displayHeader');
+      component.display = 'list';
+      component.change();
+      assert.equal(count, 1);
+
     });
   });
 

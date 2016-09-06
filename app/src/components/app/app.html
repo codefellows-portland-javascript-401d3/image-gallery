@@ -1,2 +1,10 @@
-<h1>Image Gallery</h1>
-<images></images>
+<ui-view name="header"></ui-view>
+<ui-view name="sideheader"></ui-view>
+
+<h3>Hi {{$ctrl.user.username}}!</h3>
+
+<main>
+  <ui-view name="main">Loading...</ui-view>
+</main>
+
+<footer>&copy; Aaron Bini  |  <a href="https://github.com/codefellows-portland-javascript-401d3/image-gallery/tree/aaronbini"><span>GitHub Page</span></a></footer>

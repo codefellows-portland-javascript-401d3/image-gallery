@@ -10,25 +10,19 @@ export default {
   controller
 };
 
-controller.$inject = [ '$mdDialog', '$timeout' ];
-function controller( $mdDialog, $timeout ) {
-  this.image = angular.copy( this.imageToEdit );
+controller.$inject = ['$mdDialog', 'imageService'];
+function controller($mdDialog, imageService) {
+  this.image = angular.copy(this.imageToEdit);
 
   this.cancel = () => {
     $mdDialog.hide();
   };
 
   this.save = () => {
-      // simulate service save that might look like:
-      // movieService.update( this.movie )
-      //     .then( updatedMovie => {
-      //         $mdDialog.hide( updatedMovie );
-
-      //     });
-
-    $timeout( () => {
-      const updatedImage = angular.copy( this.image );
-      $mdDialog.hide( updatedImage );
-    });
+    imageService.update(this.image)
+      .then(updatedImage => {
+        $mdDialog.hide(updatedImage);
+      });
   };
+
 }
