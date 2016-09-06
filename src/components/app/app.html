@@ -7,9 +7,14 @@
     <button class="button-primary" ng-click="$ctrl.chooseFrame('thumb')">Thumbnails</button>
     <button class="button-primary" ng-click="$ctrl.chooseFrame('full')">Full Images</button>
     <button class="button-primary" ng-click="$ctrl.chooseFrame('addForm')">Add Image</button>
+    <select ng-model="$ctrl.gallery" ng-change="$ctrl.selectGallery()">
+      <option value="all">{{$ctrl.defaulChoiceText}}</option>
+      <option ng-repeat="gallery in $ctrl.galleries" value="{{gallery._id}}">{{gallery.name}}</option>
+    </select>
   </section>
 
   <section class="row twelve columns">
+    <h3>Showing {{$ctrl.galleryName}}</h3>
     <div ng-show="$ctrl.list">
       <text-list images="$ctrl.images"></text-list>
     </div>

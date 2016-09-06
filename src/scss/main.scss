@@ -34,3 +34,12 @@ section {
   text-align: center;
   margin: auto;
 }
+
+select {
+  border: 1px solid #33C3F0;
+}
+
+button.selected {
+  background-color: #11a9d9;
+  border-color: #11a9d9;
+}

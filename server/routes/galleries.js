@@ -32,6 +32,7 @@ module.exports = router
 .get('/:id', (req,res,next) => {
   Gallery.findById(req.params.id)
   .lean()
+  .populate('images')
   .then( gallery => res.send(gallery) )
   .catch( err => {
     console.log('error getting an gallery by id');
