@@ -11,8 +11,9 @@ describe('App Components', function() {
   const $state = {
     params: {}
   };
+  const albumSvc = {};
 
-  beforeEach(angular.mock.module('components', {imageService: imageSvc, $state}));
+  beforeEach(angular.mock.module('components', {imageService: imageSvc, albumService: albumSvc, $state}));
 
   let $component, $scope;
 
@@ -33,6 +34,33 @@ describe('App Components', function() {
 
     assert.equal(component.addButton, 'add');
     assert.equal(component.count, 0);
+  });
+
+  it('images component increments count by one when next is called', () => {
+    const images = [{album: 123}, {album: 456}];
+    const component = $component('images', null, ({images}));
+    assert.equal(component.count, 0);
+    component.next();
+    assert.equal(component.count, 1);
+  });
+
+  it('images component decrements count by one when last is called', () => {
+    const images = [{album: 123}, {album: 456}];
+    const component = $component('images', null, ({images}));
+
+    component.count++;
+    assert.equal(component.count, 1);
+    component.last();
+    assert.equal(component.count, 0);
+  });
+
+  it('images component slideTimer function sets this.timer to $timeout function', () => {
+    const images = [{album: 123}, {album: 456}];
+    const component = $component('images', null, ({images}));
+    component.timer = null;
+    assert.notOk(component.timer);
+    component.slideTimer();
+    assert.ok(component.timer);
   });
 
   it('images component properly calls imageService remove function', () => {
@@ -201,6 +229,86 @@ describe('App Components', function() {
         assert.deepEqual(component.image, image);
         done();
       }, 100);
+
+    });
+  });
+
+  describe('album components', () => {
+    it('initializes with correct component data', ()=> {
+      const albums = [{name: 'album1'}, {name: 'album2'}];
+      albumSvc.getAll = function () {
+        return Promise.resolve(albums);
+      };
+      const component = $component('albums', null, {albums});
+      assert.equal(component.addButton, 'add');
+    });
+
+    it('album component add calls albumService.add', () => {
+      const albums = [{name: 'album1'}];
+      const album = {name: 'album2'};
+      albumSvc.add = (albumToAdd) => {
+        albums.unshift(albumToAdd);
+        this.addButton = 'add';
+        return Promise.resolve(albumToAdd);
+      };
+      const component = $component('albums', null, {albums});
+      assert.equal(component.albums.length, 1);
+      component.add(album);
+      assert.equal(component.albums.length, 2);
+    });
+  });
+
+  describe('new album component', () => {
+
+    function testResetAlbum(album) {
+      assert.ok(album, 'album object should exist');
+      assert.notOk(album.title, 'album should not have title');
+      assert.notOk(album.description, 'album should not have description');
+    };
+
+    it( 'calls add with new album and clears out local album', () => {
+      let addedAlbum = null;
+      const add = album => {
+        addedAlbum = album;
+      };
+
+      const component = $component( 'newAlbum', {$scope}, {add});
+      testResetAlbum(component.album);
+
+      $scope.addAlbum = {
+        $setPristine: function () {
+          console.log('setPristine');
+        },
+        $setUntouched: function () {
+          console.log('setUntouched');
+        }
+      };
+
+      const album = component.album;
+      album.title = 'new album';
+      album.description = 'some description';
+
+      component.submit();
+      assert.deepEqual(addedAlbum, album);
+      testResetAlbum(component.album);
+    });
+  });
+
+  describe('header components', () => {
+    it('display header calls $state.go', () => {
+      let count = 0;
+      $state.go = function (location, params) {
+        console.log(params);
+        count++;
+      };
+      $state.current = {
+        name: 'albums'
+      };
+
+      const component = $component('displayHeader');
+      component.display = 'list';
+      component.change();
+      assert.equal(count, 1);
 
     });
   });
