@@ -4,7 +4,12 @@ import styles from './app-header.scss';
 export default {
   template,
   transclude: true,
-  controller () {
-    this.styles = styles;
-  }
+  controller
 };
+
+controller.$inject = ['userService', 'tokenService'];
+function controller (userService, tokenService) {
+  this.styles = styles;
+  this.token = tokenService.get();
+  this.logout = () => userService.logout();
+}

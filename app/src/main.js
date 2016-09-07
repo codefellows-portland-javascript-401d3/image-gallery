@@ -1,9 +1,13 @@
 import angular from 'angular';
 import app from './app';
+import auth from './auth';
 import routes from './routes';
+import http from './http';
 import './scss/main.scss';
 
+app.config(http);
 app.config(routes);
+app.run(auth);
 
 // if we wanted to turn on caching across the board...
 // (only applies to gets)

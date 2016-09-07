@@ -1,4 +1,5 @@
 <section>
+  <p ng-if="!$ctrl.albums">You have not added albums yet.</p>
   <ul>
     <li ng-repeat="album in $ctrl.albums">
       <a ui-sref="images({albumId: album._id, albumName: album.name})">{{album.name}}</a>

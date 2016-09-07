@@ -10,11 +10,12 @@ export default {
 };
 
 
-controller.$inject = ['albumService'];
-function controller (albumService) {
+controller.$inject = ['albumService', 'tokenService'];
+function controller (albumService, tokenService) {
   this.styles = styles;
   this.addButton = 'add';
-  albumService.getAll()
+  this.userId = tokenService.get();
+  albumService.getAlbumsbyUser(this.userId)
     .then(albums => {
       this.albums = albums;
     })

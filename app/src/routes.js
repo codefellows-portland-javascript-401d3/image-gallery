@@ -14,6 +14,9 @@ export default function configRoutes ($stateProvider, $urlRouterProvider) {
   })
   .state('albums', {
     url: '/albums?display',
+    data: {
+      requiresAuth: true
+    },
     params: {
       display: {dynamic: true}
     },
@@ -32,6 +35,9 @@ export default function configRoutes ($stateProvider, $urlRouterProvider) {
   })
   .state('images', {
     url: '/images/:albumId/:albumName?display',
+    data: {
+      requiresAuth: true
+    },
     params: {
       display: {dynamic: true}
     },

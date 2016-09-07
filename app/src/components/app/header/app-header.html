@@ -3,5 +3,8 @@
 		<a ui-sref-active="active" ui-sref="home">Home</a>
 		<a ui-sref-active="active" ui-sref="albums">My Albums</a>
 		<ng-transclude></ng-transclude>
+		<div ng-if="$ctrl.token">
+			<a ui-sref="home" ng-click="$ctrl.logout()">Logout</a>
+		</div>
 	</div>
 </header>
