@@ -12,8 +12,12 @@ At a minimum, you should have:
 
 User should be able to CRUD albums and images in albums
 
-Test routes with protractor
-
 # Rubric
-TBD
+Route/State Design and Implementation *10pts*
+Route parameters and component data passing *6pts*
+Handle multiple albums *4pts*
+
+
+
+
   
