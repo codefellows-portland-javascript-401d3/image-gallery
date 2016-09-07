@@ -23,7 +23,7 @@ function controller (imageService, $state, $timeout) {
   imageService.getByAlbum(this.albumListId)
     .then(images => {
       this.images = images;
-      this.images[0].current = true;
+      if (this.images) this.images[0].current = true;
     })
     .catch(err => console.log(err));
 

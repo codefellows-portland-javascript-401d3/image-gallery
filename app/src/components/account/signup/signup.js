@@ -5,7 +5,7 @@ export default {
   template,
   bindings: {
     success: '&',
-    action: '<'
+    cancel: '&'
   },
   controller
 };
@@ -27,6 +27,7 @@ function controller (userService) {
         return true;
       })
       .catch( error => {
+        this.cancel();
         this.error = error;
         return false;
       });

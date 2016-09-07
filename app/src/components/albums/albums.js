@@ -14,7 +14,7 @@ controller.$inject = ['albumService', 'tokenService'];
 function controller (albumService, tokenService) {
   this.styles = styles;
   this.addButton = 'add';
-  this.userId = tokenService.get();
+  this.userId = tokenService.getUserId();
   albumService.getAlbumsbyUser(this.userId)
     .then(albums => {
       this.albums = albums;
@@ -23,6 +23,7 @@ function controller (albumService, tokenService) {
 
 
   this.add = albumToAdd => {
+    albumToAdd.user = this.userId;
     albumService.add(albumToAdd)
       .then(album => {
         this.albums.unshift(album);

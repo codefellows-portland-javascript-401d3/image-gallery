@@ -3,7 +3,10 @@ import './signin.scss';
 
 export default {
   template,
-  bindings: { success: '&'},
+  bindings: {
+    success: '&',
+    cancel: '&'
+  },
   controller
 };
 
@@ -22,8 +25,10 @@ function controller (userService) {
         return true;
       })
       .catch( error => {
+        this.cancel();
         this.error = error;
         return false;
       });
   };
+
 };

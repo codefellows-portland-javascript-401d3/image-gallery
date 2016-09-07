@@ -4,9 +4,14 @@ import styles from './user.scss';
 export default {
   template,
   bindings: {
-    user: '='
+    username: '&'
   },
-  controller: function () {
-    this.styles = styles;
-  }
+
+  controller
+};
+
+controller.$inject = ['tokenService'];
+function controller (tokenService) {
+  this.styles = styles;
+  this.username = tokenService.getUsername();
 };

@@ -1,6 +1,6 @@
 <section>
   <h3>Sign In Below</h3>
-  <form name="auth" ng-submit="$ctrl.$valid && $ctrl.authenticate()"
+  <form name="auth" ng-submit="auth.$valid && $ctrl.authenticate()"
         novalidate>
       <md-input-container>
           <label>Username:</label>
@@ -26,7 +26,7 @@
         <md-button type="submit" class="md-primary">Sign In!</md-button>
       </md-dialog-actions>
       <md-dialog-actions>
-        <md-button ng-click="$ctrl.action = 'cancel'" class="md-primary">Cancel</md-button>
+        <md-button ng-click="$ctrl.cancel()" class="md-primary">Cancel</md-button>
       </md-dialog-actions>
   </form>
   <div class="error" ng-if="$ctrl.error">{{$ctrl.error.reason}}</div>

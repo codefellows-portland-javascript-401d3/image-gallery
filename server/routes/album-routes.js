@@ -10,8 +10,8 @@ module.exports = router
       .then(albums => res.send(albums))
       .catch(next);
   })
-  .get('/:id', (req, res, next) => {
-    Album.findById(req.params.id)
+  .get('/:userId', (req, res, next) => {
+    Album.findByUser(req.params.userId)
       .then(album => res.send(album))
       .catch(next);
   })

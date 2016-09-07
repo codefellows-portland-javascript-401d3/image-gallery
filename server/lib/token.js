@@ -4,12 +4,10 @@ const secret = process.env.APP_SECRET || 'app_sekrit';
 module.exports = {
   sign (user) {
     return new Promise ( (resolve, reject) => {
-      jwt.sign({
-        id: user.id,
-        roles: user.roles
-      }, secret, null, (err, token) => {
+      const signObj = {id: user.id, name: user.username, roles: user.roles};
+      jwt.sign(signObj, secret, null, (err, token) => {
         if (err) return reject(err);
-        resolve(token);
+        resolve({token, signObj});
       });
     });
   },

@@ -4,10 +4,13 @@ export default {
     <button ng-click="$ctrl.action = 'signin'">Sign In</button>
     <button ng-click="$ctrl.action = 'signup'">Sign Up</button>
 	</div>
-	<signin ng-if="$ctrl.action==='signin'" success="$ctrl.success()"></signin>
-	<signup ng-if="$ctrl.action==='signup'" success="$ctrl.success()"></signup>
+	<signin ng-if="$ctrl.action==='signin'" cancel="$ctrl.cancel()" success="$ctrl.success()"></signin>
+	<signup ng-if="$ctrl.action==='signup'" cancel="$ctrl.cancel()" success="$ctrl.success()"></signup>
 	`,
-  bindings: { success: '&' },
+  bindings: {
+    success: '&',
+    cancel: '&'
+  },
   controller
 };
 
