@@ -23,7 +23,7 @@ function controller (imageService, $state, $timeout) {
   imageService.getByAlbum(this.albumListId)
     .then(images => {
       this.images = images;
-      if (this.images) this.images[0].current = true;
+      if (this.images.length) this.images[0].current = true;
     })
     .catch(err => console.log(err));
 
@@ -64,7 +64,6 @@ function controller (imageService, $state, $timeout) {
       .catch(err => console.log(err));
   };
 
-
   this.resetCurrent = () => {
     this.images.forEach(e => {
       e.current = false;
@@ -79,7 +78,7 @@ function controller (imageService, $state, $timeout) {
     } else {
       this.count = 0;
       this.resetCurrent();
-      this.images[this.count].current = true;
+      if(this.images.length) this.images[this.count].current = true;
     }
   };
 
@@ -96,14 +95,14 @@ function controller (imageService, $state, $timeout) {
   };
 
   //just playing around with using timeout for slideshow loop
-  this.timer = null;
-  this.slideTimer = () => {
-    this.timer = $timeout(() => {
-      this.next();
-      this.timer = $timeout(this.slideTimer, 5000);
-    }, 5000);
-  };
-
-  this.slideTimer();
+  // this.timer = null;
+  // this.slideTimer = () => {
+  //   this.timer = $timeout(() => {
+  //     this.next();
+  //     this.timer = $timeout(this.slideTimer, 500);
+  //   }, 3000);
+  // };
+  //
+  // this.slideTimer();
 
 };

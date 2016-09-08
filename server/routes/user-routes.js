@@ -12,7 +12,7 @@ module.exports = router
       .catch(next);
   })
   .get('/:id', (req, res, next) => {
-    User.findByUser(req.params.id)
+    User.findById(req.params.id)
       .then(user => res.send(user))
       .catch(next);
   })

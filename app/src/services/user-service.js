@@ -20,6 +20,18 @@ export default function userService (token, $http, apiUrl) {
     };
   }
 
+  function getMe (id) {
+    return $http.get(`${apiUrl}/users/${id}`)
+      .then(result => result.data);
+  };
+
+  function update (userToUpdate) {
+    return $http.put(`${apiUrl}/users/${userToUpdate._id}`, userToUpdate)
+      .then(result => {
+        return result.data;
+      });
+  };
+
   return {
     //do we have token?
     isAuthenticated() {
@@ -31,6 +43,10 @@ export default function userService (token, $http, apiUrl) {
     },
     //call API and set token
     signin: credential('signin'),
-    signup: credential('signup')
+    signup: credential('signup'),
+    //update user information
+    update,
+    //get current user information
+    getMe
   };
 }

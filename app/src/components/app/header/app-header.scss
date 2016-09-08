@@ -1,9 +1,10 @@
-:local(.app-header) {
+:local(.appheader) {
   a {
     color: cornflowerblue;
-    &:active {
+    margin: 15px;
+    &:hover {
       color: chocolate;
-      text-decoration: underline;
+      text-decoration: none;
     }
   }
 

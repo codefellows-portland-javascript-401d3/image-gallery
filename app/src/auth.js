@@ -34,14 +34,3 @@ export default function auth ($rootScope, userService, $mdDialog, $state) {
     }
   });
 };
-
-// this.cancel = () => {
-//   $mdDialog.hide();
-// };
-//
-// this.save = () => {
-//   imageService.update(this.image)
-//     .then(updatedImage => {
-//       $mdDialog.hide(updatedImage);
-//     });
-// };

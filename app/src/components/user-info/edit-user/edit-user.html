@@ -1,0 +1,41 @@
+<md-dialog-content layout-gt-sm="row" layout-padding>
+    <md-content layout-gt-sm="row" layout-padding>
+        <div>
+
+            <form name="editUser"
+                  novalidate>
+                <md-input-container>
+                    <label>Username:</label>
+                    <input
+                        name="username"
+                        required
+                        ng-model="$ctrl.user.username">
+                        <div ng-messages="editUser.username.$error" role="alert">
+                            <ng-message when="required">A username is required</ng-message>
+                        </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>E-mail:</label>
+                    <input
+                        name="email"
+                        required
+                        ng-model="$ctrl.user.email">
+                    <div ng-messages="editUser.email.$error" role="alert">
+                        <ng-message when="required">An e-mail is required</ng-message>
+                    </div>
+                </md-input-container>
+            </form>
+
+        </div>
+    </md-content>
+</md-dialog-content>
+<div>
+</div>
+<md-dialog-actions>
+    <md-button ng-click="$ctrl.cancel()" class="md-primary">
+        Cancel
+    </md-button>
+    <md-button ng-click="$ctrl.save()" class="md-primary">
+        Save
+    </md-button>
+</md-dialog-actions>

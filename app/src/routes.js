@@ -12,6 +12,20 @@ export default function configRoutes ($stateProvider, $urlRouterProvider) {
       }
     }
   })
+  .state('users', {
+    url: '/users',
+    data: {
+      requiresAuth: true
+    },
+    views: {
+      header: {
+        component: 'appHeader'
+      },
+      main: {
+        component: 'userInfo'
+      }
+    }
+  })
   .state('albums', {
     url: '/albums?display',
     data: {
