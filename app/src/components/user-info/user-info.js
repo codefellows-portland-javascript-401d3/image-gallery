@@ -20,10 +20,11 @@ function controller(userService, tokenService, $mdDialog) {
     })
     .catch(err => console.log(err));
 
+  this.parentEl = angular.element(document.body);
+
   this.edit = $event => {
-    const parentEl = angular.element(document.body);
     $mdDialog.show({
-      parent: parentEl,
+      parent: this.parentEl,
       targetEvent: $event,
       controllerAs: '$ctrl',
       bindToController: true,

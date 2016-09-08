@@ -10,12 +10,12 @@ export default {
   controller
 };
 
-controller.$inject = ['userService', 'tokenService'];
-function controller (userService, tokenService) {
+controller.$inject = ['userService', '$window'];
+function controller (userService, $window) {
   this.styles = styles;
-  this.token = tokenService.get();
+  this.token = $window.localStorage['token'];
 
-  this.username = tokenService.getUsername();
+  this.username = $window.localStorage['username'];
   this.logout = () => {
     this.username = null;
     userService.logout();

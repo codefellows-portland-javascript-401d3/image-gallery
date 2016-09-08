@@ -107,15 +107,15 @@ describe('user service', function() {
 
   it('updates user', (done) => {
     const user = {username: 'test', _id: '123'};
-    const id = '123';
+    const updatedUser = {username: 'testEdit', _id: '123'};
 
     $httpBackend
-      .expectPUT('/api/users/123')
-      .respond(user);
+      .expectPUT(`/api/users/${user._id}`)
+      .respond(updatedUser);
 
-    userService.update(id)
-      .then(updatedUser => {
-        assert.deepEqual(updatedUser, user);
+    userService.update(user)
+      .then(updated => {
+        assert.deepEqual(updated, updatedUser);
         done();
       })
       .catch(done);

@@ -1,10 +1,6 @@
 /* globals angular, chai */
 const assert = chai.assert;
 
-//test new images component methods: next, last, slideTimer
-//test album component
-//test new album component
-
 describe('App Components', function() {
 
   const imageSvc = {};
@@ -18,8 +14,24 @@ describe('App Components', function() {
     }
   };
 
+  const userSvc = {};
+
+  const $window = {
+    localStorage: {
+      token: 'token',
+      username: 'aaron'
+    }
+  };
+
   beforeEach(angular.mock.module('components'));
-  beforeEach(angular.mock.module('services', {tokenService: tokenSvc, imageService: imageSvc, albumService: albumSvc, $state}));
+  beforeEach(angular.mock.module('services', {
+    tokenService: tokenSvc,
+    imageService: imageSvc,
+    albumService: albumSvc,
+    userService: userSvc,
+    $window,
+    $state
+  }));
 
   let $component, $scope;
 
@@ -321,6 +333,28 @@ describe('App Components', function() {
       component.display = 'list';
       component.change();
       assert.equal(count, 1);
+
+    });
+
+    it('appHeader initializes with localStorage token and username', () => {
+
+      const component = $component('appHeader');
+      assert.deepEqual(component.username, 'aaron');
+      assert.deepEqual(component.token, 'token');
+    });
+
+    it('appHeader logout resets $ctrl.username and calls userService logout', () => {
+
+      userSvc.logout = () => {
+        component.loggedIn = false;
+      };
+      const component = $component('appHeader');
+      component.loggedIn = true;
+      assert.ok(component.loggedIn);
+      assert.ok(component.username);
+      component.logout();
+      assert.notOk(component.loggedIn);
+      assert.notOk(component.username);
 
     });
   });
