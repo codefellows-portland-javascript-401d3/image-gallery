@@ -21,4 +21,27 @@
 
 ###Lab 4 - 8/25/2016
 
-####
+####Add services
+
+1. Add services
+2. Use angular.mocks in testing
+3. Add backend
+4. Use $httpBackend for services testing
+
+###Lab 6 - 9/01/2016
+
+####Add album component
+
+1. Add album component that encapsulates image components
+2. Add Angular routing to round-out front-end page feel
+3. Add a welcome page
+
+###Lab 7 - 9/08/2016
+
+####Add user auth
+
+1. Sign-in and sign-up capabilities
+2. Store token and add token checking on backend
+3. Add "protection" on back-end for routes that require auth
+4. Let user add albums and images, and that user will be only one able to view those albums
+5. Deal with bad tokens
