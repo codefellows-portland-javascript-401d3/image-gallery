@@ -6,7 +6,11 @@
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server --inline",
-    "test": "karma start"
+    "test": "karma start",
+    "update-webdriver": "webdriver update",
+    "e2e": "protractor",
+    "e2e-home": "npm run e2e -- --suite=home",
+    "e2e-explore": "protractor --elementExplorer"
   },
   "repository": {
     "type": "git",
@@ -39,14 +43,17 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.22.0",
+    "jasmine-core": "^2.5.0",
     "karma": "^1.2.0",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.0.2",
     "karma-mocha": "^1.1.1",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
     "node-sass": "^3.8.0",
+    "protractor": "^4.0.5",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",

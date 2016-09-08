@@ -1,11 +1,11 @@
 
 
-describe('images', () => {
+describe('villains', () => {
 
-  const heroesService = {};
+  const villainsService = {};
   const $mdDialog = {};
 
-  beforeEach(angular.mock.module('components', 'ngMaterial', {heroesServiceMock:heroesService}));
+  beforeEach(angular.mock.module('components', 'ngMaterial', {villainsServiceMock:villainsService}));
   beforeEach(angular.mock.module('services', {apiUrl: '/api'}));
 
   let $component;
@@ -15,30 +15,30 @@ describe('images', () => {
   }));
 
   it('has has a value for view', () => {
-    const component = $component('images');
+    const component = $component('villains');
     const view = component.view;
     assert.isOk(view);
   });
 
   it('adds pic to this.images', () => {
 
-    let newPic = {title: 'Wonder Woman'};
+    let newPic = {title: 'Joker'};
     const images = [];
-    heroesService.add = image => {
+    villainsService.add = image => {
       images.push(image);
     };
-    const component = $component('images');
+    const component = $component('villains');
     component.add(newPic);
     assert.deepEqual(component.images, images);
   });
 
   it('removes the selected pic', () => {
-    const images = [{_id: 0, title: 'Wonder Woman', url: 'blah.com', description: 'Diana Prince'}];
+    const images = [{_id: 0, title: 'Joker', url: 'blah.com', description: 'evil'}];
     const newImages = [];
-    heroesService.remove = () => {
+    villainsService.remove = () => {
       this.images.pop();
     };
-    const component = $component('images');
+    const component = $component('villains');
     component.remove();
     assert.deepEqual(component.images, newImages);
   });
