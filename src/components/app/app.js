@@ -1,4 +1,5 @@
 import template from './app.html';
+import styles from './app.scss';
 
 export default {
   template,
@@ -7,6 +8,7 @@ export default {
 
 controller.$inject = ['imageService', 'galleryService'];
 function controller(imageService, galleryService) {
+  this.styles = styles;
 
   this.chooseFrame = selection => {
     this.list = false;
@@ -18,6 +20,16 @@ function controller(imageService, galleryService) {
   };
 
   this.chooseFrame('list'); // init value
+  
+  this.toggleImageForm = () => {
+    this.addImageSubForm = !this.addImageSubForm;
+    if(this.addImageToGallerySubForm && this.addImageSubForm) this.addImageToGallerySubForm = false;
+  };
+
+  this.toggleGallerySubForm = () => {
+    this.addImageToGallerySubForm = !this.addImageToGallerySubForm;
+    if(this.addImageToGallerySubForm && this.addImageSubForm) this.addImageSubForm = false;
+  };
 
 // handling image methods
   this.getImages = () => {
@@ -26,6 +38,7 @@ function controller(imageService, galleryService) {
       .then( images => {
         this.images = images;
         this.galleryName = 'All Images';
+        this.galleryChosen = false;
       } )
       .catch( err => console.log(err) );
     } else {
@@ -33,6 +46,7 @@ function controller(imageService, galleryService) {
       .then( gallery => {
         this.galleryName = `"${gallery.name}" Gallery`;
         this.images = gallery.images;
+        this.galleryChosen = true;
       })
       .catch( err => console.log(err) );
     }
@@ -48,11 +62,17 @@ function controller(imageService, galleryService) {
     });
   };
 
-  // this.removeImage = imageToRemove => {
-  //   imageService.remove( imageToRemove )
-  //   .then( () => this.getImages() )
-  //   .catch( err => console.log(err) );
-  // };
+  this.removeImage = image => {
+    if(this.galleryChosen) {
+      galleryService.removeImage(this.gallery, image._id)
+      .then( result => this.images = result.images )
+      .catch( err => console.log(err) );
+    } else {
+      imageService.remove(image._id)
+      .then( result => this.images = result.images )
+      .catch( err => console.log(err) );
+    }
+  };
 
 // Handling gallery methods //
 
@@ -68,7 +88,6 @@ function controller(imageService, galleryService) {
 
   // This method controls the top option text and gets the images for the current gallery
   this.selectGallery = () => {
-    console.log('this.gallery:',this.gallery);
     if(this.gallery != 'all') {
       this.defaulChoiceText = 'All Images';
     } else {

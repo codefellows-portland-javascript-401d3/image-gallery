@@ -17,7 +17,15 @@
   <section class="row twelve columns">
     <div ng-show="$ctrl.list">
       <h3>Showing {{$ctrl.galleryName}}</h3>
-      <text-list images="$ctrl.images"></text-list>
+      <button ng-click="$ctrl.toggleImageForm()">New Image</button>
+      <button ng-show="$ctrl.galleryChosen" ng-click="$ctrl.toggleGallerySubForm()">Add Image to Gallery</button>
+      <div ng-show="$ctrl.addImageSubForm">
+        <add-image-form submit-image="$ctrl.submitImage"></add-image-form>
+      </div>
+      <div ng-show="$ctrl.addImageToGallerySubForm">
+        <add-image-to-gallery images="$ctrl.images" gallery="$ctrl.gallery" submit-image="$ctrl.addImageToGallery"></add-image-to-gallery>
+      </div>
+      <text-list images="$ctrl.images" remove-image="$ctrl.removeImage"></text-list>
     </div>
     <div ng-show="$ctrl.thumb">
       <h3>Showing {{$ctrl.galleryName}}</h3>

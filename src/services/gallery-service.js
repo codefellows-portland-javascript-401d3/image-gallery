@@ -8,7 +8,7 @@ export default function listService($http, apiUrl) {
       .then( response => response.data );
     },
 
-    getById( galleryId ) {
+    getById(galleryId) {
       return $http.get(`${apiUrl}/galleries/${galleryId}`)
       .then( response => response.data );
     },
@@ -26,9 +26,46 @@ export default function listService($http, apiUrl) {
       .then( response => response.data );
     },
 
-    update(gallery) {
-      return $http.put(`${apiUrl}/galleries/${gallery._id}`, image)
-      .then( response => response.data );      
+    update(gallery, image) {
+      return $http.get(`${apiUrl}/galleries/${gallery}`)
+      .then( response => {
+        const images = response.data.images.map( imageObj => {return imageObj._id;} );
+        if(images.indexOf(image) == -1) {
+          images.push(image);
+          return $http.put(`${apiUrl}/galleries/${gallery}`, {images});
+        } else {
+          console.log('That image is already in the gallery.');
+          return response;
+        }
+      })
+      .then( response => {
+        return response.data;
+      })
+      .catch( err => {
+        console.log('error updating gallery');
+        console.log(err);
+        next(err);
+      });
+    },
+
+    removeImage(gallery, image) {
+      return $http.get(`${apiUrl}/galleries/${gallery}`)
+      .then( response => {
+        const images = response.data.images.map( imageObj => {return imageObj._id;} );
+        const index = images.indexOf(image);
+        if(index == -1) {
+          return response;
+        } else {
+          images.splice(index,1);
+          return $http.put(`${apiUrl}/galleries/${gallery}`, {images});
+        }
+      })
+      .then( response => response.data )
+      .catch( err => {
+        console.log('error updating gallery');
+        console.log(err);
+        next(err);
+      });
     }
   };
 }

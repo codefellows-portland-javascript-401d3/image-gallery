@@ -53,16 +53,12 @@ module.exports = router
   });
 })
 
-//add images to existing gallery
+//update existing gallery, mainly for images array
 .put('/:id', bodyparser, (req,res,next) => {
-  Gallery.findById(req.params.id)
-  .then( gallery => {
-    gallery.images = gallery.images.concat(req.body.images);
-    return gallery.save();
-  })
-  .then( gallery => {
-    res.send(gallery);
-  })
+  Gallery.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  .lean()
+  .populate('images')
+  .then( gallery => res.send(gallery) )
   .catch( err => {
     console.log('error creating a new gallery');
     console.log(err);
@@ -70,8 +66,8 @@ module.exports = router
   });
 })
 
-.delete('/:id', (req,res,next) => {
-  Gallery.findByIdAndRemove(req.params.id)
+.delete('/:galleryId', (req,res,next) => {
+  Gallery.findByIdAndRemove(req.params.galleryId)
   .lean()
   .then( deleted => res.send(deleted) )
   .catch( err => {

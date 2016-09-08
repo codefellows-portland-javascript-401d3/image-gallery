@@ -1,19 +1,24 @@
-<div class="add-image-form">
-  <h3>Add New Image</h3>
+<div class="add-image-form outline">
+  <h5>Add New Image</h5>
   <form>
-    <div>
-      <label>Title:</label>
-      <input ng-model="$ctrl.image.title">
-    </div>
-    <div>
-      <label>Description:</label>
-      <input ng-model="$ctrl.image.description">
-    </div>
-    <div>
-      <label>Link:</label>
-      <input ng-model="$ctrl.image.url">
-    </div>
+    <table>
+      <tr>
+        <td>
+          <label>Title:</label>
+          <input ng-model="$ctrl.image.title">
+        </td>
+        <td>
+          <label>Description:</label>
+          <input ng-model="$ctrl.image.description">
+        <td>
+          <label>Link:</label>
+          <input ng-model="$ctrl.image.url">
+        </td>
+        <td>
+          <button ng-click="$ctrl.submit()" class="add-image-button">Submit</button>
+        </td>
+      </tr>
+    </table>
   </form>
-  <button ng-click="$ctrl.submit()" class="add-image-button">Submit</button>
   <div id="add-result" ng-show="$ctrl.result">{{$ctrl.message}}</div>
 </div>

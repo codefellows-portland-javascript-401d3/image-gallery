@@ -4,18 +4,12 @@ import styles from './text-list.scss';
 export default {
   template,
   bindings: {
-    images: '='
+    images: '=',
+    removeImage: '='
   },
   controller
 };
 
-controller.$inject = ['imageService'];
-function controller(imageService) {
+function controller() {
   this.styles = styles;
-
-  this.removeImage = imageId => {
-    imageService.remove(imageId)
-    .then( imagesRemaining => this.images = imagesRemaining )
-    .catch( err => console.log(err) );
-  };
 };

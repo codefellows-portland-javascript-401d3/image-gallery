@@ -54,11 +54,11 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	__webpack_require__(39);
+	__webpack_require__(47);
 	
-	__webpack_require__(41);
+	__webpack_require__(49);
 	
-	__webpack_require__(43);
+	__webpack_require__(51);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31869,7 +31869,7 @@
 	
 	var _components2 = _interopRequireDefault(_components);
 	
-	var _services = __webpack_require__(35);
+	var _services = __webpack_require__(43);
 	
 	var _services2 = _interopRequireDefault(_services);
 	
@@ -32379,14 +32379,15 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./app/add-form/add-form.js": 9,
-		"./app/app.js": 15,
-		"./app/images/images.js": 17,
-		"./app/images/imago/imago.js": 21,
-		"./app/text-list/text-list-item/text-list-item.js": 23,
-		"./app/text-list/text-list.js": 25,
-		"./app/thumbs/thumb/thumb.js": 29,
-		"./app/thumbs/thumbs.js": 31
+		"./app/add-gallery-form/add-gallery-form.js": 9,
+		"./app/add-image-form/add-image-form.js": 15,
+		"./app/add-image-to-gallery/add-image-to-gallery.js": 19,
+		"./app/app.js": 23,
+		"./app/images/images.js": 27,
+		"./app/images/imago/imago.js": 31,
+		"./app/text-list/text-list.js": 33,
+		"./app/thumbs/thumb/thumb.js": 37,
+		"./app/thumbs/thumbs.js": 39
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -32412,18 +32413,97 @@
 	  value: true
 	});
 	
-	var _addForm = __webpack_require__(10);
+	var _addGalleryForm = __webpack_require__(10);
 	
-	var _addForm2 = _interopRequireDefault(_addForm);
+	var _addGalleryForm2 = _interopRequireDefault(_addGalleryForm);
 	
-	var _addForm3 = __webpack_require__(11);
+	var _addGalleryForm3 = __webpack_require__(11);
 	
-	var _addForm4 = _interopRequireDefault(_addForm3);
+	var _addGalleryForm4 = _interopRequireDefault(_addGalleryForm3);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = {
-	  template: _addForm2.default,
+	  template: _addGalleryForm2.default,
+	  bindings: {
+	    submitGallery: '=',
+	    getGalleries: '=',
+	    galleries: '='
+	  },
+	  controller: controller
+	};
+	
+	
+	controller.$inject = ['galleryService'];
+	function controller(galleryService) {
+	  var _this = this;
+	
+	  this.result = false;
+	  this.styles = _addGalleryForm4.default;
+	  this.gallery = {};
+	
+	  this.submit = function () {
+	    var data = {
+	      'name': _this.gallery.name,
+	      'description': _this.gallery.description
+	    };
+	    _this.submitGallery(data);
+	    clearForm();
+	    _this.result = true;
+	    _this.message = 'New Gallery Created';
+	  };
+	
+	  var clearForm = function clearForm() {
+	    _this.gallery = {};
+	  };
+	  clearForm(); // init the image object for testing purposes
+	
+	  this.removeGallery = function (galleryId) {
+	    galleryService.remove(galleryId).then(function (galleriesRemaining) {
+	      return _this.galleries = galleriesRemaining;
+	    }).catch(function (err) {
+	      return console.log(err);
+	    });
+	  };
+	}
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"add-gallery-form\">\n  <h3>Add New Gallery</h3>\n  <form>\n    <div>\n      <label>Name:</label>\n      <input ng-model=\"$ctrl.gallery.name\">\n    </div>\n    <div>\n      <label>Description:</label>\n      <input ng-model=\"$ctrl.gallery.description\">\n    </div>\n  </form>\n  <button ng-click=\"$ctrl.submit()\" class=\"add-gallery-button\">Submit</button>\n  <div id=\"add-result\" ng-show=\"$ctrl.result\">{{$ctrl.message}}</div>\n</div>\n<section class=\"row twelve columns\">\n  <table class=\"u-full-width\">\n    <thead>\n      <tr>\n        <th>Name</th>\n        <th>Description</th>\n        <th></th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr ng-repeat=\"gallery in $ctrl.galleries\">\n        <td>{{gallery.name}}</td>  \n        <td>{{gallery.description}}</td>\n        <td><button ng-click=\"$ctrl.removeGallery(gallery)\">X</button></td>\n      </tr>\n    </tbody>\n  </table>\n</section>";
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _addImageForm = __webpack_require__(16);
+	
+	var _addImageForm2 = _interopRequireDefault(_addImageForm);
+	
+	var _addImageForm3 = __webpack_require__(17);
+	
+	var _addImageForm4 = _interopRequireDefault(_addImageForm3);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _addImageForm2.default,
 	  bindings: {
 	    submitImage: '='
 	  },
@@ -32435,7 +32515,7 @@
 	  var _this = this;
 	
 	  this.result = false;
-	  this.styles = _addForm4.default;
+	  this.styles = _addImageForm4.default;
 	  this.image = {};
 	
 	  this.submit = function () {
@@ -32457,22 +32537,20 @@
 	}
 
 /***/ },
-/* 10 */
+/* 16 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"add-form\">\n  <h3>Add New Image</h3>\n  <form>\n    <div>\n      <label>Title:</label>\n      <input ng-model=\"$ctrl.image.title\">\n    </div>\n    <div>\n      <label>Description:</label>\n      <input ng-model=\"$ctrl.image.description\">\n    </div>\n    <div>\n      <label>Link:</label>\n      <input ng-model=\"$ctrl.image.url\">\n    </div>\n  </form>\n  <button ng-click=\"$ctrl.submit()\" class=\"add-image-button\">Submit</button>\n  <div id=\"add-result\" ng-show=\"$ctrl.result\">{{$ctrl.message}}</div>\n</div>\n";
+	module.exports = "<div class=\"add-image-form outline\">\n  <h5>Add New Image</h5>\n  <form>\n    <table>\n      <tr>\n        <td>\n          <label>Title:</label>\n          <input ng-model=\"$ctrl.image.title\">\n        </td>\n        <td>\n          <label>Description:</label>\n          <input ng-model=\"$ctrl.image.description\">\n        <td>\n          <label>Link:</label>\n          <input ng-model=\"$ctrl.image.url\">\n        </td>\n        <td>\n          <button ng-click=\"$ctrl.submit()\" class=\"add-image-button\">Submit</button>\n        </td>\n      </tr>\n    </table>\n  </form>\n  <div id=\"add-result\" ng-show=\"$ctrl.result\">{{$ctrl.message}}</div>\n</div>\n";
 
 /***/ },
-/* 11 */
+/* 17 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */
+/* 18 */,
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32481,9 +32559,87 @@
 	  value: true
 	});
 	
-	var _app = __webpack_require__(16);
+	var _addImageToGallery = __webpack_require__(20);
+	
+	var _addImageToGallery2 = _interopRequireDefault(_addImageToGallery);
+	
+	var _addImageToGallery3 = __webpack_require__(21);
+	
+	var _addImageToGallery4 = _interopRequireDefault(_addImageToGallery3);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _addImageToGallery2.default,
+	  bindings: {
+	    gallery: '=',
+	    images: '='
+	  },
+	  controller: controller
+	};
+	
+	
+	controller.$inject = ['imageService', 'galleryService'];
+	function controller(imageService, galleryService) {
+	  var _this = this;
+	
+	  this.styles = _addImageToGallery4.default;
+	
+	  this.updateImageList = function () {
+	    imageService.getAll().then(function (images) {
+	      return _this.imageList = images;
+	    }).catch(function (err) {
+	      return console.log(err);
+	    });
+	  };
+	  this.updateImageList();
+	
+	  this.submit = function () {
+	    if (!_this.imgageSelected) return;
+	    galleryService.update(_this.gallery, _this.imgageSelected).then(function (result) {
+	      return _this.images = result.images;
+	    }).catch(function (err) {
+	      return console.log(err);
+	    });
+	    resetForm();
+	  };
+	
+	  var resetForm = function resetForm() {
+	    _this.imgageSelected = '';
+	  };
+	  resetForm(); // init the image object for testing purposes
+	}
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"add-image-form outline\">\n  <h5>Add Image To This Gallery</h5>\n  <form>\n    <select ng-model=\"$ctrl.imgageSelected\">\n      <option value=\"\">Select Image</option>\n      <option ng-repeat=\"image in $ctrl.imageList\" value=\"{{image._id}}\">{{image.title}}</option>\n    </select>\n    <button ng-click=\"$ctrl.submit()\" class=\"add-image-button\">Add</button>\n  </form>\n</div>\n";
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 22 */,
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _app = __webpack_require__(24);
 	
 	var _app2 = _interopRequireDefault(_app);
+	
+	var _app3 = __webpack_require__(25);
+	
+	var _app4 = _interopRequireDefault(_app3);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32497,25 +32653,49 @@
 	function controller(imageService, galleryService) {
 	  var _this = this;
 	
+	  this.styles = _app4.default;
+	
 	  this.chooseFrame = function (selection) {
 	    _this.list = false;
 	    _this.thumb = false;
 	    _this.full = false;
-	    _this.addForm = false;
+	    _this.addImageForm = false;
+	    _this.addGalleryForm = false;
 	    _this[selection] = true;
 	  };
 	
 	  this.chooseFrame('list'); // init value
 	
+	  this.toggleImageForm = function () {
+	    _this.addImageSubForm = !_this.addImageSubForm;
+	    if (_this.addImageToGallerySubForm && _this.addImageSubForm) _this.addImageToGallerySubForm = false;
+	  };
+	
+	  this.toggleGallerySubForm = function () {
+	    _this.addImageToGallerySubForm = !_this.addImageToGallerySubForm;
+	    if (_this.addImageToGallerySubForm && _this.addImageSubForm) _this.addImageSubForm = false;
+	  };
+	
 	  // handling image methods
 	  this.getImages = function () {
-	    imageService.getAll().then(function (images) {
-	      return _this.images = images;
-	    }).catch(function (err) {
-	      return console.log(err);
-	    });
+	    if (_this.gallery === 'all') {
+	      imageService.getAll().then(function (images) {
+	        _this.images = images;
+	        _this.galleryName = 'All Images';
+	        _this.galleryChosen = false;
+	      }).catch(function (err) {
+	        return console.log(err);
+	      });
+	    } else {
+	      galleryService.getById(_this.gallery).then(function (gallery) {
+	        _this.galleryName = '"' + gallery.name + '" Gallery';
+	        _this.images = gallery.images;
+	        _this.galleryChosen = true;
+	      }).catch(function (err) {
+	        return console.log(err);
+	      });
+	    }
 	  };
-	  this.getImages(); // init on load
 	
 	  this.submitImage = function (data) {
 	    imageService.add(data).then(function () {
@@ -32527,16 +32707,25 @@
 	    });
 	  };
 	
-	  this.remove = function (imageToRemove) {
-	    imageService.remove(imageToRemove).then(function (deleted) {
-	      var index = _this.images.findIndex(function (m) {
-	        return m._id === deleted._id;
+	  this.removeImage = function (image) {
+	    if (_this.galleryChosen) {
+	      galleryService.removeImage(_this.gallery, image._id).then(function (result) {
+	        return _this.images = result.images;
+	      }).catch(function (err) {
+	        return console.log(err);
 	      });
-	      if (index > -1) _this.images.splice(index, 1);
-	    });
+	    } else {
+	      imageService.remove(image._id).then(function (result) {
+	        return _this.images = result.images;
+	      }).catch(function (err) {
+	        return console.log(err);
+	      });
+	    }
 	  };
 	
-	  // Handling gallery methods
+	  // Handling gallery methods //
+	
+	  // This method just gets all the gallery names
 	  this.getGalleries = function () {
 	    galleryService.getAll().then(function (galleries) {
 	      return _this.galleries = galleries;
@@ -32547,25 +32736,44 @@
 	  this.getGalleries(); // init on load
 	
 	  this.gallery = 'all'; // init on load
+	
+	  // This method controls the top option text and gets the images for the current gallery
 	  this.selectGallery = function () {
-	    console.log('this.gallery:', _this.gallery);
 	    if (_this.gallery != 'all') {
 	      _this.defaulChoiceText = 'All Images';
 	    } else {
 	      _this.defaulChoiceText = 'Gallery Select';
 	    }
-	    _this.selectGallery(); // init on load
+	    _this.getImages();
+	  };
+	  this.selectGallery(); // init on load
+	
+	  this.submitGallery = function (data) {
+	    galleryService.add(data).then(function () {
+	      return _this.getGalleries();
+	    }).catch(function (response) {
+	      console.log('Error adding gallery:', response);
+	      _this.result = true;
+	      _this.message = 'Error: ' + response;
+	    });
 	  };
 	};
 
 /***/ },
-/* 16 */
+/* 24 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\n  <h1 class=\"twelve columns\">Image Gallery</h1>\n\n  <section class=\"row twelve columns\">\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('list')\">List View</button>\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('thumb')\">Thumbnails</button>\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('full')\">Full Images</button>\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('addForm')\">Add Image</button>\n    <select ng-model=\"$ctrl.gallery\" ng-change=\"$ctrl.selectGallery()\">\n      <option value=\"all\">{{$ctrl.defaulChoiceText}}</option>\n      <option ng-repeat=\"gallery in $ctrl.galleries\" value=\"{{gallery._id}}\">{{gallery.name}}</option>\n    </select>\n  </section>\n\n  <section class=\"row twelve columns\">\n    <div ng-show=\"$ctrl.list\">\n      <text-list images=\"$ctrl.images\"></text-list>\n    </div>\n    <div ng-show=\"$ctrl.thumb\">\n      <thumbs images=\"$ctrl.images\"></thumbs>\n    </div>\n    <div ng-show=\"$ctrl.full\">\n      <images images=\"$ctrl.images\"></images>\n    </div>\n    <div ng-show=\"$ctrl.addForm\">\n      <add-form submit-image=\"$ctrl.submitImage\"></add-form>\n    </div>\n  </section>\n</div>\n";
+	module.exports = "<div class=\"container\">\n\n  <h1 class=\"twelve columns\">Image Gallery</h1>\n\n  <section class=\"row twelve columns\">\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('list')\">List View</button>\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('thumb')\">Thumbnails</button>\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('full')\">Full Images</button>\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('addImageForm')\">Add Image</button>\n    <button class=\"button-primary\" ng-click=\"$ctrl.chooseFrame('addGalleryForm')\">Add Gallery</button>\n    <select ng-model=\"$ctrl.gallery\" ng-change=\"$ctrl.selectGallery()\">\n      <option value=\"all\">{{$ctrl.defaulChoiceText}}</option>\n      <option ng-repeat=\"gallery in $ctrl.galleries\" value=\"{{gallery._id}}\">{{gallery.name}}</option>\n    </select>\n  </section>\n\n  <section class=\"row twelve columns\">\n    <div ng-show=\"$ctrl.list\">\n      <h3>Showing {{$ctrl.galleryName}}</h3>\n      <button ng-click=\"$ctrl.toggleImageForm()\">New Image</button>\n      <button ng-show=\"$ctrl.galleryChosen\" ng-click=\"$ctrl.toggleGallerySubForm()\">Add Image to Gallery</button>\n      <div ng-show=\"$ctrl.addImageSubForm\">\n        <add-image-form submit-image=\"$ctrl.submitImage\"></add-image-form>\n      </div>\n      <div ng-show=\"$ctrl.addImageToGallerySubForm\">\n        <add-image-to-gallery images=\"$ctrl.images\" gallery=\"$ctrl.gallery\" submit-image=\"$ctrl.addImageToGallery\"></add-image-to-gallery>\n      </div>\n      <text-list images=\"$ctrl.images\" remove-image=\"$ctrl.removeImage\"></text-list>\n    </div>\n    <div ng-show=\"$ctrl.thumb\">\n      <h3>Showing {{$ctrl.galleryName}}</h3>\n      <thumbs images=\"$ctrl.images\"></thumbs>\n    </div>\n    <div ng-show=\"$ctrl.full\">\n      <h3>Showing {{$ctrl.galleryName}}</h3>\n      <images images=\"$ctrl.images\"></images>\n    </div>\n    <div ng-show=\"$ctrl.addImageForm\">\n      <add-image-form submit-image=\"$ctrl.submitImage\"></add-image-form>\n    </div>\n    <div ng-show=\"$ctrl.addGalleryForm\">\n      <add-gallery-form submit-gallery=\"$ctrl.submitGallery\" galleries=\"$ctrl.galleries\"></add-gallery-form>\n    </div>\n  </section>\n</div>\n";
 
 /***/ },
-/* 17 */
+/* 25 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 26 */,
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32574,11 +32782,11 @@
 	  value: true
 	});
 	
-	var _images = __webpack_require__(18);
+	var _images = __webpack_require__(28);
 	
 	var _images2 = _interopRequireDefault(_images);
 	
-	var _images3 = __webpack_require__(19);
+	var _images3 = __webpack_require__(29);
 	
 	var _images4 = _interopRequireDefault(_images3);
 	
@@ -32595,20 +32803,20 @@
 	};
 
 /***/ },
-/* 18 */
+/* 28 */
 /***/ function(module, exports) {
 
 	module.exports = "<li ng-repeat=\"image in $ctrl.images\">\n    <imago image=\"image\"></imago>\n</li>\n";
 
 /***/ },
-/* 19 */
+/* 29 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 20 */,
-/* 21 */
+/* 30 */,
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32617,7 +32825,7 @@
 	  value: true
 	});
 	
-	var _imago = __webpack_require__(22);
+	var _imago = __webpack_require__(32);
 	
 	var _imago2 = _interopRequireDefault(_imago);
 	
@@ -32632,13 +32840,13 @@
 	};
 
 /***/ },
-/* 22 */
+/* 32 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"imago\">\n  <div class=\"img-title\">{{$ctrl.image.title}}</div>  \n  <div class=\"img-container\"><img class=\"full-pic\" ng-src=\"{{$ctrl.image.url}}\"><div>\n  <div class=\"img-desc\">{{$ctrl.image.description}}</div>\n</div>\n";
 
 /***/ },
-/* 23 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32647,41 +32855,11 @@
 	  value: true
 	});
 	
-	var _textListItem = __webpack_require__(24);
-	
-	var _textListItem2 = _interopRequireDefault(_textListItem);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-	  template: _textListItem2.default,
-	  bindings: {
-	    item: '='
-	  },
-	  controller: function controller() {}
-	};
-
-/***/ },
-/* 24 */
-/***/ function(module, exports) {
-
-	module.exports = "<tr>\n  <td class=\"text-title\">{{$ctrl.item.title}}</td>  \n  <td class=\"text-desc\">{{$ctrl.item.description}}</td>\n  <td class=\"text-url\">{{$ctrl.item.url}}<td>\n</tr>\n";
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _textList = __webpack_require__(26);
+	var _textList = __webpack_require__(34);
 	
 	var _textList2 = _interopRequireDefault(_textList);
 	
-	var _textList3 = __webpack_require__(27);
+	var _textList3 = __webpack_require__(35);
 	
 	var _textList4 = _interopRequireDefault(_textList3);
 	
@@ -32690,42 +32868,32 @@
 	exports.default = {
 	  template: _textList2.default,
 	  bindings: {
-	    images: '='
+	    images: '=',
+	    removeImage: '='
 	  },
 	  controller: controller
 	};
 	
 	
-	controller.$inject = ['imageService'];
-	function controller(imageService) {
-	  var _this = this;
-	
+	function controller() {
 	  this.styles = _textList4.default;
-	
-	  this.removeImage = function (imageId) {
-	    imageService.remove(imageId).then(function (imagesRemaining) {
-	      return _this.images = imagesRemaining;
-	    }).catch(function (err) {
-	      return console.log(err);
-	    });
-	  };
 	};
 
 /***/ },
-/* 26 */
+/* 34 */
 /***/ function(module, exports) {
 
-	module.exports = "<table class=\"u-full-width\">\n  <thead>\n    <tr>\n      <th><input type=\"checkbox\" id=\"check-all\" value=\"check-all\"></th>\n      <th>Title</th>\n      <th>Description</th>\n      <th>Link</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr ng-repeat=\"image in $ctrl.images\">\n      <td><input type=\"checkbox\" class=\"item-checkbox\" value=\"{{image._id}}\"></td>\n      <td>{{image.title}}</td>  \n      <td>{{image.description}}</td>\n      <td>{{image.url}}</td>\n      <td>{{image._id}}</td>\n      <td><button ng-click=\"$ctrl.removeImage(image)\">X</button></td>\n    </tr>\n  </tbody>\n</table>";
+	module.exports = "<table class=\"u-full-width\">\n  <thead>\n    <tr>\n      <th><input type=\"checkbox\" id=\"check-all\" value=\"check-all\"></th>\n      <th>Thumbnail</th>\n      <th>Title</th>\n      <th>Description</th>\n      <th>Link</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr ng-repeat=\"image in $ctrl.images\">\n      <td><input type=\"checkbox\" class=\"item-checkbox\" value=\"{{image._id}}\"></td>\n      <td><img class=\"thumb-pic\" ng-src=\"{{image.url}}\"></td>\n      <td>{{image.title}}</td>  \n      <td>{{image.description}}</td>\n      <td><button ng-click=\"$ctrl.removeImage(image)\">X</button></td>\n    </tr>\n  </tbody>\n</table>\n";
 
 /***/ },
-/* 27 */
+/* 35 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 28 */,
-/* 29 */
+/* 36 */,
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32734,7 +32902,7 @@
 	  value: true
 	});
 	
-	var _thumb = __webpack_require__(30);
+	var _thumb = __webpack_require__(38);
 	
 	var _thumb2 = _interopRequireDefault(_thumb);
 	
@@ -32749,13 +32917,13 @@
 	};
 
 /***/ },
-/* 30 */
+/* 38 */
 /***/ function(module, exports) {
 
 	module.exports = "<img class=\"thumb-pic\" ng-src=\"{{$ctrl.image.url}}\">\n";
 
 /***/ },
-/* 31 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32764,11 +32932,11 @@
 	  value: true
 	});
 	
-	var _thumbs = __webpack_require__(32);
+	var _thumbs = __webpack_require__(40);
 	
 	var _thumbs2 = _interopRequireDefault(_thumbs);
 	
-	var _thumbs3 = __webpack_require__(33);
+	var _thumbs3 = __webpack_require__(41);
 	
 	var _thumbs4 = _interopRequireDefault(_thumbs3);
 	
@@ -32785,20 +32953,20 @@
 	};
 
 /***/ },
-/* 32 */
+/* 40 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"flex-container\">\n  <div ng-repeat=\"thumb in $ctrl.images\">\n      <thumb image=\"thumb\"></thumb>\n  </div>\n</div>";
 
 /***/ },
-/* 33 */
+/* 41 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 34 */,
-/* 35 */
+/* 42 */,
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32822,7 +32990,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// this is a webpack specific require construct
-	var reqContext = __webpack_require__(36);
+	var reqContext = __webpack_require__(44);
 	
 	var services = _angular2.default.module('services', []);
 	
@@ -32834,12 +33002,12 @@
 	exports.default = services.name;
 
 /***/ },
-/* 36 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./gallery-service.js": 37,
-		"./image-service.js": 38
+		"./gallery-service.js": 45,
+		"./image-service.js": 46
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -32852,11 +33020,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 36;
+	webpackContext.id = 44;
 
 
 /***/ },
-/* 37 */
+/* 45 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32875,6 +33043,11 @@
 	        return response.data;
 	      });
 	    },
+	    getById: function getById(galleryId) {
+	      return $http.get(apiUrl + '/galleries/' + galleryId).then(function (response) {
+	        return response.data;
+	      });
+	    },
 	    add: function add(gallery) {
 	      return $http.post(apiUrl + '/galleries', gallery).then(function (response) {
 	        return response.data;
@@ -32887,16 +33060,51 @@
 	        return response.data;
 	      });
 	    },
-	    update: function update(gallery) {
-	      return $http.put(apiUrl + '/galleries/' + gallery._id, image).then(function (response) {
+	    update: function update(gallery, image) {
+	      return $http.get(apiUrl + '/galleries/' + gallery).then(function (response) {
+	        var images = response.data.images.map(function (imageObj) {
+	          return imageObj._id;
+	        });
+	        if (images.indexOf(image) == -1) {
+	          images.push(image);
+	          return $http.put(apiUrl + '/galleries/' + gallery, { images: images });
+	        } else {
+	          console.log('That image is already in the gallery.');
+	          return response;
+	        }
+	      }).then(function (response) {
 	        return response.data;
+	      }).catch(function (err) {
+	        console.log('error updating gallery');
+	        console.log(err);
+	        next(err);
+	      });
+	    },
+	    removeImage: function removeImage(gallery, image) {
+	      return $http.get(apiUrl + '/galleries/' + gallery).then(function (response) {
+	        var images = response.data.images.map(function (imageObj) {
+	          return imageObj._id;
+	        });
+	        var index = images.indexOf(image);
+	        if (index == -1) {
+	          return response;
+	        } else {
+	          images.splice(index, 1);
+	          return $http.put(apiUrl + '/galleries/' + gallery, { images: images });
+	        }
+	      }).then(function (response) {
+	        return response.data;
+	      }).catch(function (err) {
+	        console.log('error updating gallery');
+	        console.log(err);
+	        next(err);
 	      });
 	    }
 	  };
 	}
 
 /***/ },
-/* 38 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32936,21 +33144,21 @@
 	}
 
 /***/ },
-/* 39 */
+/* 47 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 40 */,
-/* 41 */
+/* 48 */,
+/* 49 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 42 */,
-/* 43 */
+/* 50 */,
+/* 51 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
