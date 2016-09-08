@@ -95,14 +95,14 @@ function controller (imageService, $state, $timeout) {
   };
 
   //just playing around with using timeout for slideshow loop
-  // this.timer = null;
-  // this.slideTimer = () => {
-  //   this.timer = $timeout(() => {
-  //     this.next();
-  //     this.timer = $timeout(this.slideTimer, 500);
-  //   }, 3000);
-  // };
-  //
-  // this.slideTimer();
+  this.timer = null;
+  this.slideTimer = () => {
+    this.timer = $timeout(() => {
+      this.next();
+      this.timer = $timeout(this.slideTimer, 500);
+    }, 3000);
+  };
+
+  this.slideTimer();
 
 };

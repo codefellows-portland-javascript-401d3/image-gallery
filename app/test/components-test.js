@@ -12,8 +12,14 @@ describe('App Components', function() {
     params: {}
   };
   const albumSvc = {};
+  const tokenSvc = {
+    getUserId() {
+      return 'id';
+    }
+  };
 
-  beforeEach(angular.mock.module('components', {imageService: imageSvc, albumService: albumSvc, $state}));
+  beforeEach(angular.mock.module('components'));
+  beforeEach(angular.mock.module('services', {tokenService: tokenSvc, imageService: imageSvc, albumService: albumSvc, $state}));
 
   let $component, $scope;
 
@@ -236,6 +242,11 @@ describe('App Components', function() {
   describe('album components', () => {
     it('initializes with correct component data', ()=> {
       const albums = [{name: 'album1'}, {name: 'album2'}];
+
+      albumSvc.getAlbumsbyUser = (id) => {
+        return Promise.resolve(id);
+      };
+
       albumSvc.getAll = function () {
         return Promise.resolve(albums);
       };
@@ -246,6 +257,7 @@ describe('App Components', function() {
     it('album component add calls albumService.add', () => {
       const albums = [{name: 'album1'}];
       const album = {name: 'album2'};
+
       albumSvc.add = (albumToAdd) => {
         albums.unshift(albumToAdd);
         this.addButton = 'add';
