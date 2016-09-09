@@ -20,7 +20,7 @@ describe('image add form', () => {
   }
 
   it('initializes with empty form', () => {
-    const component = $component('addForm');
+    const component = $component('addImageForm');
     confirmFormClear(component.image);
   });
 
@@ -31,7 +31,7 @@ describe('image add form', () => {
       addedImage = imageData;
     };
 
-    const component = $component('addForm', null, { submitImage });
+    const component = $component('addImageForm', null, { submitImage });
     const image = component.image; 
     confirmFormClear(component.image);
     

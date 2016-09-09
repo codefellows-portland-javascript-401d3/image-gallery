@@ -1,5 +1,5 @@
-import template from './add-form.html';
-import styles from './add-form.scss';
+import template from './add-image-form.html';
+import styles from './add-image-form.scss';
 
 export default {
   template,

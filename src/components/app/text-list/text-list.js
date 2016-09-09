@@ -4,9 +4,12 @@ import styles from './text-list.scss';
 export default {
   template,
   bindings: {
-    images: '='
+    images: '=',
+    removeImage: '='
   },
-  controller: function() {
-    this.styles = styles;
-  }
+  controller
+};
+
+function controller() {
+  this.styles = styles;
 };

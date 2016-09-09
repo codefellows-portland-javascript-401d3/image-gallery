@@ -1,5 +1,21 @@
-<div class="text-list">
-  <div ng-repeat="image in $ctrl.images" class="text-list-item">
-    <text-list-item item="image"></text-list-item>
-  </div>
-</div>
+<table class="u-full-width">
+  <thead>
+    <tr>
+      <th><input type="checkbox" id="check-all" value="check-all"></th>
+      <th>Thumbnail</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Link</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="image in $ctrl.images">
+      <td><input type="checkbox" class="item-checkbox" value="{{image._id}}"></td>
+      <td><img class="thumb-pic" ng-src="{{image.url}}"></td>
+      <td>{{image.title}}</td>  
+      <td>{{image.description}}</td>
+      <td><button ng-click="$ctrl.removeImage(image)">X</button></td>
+    </tr>
+  </tbody>
+</table>

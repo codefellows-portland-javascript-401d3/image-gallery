@@ -1,0 +1,10 @@
+<div class="add-image-form outline">
+  <h5>Add Image To This Gallery</h5>
+  <form>
+    <select ng-model="$ctrl.imgageSelected">
+      <option value="">Select Image</option>
+      <option ng-repeat="image in $ctrl.imageList" value="{{image._id}}">{{image.title}}</option>
+    </select>
+    <button ng-click="$ctrl.submit()" class="add-image-button">Add</button>
+  </form>
+</div>
