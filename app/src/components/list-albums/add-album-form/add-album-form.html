@@ -1,0 +1,13 @@
+<section ng-class="$ctrl.styles.addAlbum">
+  <!-- Error Message -->
+  <div id="error" ng-show="$ctrl.isInvalid">
+    <p>Please fill out all fields.</p>
+  </div>
+  <!-- Form -->
+  <form ng-submit="$ctrl.submit()">
+    <md-input-container>
+      <input placeholder="Title" ng-model="$ctrl.album.title">
+    </md-input-container>
+    <md-button type="submit">ADD</md-button>
+  </form>
+</section>

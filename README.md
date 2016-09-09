@@ -1,6 +1,10 @@
-# Image Gallery
+# Image Gallery App
 
-### This is an image gallery app that uses MongoDB, Express, AngularJS, node.js, and Webpack.
+[Live site here](https://photo-album-app.herokuapp.com/#/)
+
+### This is an image gallery app that uses MongoDB, Express, AngularJS, node.js, Webpack, and deployed via Heroku.
+
+### Users can CRUD photo albums and images within the photo albums
 
 ### Directions to run locally
 1. Download the files
@@ -15,10 +19,12 @@
   - `npm install` and `npm run build`
   - Navigate to `localhost:8080` in a web browser
 
-### Defaults
-- Server runs on `localhost:3000`
-- Frontend runs on `localhost:8080`
-- All form fields are required
+### Misc Info
+- Server runs on `localhost:3000` by default
+- Frontend runs on `localhost:8080` by default
+- All form fields are required to add and item
+- When updating, the form fields must be filled out and not the same as the original data
+- Can delete/update images from the individual album list view only
 
 ### Tests
 `cd app` and `npm run test`

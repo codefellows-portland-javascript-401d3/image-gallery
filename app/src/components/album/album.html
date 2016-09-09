@@ -1,31 +1,33 @@
 <div ng-class="$ctrl.styles.album">
-  <h1>Cute Dog Gallery</h1>
-  
+  <h1>{{$ctrl.title}}</h1>
+
   <!-- Radio buttons -->
-  <md-radio-group ng-model="$ctrl.view" layout="row" layout-align="center center">
-    <md-radio-button class="md-primary" value="list" aria-label="list">
-      List
-    </md-radio-button>
-    <md-radio-button class="md-primary" value="thumbnail" aria-label="thumbnail">
-      Thumbnail
-    </md-radio-button>
-    <md-radio-button class="md-primary" value="gallery" aria-label="gallery">
-      Gallery
-    </md-radio-button>
-  </md-radio-group>
+  <div ng-class=$ctrl.styles.radioButtons>
+    <md-radio-group ng-model="$ctrl.display" layout="row" layout-align="center center">
+      <md-radio-button class="md-primary" value="list" aria-label="list" ng-click="$ctrl.changeDisplay('list')">
+        List
+      </md-radio-button>
+      <md-radio-button class="md-primary" value="thumbnail" aria-label="thumbnail" ng-click="$ctrl.changeDisplay('thumbnail')">
+        Thumbnail
+      </md-radio-button>
+      <md-radio-button class="md-primary" value="gallery" aria-label="gallery" ng-click="$ctrl.changeDisplay('gallery')">
+        Gallery
+      </md-radio-button>
+    </md-radio-group>
+  </div>
 
   <!-- Image and image info -->
   <section>
     <span ng-repeat="image in $ctrl.images">
-      <list ng-if="$ctrl.view === 'list'" info="image"></list>
-      <thumbnail ng-if="$ctrl.view === 'thumbnail'" info="image"></thumbnail>
-      <gallery ng-if="$ctrl.view === 'gallery'" info="image"></gallery>
+      <list ng-if="$ctrl.display === 'list'" info="image" remove=$ctrl.remove update=$ctrl.update></list>
+      <thumbnail ng-if="$ctrl.display === 'thumbnail'" info="image"></thumbnail>
+      <gallery ng-if="$ctrl.display === 'gallery'" info="image"></gallery>
     </span>
   </section>
 
   <!-- Form to add more images -->
   <section>
-    <add-image-form add="$ctrl.add"></add-image-form>
+    <add-image-form add="$ctrl.add" id="$ctrl.albumId"></add-image-form>
   </section>
 
 </div>

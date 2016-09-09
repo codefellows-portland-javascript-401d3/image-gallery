@@ -1,0 +1,24 @@
+:local(.listAlbums){
+
+  a {
+    font-size: 2em;
+    text-decoration: none;
+  }
+  a:hover {
+    background: white;
+    color: #333;
+  }
+
+  .confirmMessage {
+    color: #ff4d4d;
+  }
+
+  .listItem {
+    padding: 0.5%;
+  }
+
+  .listItem:hover {
+    border: 1px solid #373A3B;
+  }
+
+}

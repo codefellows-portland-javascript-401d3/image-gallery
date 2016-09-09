@@ -18,7 +18,9 @@ describe('add image form', ()=>{
 
   it('passes form data to add function', ()=>{
     let imageAdded = null;
+    let albumId = '123';
     const add = image=>{
+      image.album = albumId;
       imageAdded = image;
     };
 
@@ -26,16 +28,17 @@ describe('add image form', ()=>{
     component.image.title = 'test1';
     component.image.description = 'test2';
     component.image.link = 'test3';
+    component.image.album = '123';
 
     component.submit();
-    assert.deepEqual(imageAdded, {title: 'test1', description: 'test2', link: 'test3'});
+    assert.deepEqual(imageAdded, {title: 'test1', description: 'test2', link: 'test3', album: '123'});
   });
 
   it('errors when form fields aren\'t filled out', ()=>{
     const component = $component('addImageForm');
     //description and link fields are blank
     component.image.title = 'test1';
-    
+
     component.submit();
     assert.equal(component.isInvalid, true);
   });

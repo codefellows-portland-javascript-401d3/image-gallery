@@ -1,0 +1,16 @@
+:local(.list){
+
+.item {
+  width: 50%;
+  margin: 0 auto;
+  padding: 0.5%;
+}
+
+.item:hover {
+  border: 1px solid #373A3B;
+}
+  .confirmMessage {
+    color: #ff4d4d;
+  }
+
+}

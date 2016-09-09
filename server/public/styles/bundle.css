@@ -6,17 +6,79 @@
   max-width: 650px; }
 
 ._29txRqz316H0zhZnrjR6Gb md-radio-group {
-  margin-bottom: 3%; }
+  margin-bottom: 5%; }
+
+._29txRqz316H0zhZnrjR6Gb md-radio-button {
+  outline-color: #303030;
+  padding-right: 1%;
+  margin-right: 2%; }
 ._1t2g1fkcoNeTsLKlcL7UQ- img {
   height: 40%;
   width: 40%; }
+._1aRw_8d3S7McjP0G-8MWpj .item {
+  width: 50%;
+  margin: 0 auto;
+  padding: 0.5%; }
+
+._1aRw_8d3S7McjP0G-8MWpj .item:hover {
+  border: 1px solid #373A3B; }
+
+._1aRw_8d3S7McjP0G-8MWpj .confirmMessage {
+  color: #ff4d4d; }
+.EuaGFskaL_ddfBUHw7Fml {
+  margin: 3% auto; }
+  .EuaGFskaL_ddfBUHw7Fml #error {
+    color: #ff4d4d; }
+.z2FNsF9wbpmZHvLN_Tv9k md-radio-group {
+  margin-bottom: 3%; }
+
+.z2FNsF9wbpmZHvLN_Tv9k md-radio-button {
+  outline-color: #303030; }
 ._3Em0oDAUzAWdRfSUcIoE1V img {
   width: 80px;
   height: 100px; }
+._20NNA1WcEHt78El7mXAFvh a {
+  font-size: 1.5em;
+  margin-right: 0.5em;
+  text-decoration: none;
+  color: white; }
+
+._20NNA1WcEHt78El7mXAFvh a.active {
+  border-bottom: 1px solid white; }
+.l9fPrf9kpAtHYjvzvx25c {
+  margin: 3% auto; }
+  .l9fPrf9kpAtHYjvzvx25c #error {
+    color: #ff4d4d; }
+._37FOYshd97XLxVXjHo_ZRG a {
+  font-size: 2em;
+  text-decoration: none; }
+
+._37FOYshd97XLxVXjHo_ZRG a:hover {
+  background: white;
+  color: #333; }
+
+._37FOYshd97XLxVXjHo_ZRG .confirmMessage {
+  color: #ff4d4d; }
+
+._37FOYshd97XLxVXjHo_ZRG .listItem {
+  padding: 0.5%; }
+
+._37FOYshd97XLxVXjHo_ZRG .listItem:hover {
+  border: 1px solid #373A3B; }
+._3yAZViovEBzFWYBOo34SxC {
+  margin: 3% auto; }
+  ._3yAZViovEBzFWYBOo34SxC #error {
+    color: #ff4d4d; }
+._23XnJNGIuxwbbctNa1oBpu {
+  width: 80%;
+  margin: 0 auto; }
 md-content {
-  text-align: center; }
+  text-align: center;
+  margin: 2%;
+  padding: 1%; }
   md-content a {
-    color: rgba(63, 81, 181, 0.87); }
+    color: rgba(63, 81, 181, 0.87);
+    text-decoration: none; }
 /*!
  * Angular Material Design
  * https://github.com/angular/material

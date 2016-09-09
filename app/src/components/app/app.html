@@ -1,5 +1,16 @@
 <md-content>
   <div layout="column" layout-align="center center" max-width="20%">
-    <album></album>
+    <div>
+      <ui-view name="header">
+      </ui-view>
+    </div>
+    <main>
+      <ui-view name="main">
+        Loading...
+      </ui-view>
+      <!-- <album></album> -->
+      <!-- <list-albums></list-albums> -->
+      <!-- <welcome></welcome> -->
+    </main>
   </div>
 </md-content>

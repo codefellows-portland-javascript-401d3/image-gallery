@@ -1,5 +1,20 @@
-<section>
+<span ng-class="$ctrl.styles.list">
+  <div class="item">
     <h2>{{$ctrl.info.title}}</h2>
     <p>{{$ctrl.info.description}}</p>
-    <p><a ng-href="{{$ctrl.info.link}}">View Image</a></p>
-</section>
+    <a ng-href="{{$ctrl.info.link}}">View</a>
+    <div>
+      <md-button ng-click="showWarning=!showWarning">Delete</md-button>
+      <md-button ng-hide="showUpdate" ng-click="showUpdate=!showUpdate">Edit</md-button>
+      <md-button ng-show="showUpdate" ng-click="showUpdate=false">Cancel Edit</md-button>
+    </div>
+    <!-- Update Form -->
+    <update-image-form ng-show="showUpdate" showUpdate="$ctrl.showUpdate" update=$ctrl.update info=$ctrl.info></update-image-form>
+    <!-- Warning message when deleting an image -->
+    <div ng-show="showWarning">
+      <p class="confirmMessage">Are you sure?</p>
+        <md-button ng-click="$ctrl.remove($ctrl.info)">Confirm Delete</md-button>
+        <md-button ng-click="showWarning=false">Keep Photo</md-button>
+    </div>
+  </div>
+</span>
