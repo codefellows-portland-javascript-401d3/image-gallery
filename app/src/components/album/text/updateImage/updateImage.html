@@ -1,0 +1,8 @@
+<section ng-class="$ctrl.styles.updateImage">
+  <form ng-submit="$ctrl.submit($ctrl.image._id)">
+    <input type="text" ng-model="$ctrl.updatedImage.title" placeholder="image title" ng-value="$ctrl.image.title">
+    <input type="text" ng-model="$ctrl.updatedImage.caption" placeholder="image caption" ng-value="$ctrl.image.caption">
+    <input type="text" ng-model="$ctrl.updatedImage.link" placeholder="image link" ng-value="$ctrl.image.link">
+    <button type="submit">Update Image</button>
+  </form>
+</section>

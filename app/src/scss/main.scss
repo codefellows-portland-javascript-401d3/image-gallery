@@ -1,0 +1,183 @@
+$ltest : #ffffff;
+$lter : #eeeeee;
+$lt : #dddddd;
+$dk : #999999;
+$dker : #666666;
+$dkest : #333333;
+$nah : transparent;
+
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i');
+
+
+@mixin linear-gradient($light, $dark) {
+  background: $light;
+  background: -webkit-linear-gradient($light,$light,$light,$dark);
+  background: -o-linear-gradient($light,$light,$light,$dark);
+  background: -moz-linear-gradient($light,$light,$light,$dark);
+  background: linear-gradient($light,$light,$light,$dark);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Source Sans Pro', helvetica, arial, sans-serif;
+  word-wrap: break-word;
+  color: $dkest;
+}
+
+.ng-isolated-scope {
+  margin: 0;
+  padding: 0;
+}
+
+.center {
+  text-align: center;
+}
+
+body {
+  padding: 50px 0;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.gradient {
+  @include linear-gradient($lter, $lt);
+}
+
+
+header, main {
+  width: 60%;
+  margin: 0 auto;
+  min-width: 400px;
+  max-width: 1200px;
+}
+
+header {
+  text-align: right;
+}
+
+section {
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: $lter;
+  box-shadow: 0 0 20px #ddd;
+  margin-bottom: 30px;
+}
+
+h1 { // "Image Gallery"
+  font-size: 4em;
+  font-weight: 200;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+h2 { // "Your Albums"
+  font-size: 3em;
+  font-weight: 200;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+h3 { // "SignIn" or "SignUp"
+  font-size: 2em;
+  font-weight: 200;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+h4 { // Album Names
+  font-size: 1.65em;
+  font-weight: 300;
+  margin-bottom: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+h5 { // "Select the Album to View"
+  font-size: 1.25em;
+  font-weight: 200;
+  margin-bottom: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+h6 {
+  font-size: 1em;
+  font-weight: 200;
+  margin-top: 200px;
+  margin-bottom: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+p {
+  text-align: justify;
+  font-size: 1em;
+  font-weight: 300;
+}
+
+a, a:link, a:visited, a:hover, a:active {
+  text-decoration: none;
+}
+
+a, a:link, a:visited {
+  color: $dkest;
+}
+
+a:hover, a:active {
+  color: $dk;
+}
+
+.buttonHolder {
+  width: 314px;
+  margin: 20px auto 0 auto;
+}
+
+button {
+  padding: 5px 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-color: transparent;
+  border: 1px #666 solid;
+  margin: 10px auto;
+  outline: none;
+  width: 130px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button.inline {
+  margin: 0 10px;
+}
+
+button.center {
+  margin: 50px auto;
+  display: block;
+}
+
+button:first-child {
+  margin-right: 20px;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+  background-color: transparent;
+}
+
+input[type="text"], input[type="password"] {
+  width: calc(100%);
+  margin-bottom: 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  outline: none;
+  display: block;
+  font-size: 2em;
+  font-weight: 200;
+}

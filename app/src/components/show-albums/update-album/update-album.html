@@ -1,0 +1,6 @@
+<section ng-class="$ctrl.styles.updateAlbum">
+  <form ng-submit="$ctrl.submit($ctrl.album._id)">
+    <input type="text" placeholer="New Album Title" ng-value="$ctrl.album.title" ng-model="$ctrl.updatedAlbum.title">
+    <button type="submit">Update Album</button>
+  </form>
+</section>
