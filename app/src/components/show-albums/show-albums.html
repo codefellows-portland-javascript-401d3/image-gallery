@@ -1,0 +1,30 @@
+<main ng-class=$ctrl.styles.showAlbums>
+  <h2>Your Albums</h2>
+  <h5>Select the album to view</h5>
+
+  <section ng-repeat="album in $ctrl.albums">
+    <!-- <div ng-show="album"> -->
+      <!-- TODO FIX THIS SHIT -->
+      <a ui-sref="specific-album({albumId: album._id, display: 'text'})"><h4>{{album.title}}</h4></a>
+
+      <div class="buttonHolder">
+        <button class="inline" ng-click="showUpdate=!showUpdate">Edit Album</button>
+        <button class="inline" ng-click="$ctrl.remove(album._id)">Delete Album</button>
+      </div>
+    <!-- </div> -->
+
+    <!-- <div ng-show="!album">
+      <h5>You don't currently have any albums, add one below</h5>
+    </div> -->
+  </section>
+
+  <section ng-show="showUpdate">
+    <h4>Update an Album</h4>
+    <update-album update="$ctrl.update" collection="album"> <!-- form will go here --> </update-album>
+  </section>
+
+  <section>
+    <h4 class="inline">Add an Album</h4>
+    <add-album add="$ctrl.add"></add-album>
+  </section>
+</main>

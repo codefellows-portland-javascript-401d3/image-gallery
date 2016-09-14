@@ -1,0 +1,10 @@
+<section ng-class="$ctrl.styles.newImage">
+  <h1>New Image</h1>
+  <!-- to do form validate or process errors here? -->
+  <form name="new" ng-submit="$ctrl.submit()">
+    <input type="text" ng-model="$ctrl.newImage.title" placeholder="image title">
+    <input type="text" ng-model="$ctrl.newImage.caption" placeholder="image caption">
+    <input type="text" ng-model="$ctrl.newImage.link" placeholder="image link">
+    <button type="submit">Add Image</button>
+  </form>
+</section>

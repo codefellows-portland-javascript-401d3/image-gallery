@@ -11,8 +11,8 @@ describe('images', () => {
     $component = $componentController;
   }));
 
-  it ('picker.view default state', () => {
-    const component = $component('picker');
+  it ('album.view default state', () => {
+    const component = $component('album');
     const view = component.view;
     assert.equal(view, 'text', 'the default view should be "text"');
   });

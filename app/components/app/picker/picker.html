@@ -1,9 +1,0 @@
-<div class="pickerInner">
-  <label><input type="radio" ng-model="picker.view" value="text">Text</label>
-  <label><input type="radio" ng-model="picker.view" value="thumb">Thumb</label>
-  <label><input type="radio" ng-model="picker.view" value="full">Full</label>
-</div>
-
-  <text ng-if="picker.view === 'text'" collection="picker.collection"></text>
-  <thumb ng-if="picker.view === 'thumb'" collection="picker.collection"></thumb>
-  <full ng-if="picker.view === 'full'" collection="picker.collection"></full>

@@ -1,0 +1,15 @@
+<main ng-class="$ctrl.styles.landing">
+  <div class="loggedOut" ng-if="userService.isAuthenticated()">
+    <h2>Sign In or Create an Account</h2>
+    <user-auth success="success()"></user-auth>
+  </div>
+
+  <div class="loggedIn" ng-if="!userService.isAuthenticated()">
+    <button class="center" ui-sref-active="active" ui-sref="show-albums">Show Albums</button>
+
+    <h5>Welcome! Use the button above to see the list of available albums.</h5>
+  </div>
+
+  <h6><a href="http://github.com/katesowles/image-gallery">See this project on Github</a></h6>
+
+</main>

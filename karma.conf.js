@@ -5,7 +5,7 @@ const webpackConfig = require('./webpack.config');
 webpackConfig.entry = {};
 
 // entry point for testing
-const entryPoint = './app/gallery.js';
+const entryPoint = './app/src/gallery.js';
 
 module.exports = function(config) {
   config.set({

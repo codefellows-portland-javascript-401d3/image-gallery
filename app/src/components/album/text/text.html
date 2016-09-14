@@ -1,0 +1,10 @@
+<section ng-class="$ctrl.styles.text">
+  <span class="display" ng-repeat="image in $ctrl.images">
+    <a href="{{image.link}}"><h3>{{image.title}}</h3></a>
+    <p>{{image.caption}}</p>
+
+    <button ng-click="showUpdate=!showUpdate">Update Image</button>
+    <update-image ng-show="showUpdate" showUpdate="$ctrl.showUpdate" update="$ctrl.update" image="image"></update-image>
+    <button ng-click="$ctrl.remove(image._id)">Delete Image</button>
+  </span>
+</section>

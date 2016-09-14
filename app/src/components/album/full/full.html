@@ -1,0 +1,7 @@
+<section ng-class="$ctrl.styles.full">
+  <span ng-repeat="image in $ctrl.images">
+    <img src="{{image.link}}" alt="{{image.title}}" />
+    <h3>{{image.title}}</h3>
+    <p>{{image.caption}}</p>
+  </span>
+</section>
