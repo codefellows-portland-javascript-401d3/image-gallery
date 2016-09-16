@@ -3,21 +3,20 @@ const app = module.exports = express();
 const morgan = require('morgan');
 const images = require('./routes/images');
 const albums = require('./routes/albums');
+const auth = require('./routes/auth');
+const ensureAuth = require('./auth/ensureAuth');
+const cors = require('./auth/cors')('*');
 
 app.use(morgan('dev'));
 
 app.use(express.static(__dirname + '/public'));
 
-app.use((req, res, next)=>{
-  const url = '*';
-  res.header('Access-Control-Allow-Origin', url);
-  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors);
 
-app.use('/api/images', images);
-app.use('/api/albums', albums);
+// api routes
+app.use('/api', auth);
+app.use('/api/images', ensureAuth, images);
+app.use('/api/albums', ensureAuth, albums);
 
 // eslint-disable-next-line
 app.use((err, req, res, next)=>{

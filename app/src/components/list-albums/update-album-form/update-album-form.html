@@ -1,11 +1,12 @@
 <section ng-class="$ctrl.styles.updateAlbum">
   <!-- Error Message -->
   <div id="error" ng-show="$ctrl.isInvalid">
+    <!--TODO: dynamically populate the error message-->
     <p>Title is required and must be different</p>
   </div>
   <!-- Form -->
   <form ng-submit="$ctrl.submit()">
-    <md-input-container>
+    <md-input-container class="md-accent">
       <input placeholder="Title" ng-model="$ctrl.album.title">
     </md-input-container>
     <md-button type="submit">Send</md-button>

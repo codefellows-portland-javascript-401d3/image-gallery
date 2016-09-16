@@ -1,3 +1,5 @@
+<!--TODO: make showWarning and showUpdate pop up dialog boxes
+Change the layout for computers to 2-3 columns across-->
 <div ng-class=$ctrl.styles.listAlbums>
   <h1>Albums</h1>
   <p>Click on the album name to see the pictures</p>
@@ -12,8 +14,8 @@
           <md-button ng-show="showUpdate" ng-click="showUpdate=false">Cancel Edit</md-button>
           <!-- Warning message when deleting an album -->
           <div ng-show="showWarning">
-            <p class="confirmMessage">Are you sure?</p>
-              <md-button ng-click="$ctrl.remove(album._id)">Confirm Delete</md-button>
+            <p class="warningText">Are you sure?</p>
+              <md-button class="md-warn" ng-click="$ctrl.remove(album._id)">Confirm Delete</md-button>
               <md-button ng-click="showWarning=false">Keep Album</md-button>
           </div>
           <!-- Update album form -->

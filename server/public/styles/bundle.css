@@ -24,51 +24,50 @@
   border: 1px solid #373A3B; }
 
 ._1aRw_8d3S7McjP0G-8MWpj .confirmMessage {
-  color: #ff4d4d; }
+  color: #ff5722; }
 .EuaGFskaL_ddfBUHw7Fml {
   margin: 3% auto; }
   .EuaGFskaL_ddfBUHw7Fml #error {
     color: #ff4d4d; }
-.z2FNsF9wbpmZHvLN_Tv9k md-radio-group {
-  margin-bottom: 3%; }
-
-.z2FNsF9wbpmZHvLN_Tv9k md-radio-button {
-  outline-color: #303030; }
 ._3Em0oDAUzAWdRfSUcIoE1V img {
   width: 80px;
   height: 100px; }
 ._20NNA1WcEHt78El7mXAFvh a {
   font-size: 1.5em;
   margin-right: 0.5em;
-  text-decoration: none;
   color: white; }
 
 ._20NNA1WcEHt78El7mXAFvh a.active {
-  border-bottom: 1px solid white; }
+  color: rgba(233, 30, 99, 0.87);
+  text-decoration: underline; }
+
+._20NNA1WcEHt78El7mXAFvh a:hover {
+  color: white;
+  text-decoration: underline; }
+.error {
+  color: #ff5722; }
+.error {
+  color: #ff5722; }
 .l9fPrf9kpAtHYjvzvx25c {
   margin: 3% auto; }
   .l9fPrf9kpAtHYjvzvx25c #error {
-    color: #ff4d4d; }
+    color: #ff5722; }
 ._37FOYshd97XLxVXjHo_ZRG a {
   font-size: 2em;
   text-decoration: none; }
-
-._37FOYshd97XLxVXjHo_ZRG a:hover {
-  background: white;
-  color: #333; }
-
-._37FOYshd97XLxVXjHo_ZRG .confirmMessage {
-  color: #ff4d4d; }
 
 ._37FOYshd97XLxVXjHo_ZRG .listItem {
   padding: 0.5%; }
 
 ._37FOYshd97XLxVXjHo_ZRG .listItem:hover {
   border: 1px solid #373A3B; }
+
+._37FOYshd97XLxVXjHo_ZRG .warningText {
+  color: #ff5722; }
 ._3yAZViovEBzFWYBOo34SxC {
   margin: 3% auto; }
   ._3yAZViovEBzFWYBOo34SxC #error {
-    color: #ff4d4d; }
+    color: #ff5722; }
 ._23XnJNGIuxwbbctNa1oBpu {
   width: 80%;
   margin: 0 auto; }
@@ -77,8 +76,14 @@ md-content {
   margin: 2%;
   padding: 1%; }
   md-content a {
-    color: rgba(63, 81, 181, 0.87);
-    text-decoration: none; }
+    text-decoration: none;
+    color: rgba(233, 30, 99, 0.87);
+    cursor: pointer; }
+  md-content a:hover {
+    color: rgba(63, 81, 181, 0.87); }
+
+md-dialog {
+  padding: 3%; }
 /*!
  * Angular Material Design
  * https://github.com/angular/material

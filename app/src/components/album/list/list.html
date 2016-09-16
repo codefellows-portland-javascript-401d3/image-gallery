@@ -1,19 +1,22 @@
+<!--TODO: Once dialogs are in place - change layout to 2/3 columns across-->
 <span ng-class="$ctrl.styles.list">
   <div class="item">
-    <h2>{{$ctrl.info.title}}</h2>
-    <p>{{$ctrl.info.description}}</p>
-    <a ng-href="{{$ctrl.info.link}}">View</a>
+    <!--TODO: have image open in a lightbox on click-->
+    <h2><a ng-href="{{$ctrl.info.link}}">{{$ctrl.info.title}}</a></h2>
+    <h3>{{$ctrl.info.description}}</h3>
     <div>
       <md-button ng-click="showWarning=!showWarning">Delete</md-button>
       <md-button ng-hide="showUpdate" ng-click="showUpdate=!showUpdate">Edit</md-button>
       <md-button ng-show="showUpdate" ng-click="showUpdate=false">Cancel Edit</md-button>
     </div>
     <!-- Update Form -->
+    <!--TODO: Change this to a dialog pop up-->
     <update-image-form ng-show="showUpdate" showUpdate="$ctrl.showUpdate" update=$ctrl.update info=$ctrl.info></update-image-form>
     <!-- Warning message when deleting an image -->
     <div ng-show="showWarning">
+      <!--TODO: Change this to a dialog pop up-->
       <p class="confirmMessage">Are you sure?</p>
-        <md-button ng-click="$ctrl.remove($ctrl.info)">Confirm Delete</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.remove($ctrl.info)">Confirm Delete</md-button>
         <md-button ng-click="showWarning=false">Keep Photo</md-button>
     </div>
   </div>

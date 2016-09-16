@@ -23,30 +23,28 @@ function controller(imageService, $state){
         this.display = params.display;
       } else if(params.display === 'thumbnail'){
         this.display = params.display;
-      } else {
+      } else if(params.display === 'list'){
+        this.display = params.display;
+      }
+      else {
+        // fallback for invalid display params
         this.display = 'list';
+        $state.go($state.current.name, {display: 'list'});
       }
     } else {
       this.display = params.display || 'list';
     }
   };
 
-  this.changeDisplay = (selectedDisplay)=>{
-    //TODO refactor this, so it takes a dynamic value
-    //vs a hardcoded string passed in as the selectedDisplay
-    this.display = selectedDisplay;
+  this.updateDisplay = ()=>{
     $state.go($state.current.name, {display: this.display});
   };
 
   imageService.getAlbumContent(this.albumId)
       .then(data=>{
-        this.images = data;
-        if(data.length){
-          this.title = data[0].album.title;
-        } else {
-          //TODO: Find a more elegant way to pass the album title
-          //when the album does not have images in it
-          this.title = '';
+        if(data){
+          this.title = data[0].title;
+          this.images = data[1];
         }
       })
       .catch(err=>console.log(err));

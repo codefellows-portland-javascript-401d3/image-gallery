@@ -3,10 +3,12 @@ import app from './app';
 import routes from './routes';
 import './scss/main.scss';
 import 'angular-material/angular-material.css';
+import http from './http';
+import auth from './auth';
 
-const module = angular.module(app);
+app.config(http);
+app.config(routes);
+app.run(auth);
+app.value('apiUrl', process.env.API_URL || '/api');
 
-module.config(routes);
-module.value('apiUrl', process.env.API_URL || '/api');
-
-angular.bootstrap(document, [app]);
+angular.bootstrap(document, [app.name]);

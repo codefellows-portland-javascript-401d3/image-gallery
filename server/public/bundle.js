@@ -54,22 +54,30 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _routes = __webpack_require__(73);
+	var _routes = __webpack_require__(83);
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	__webpack_require__(74);
+	__webpack_require__(84);
 	
-	__webpack_require__(76);
+	__webpack_require__(86);
+	
+	var _http = __webpack_require__(88);
+	
+	var _http2 = _interopRequireDefault(_http);
+	
+	var _auth = __webpack_require__(89);
+	
+	var _auth2 = _interopRequireDefault(_auth);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _module = _angular2.default.module(_app2.default);
+	_app2.default.config(_http2.default);
+	_app2.default.config(_routes2.default);
+	_app2.default.run(_auth2.default);
+	_app2.default.value('apiUrl', (undefined) || '/api');
 	
-	_module.config(_routes2.default);
-	_module.value('apiUrl', (undefined) || '/api');
-	
-	_angular2.default.bootstrap(document, [_app2.default]);
+	_angular2.default.bootstrap(document, [_app2.default.name]);
 
 /***/ },
 /* 1 */
@@ -16796,23 +16804,29 @@
 	
 	var _components2 = _interopRequireDefault(_components);
 	
-	var _services = __webpack_require__(63);
+	var _services = __webpack_require__(68);
 	
 	var _services2 = _interopRequireDefault(_services);
 	
-	var _angularMaterial = __webpack_require__(67);
+	var _angularMaterial = __webpack_require__(74);
 	
 	var _angularMaterial2 = _interopRequireDefault(_angularMaterial);
 	
+	var _angularMessages = __webpack_require__(80);
+	
+	var _angularMessages2 = _interopRequireDefault(_angularMessages);
+	
+	__webpack_require__(82);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var app = _angular2.default.module('myApp', [_angularUiRouter2.default, _components2.default, _services2.default, _angularMaterial2.default]);
+	var app = _angular2.default.module('myApp', [_angularUiRouter2.default, _angular2.default.module('ui.router.state.events').name, _angularMessages2.default, _components2.default, _services2.default, _angularMaterial2.default]);
 	
 	app.config(['$mdThemingProvider', function ($mdThemingProvider) {
 	  $mdThemingProvider.theme('default').dark();
 	}]);
 	
-	exports.default = app.name;
+	exports.default = app;
 
 /***/ },
 /* 4 */
@@ -20330,14 +20344,16 @@
 		"./album/gallery/gallery.js": 21,
 		"./album/list/list.js": 25,
 		"./album/list/update-image-form/update-image-form.js": 29,
-		"./album/radio-buttons/radio-buttons.js": 33,
-		"./album/thumbnail/thumbnail.js": 37,
-		"./app/app-nav/app-nav.js": 41,
-		"./app/app.js": 45,
-		"./list-albums/add-album-form/add-album-form.js": 47,
-		"./list-albums/list-albums.js": 51,
-		"./list-albums/update-album-form/update-album-form.js": 55,
-		"./welcome/welcome.js": 59
+		"./album/thumbnail/thumbnail.js": 33,
+		"./app/app-nav/app-nav.js": 37,
+		"./app/app.js": 41,
+		"./auth/signin/signin.js": 43,
+		"./auth/signup/signup.js": 47,
+		"./auth/user-auth.js": 51,
+		"./list-albums/add-album-form/add-album-form.js": 52,
+		"./list-albums/list-albums.js": 56,
+		"./list-albums/update-album-form/update-album-form.js": 60,
+		"./welcome/welcome.js": 64
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -20412,7 +20428,7 @@
 /* 12 */
 /***/ function(module, exports) {
 
-	module.exports = "<section ng-class=\"$ctrl.styles.addImage\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Please fill out all fields.</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container>\n      <input placeholder=\"Title\" ng-model=\"$ctrl.image.title\">\n    </md-input-container>\n    <md-input-container>\n      <input placeholder=\"Description\" ng-model=\"$ctrl.image.description\">\n    </md-input-container>\n    <md-input-container>\n      <input placeholder=\"Image URL\" ng-model=\"$ctrl.image.link\">\n    </md-input-container>\n    <md-button type=\"submit\">ADD</md-button>\n  </form>\n</section>\n";
+	module.exports = "<section ng-class=\"$ctrl.styles.addImage\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Please fill out all fields.</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Title\" ng-model=\"$ctrl.image.title\">\n    </md-input-container>\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Description\" ng-model=\"$ctrl.image.description\">\n    </md-input-container>\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Image URL\" ng-model=\"$ctrl.image.link\">\n    </md-input-container>\n    <md-button type=\"submit\">ADD</md-button>\n  </form>\n</section>\n";
 
 /***/ },
 /* 13 */
@@ -20469,29 +20485,26 @@
 	        _this.display = params.display;
 	      } else if (params.display === 'thumbnail') {
 	        _this.display = params.display;
+	      } else if (params.display === 'list') {
+	        _this.display = params.display;
 	      } else {
+	        // fallback for invalid display params
 	        _this.display = 'list';
+	        $state.go($state.current.name, { display: 'list' });
 	      }
 	    } else {
 	      _this.display = params.display || 'list';
 	    }
 	  };
 	
-	  this.changeDisplay = function (selectedDisplay) {
-	    //TODO refactor this, so it takes a dynamic value
-	    //vs a hardcoded string passed in as the selectedDisplay
-	    _this.display = selectedDisplay;
+	  this.updateDisplay = function () {
 	    $state.go($state.current.name, { display: _this.display });
 	  };
 	
 	  imageService.getAlbumContent(this.albumId).then(function (data) {
-	    _this.images = data;
-	    if (data.length) {
-	      _this.title = data[0].album.title;
-	    } else {
-	      //TODO: Find a more elegant way to pass the album title
-	      //when the album does not have images in it
-	      _this.title = '';
+	    if (data) {
+	      _this.title = data[0].title;
+	      _this.images = data[1];
 	    }
 	  }).catch(function (err) {
 	    return console.log(err);
@@ -20536,7 +20549,7 @@
 /* 18 */
 /***/ function(module, exports) {
 
-	module.exports = "<div ng-class=\"$ctrl.styles.album\">\n  <h1>{{$ctrl.title}}</h1>\n\n  <!-- Radio buttons -->\n  <div ng-class=$ctrl.styles.radioButtons>\n    <md-radio-group ng-model=\"$ctrl.display\" layout=\"row\" layout-align=\"center center\">\n      <md-radio-button class=\"md-primary\" value=\"list\" aria-label=\"list\" ng-click=\"$ctrl.changeDisplay('list')\">\n        List\n      </md-radio-button>\n      <md-radio-button class=\"md-primary\" value=\"thumbnail\" aria-label=\"thumbnail\" ng-click=\"$ctrl.changeDisplay('thumbnail')\">\n        Thumbnail\n      </md-radio-button>\n      <md-radio-button class=\"md-primary\" value=\"gallery\" aria-label=\"gallery\" ng-click=\"$ctrl.changeDisplay('gallery')\">\n        Gallery\n      </md-radio-button>\n    </md-radio-group>\n  </div>\n\n  <!-- Image and image info -->\n  <section>\n    <span ng-repeat=\"image in $ctrl.images\">\n      <list ng-if=\"$ctrl.display === 'list'\" info=\"image\" remove=$ctrl.remove update=$ctrl.update></list>\n      <thumbnail ng-if=\"$ctrl.display === 'thumbnail'\" info=\"image\"></thumbnail>\n      <gallery ng-if=\"$ctrl.display === 'gallery'\" info=\"image\"></gallery>\n    </span>\n  </section>\n\n  <!-- Form to add more images -->\n  <section>\n    <add-image-form add=\"$ctrl.add\" id=\"$ctrl.albumId\"></add-image-form>\n  </section>\n\n</div>\n";
+	module.exports = "<div ng-class=\"$ctrl.styles.album\">\n  <h1>{{$ctrl.title}}</h1>\n\n  <!-- Radio buttons -->\n  <md-radio-group ng-model=\"$ctrl.display\" layout=\"row\" layout-align=\"center center\" ng-change=\"$ctrl.updateDisplay()\">\n    <md-radio-button class=\"md-accent\" value=\"list\" aria-label=\"list\">\n      List\n    </md-radio-button>\n    <md-radio-button class=\"md-accent\" value=\"thumbnail\" aria-label=\"thumbnail\">\n      Thumbnail\n    </md-radio-button>\n    <md-radio-button class=\"md-accent\" value=\"gallery\" aria-label=\"gallery\">\n      Gallery\n    </md-radio-button>\n  </md-radio-group>\n\n  <!-- Image and image info -->\n  <section>\n    <span ng-repeat=\"image in $ctrl.images\">\n      <list ng-if=\"$ctrl.display === 'list'\" info=\"image\" remove=$ctrl.remove update=$ctrl.update></list>\n      <thumbnail ng-if=\"$ctrl.display === 'thumbnail'\" info=\"image\"></thumbnail>\n      <gallery ng-if=\"$ctrl.display === 'gallery'\" info=\"image\"></gallery>\n    </span>\n  </section>\n\n  <!-- Form to add more images -->\n  <section>\n    <add-image-form add=\"$ctrl.add\" id=\"$ctrl.albumId\"></add-image-form>\n  </section>\n\n</div>\n";
 
 /***/ },
 /* 19 */
@@ -20626,7 +20639,7 @@
 /* 26 */
 /***/ function(module, exports) {
 
-	module.exports = "<span ng-class=\"$ctrl.styles.list\">\n  <div class=\"item\">\n    <h2>{{$ctrl.info.title}}</h2>\n    <p>{{$ctrl.info.description}}</p>\n    <a ng-href=\"{{$ctrl.info.link}}\">View</a>\n    <div>\n      <md-button ng-click=\"showWarning=!showWarning\">Delete</md-button>\n      <md-button ng-hide=\"showUpdate\" ng-click=\"showUpdate=!showUpdate\">Edit</md-button>\n      <md-button ng-show=\"showUpdate\" ng-click=\"showUpdate=false\">Cancel Edit</md-button>\n    </div>\n    <!-- Update Form -->\n    <update-image-form ng-show=\"showUpdate\" showUpdate=\"$ctrl.showUpdate\" update=$ctrl.update info=$ctrl.info></update-image-form>\n    <!-- Warning message when deleting an image -->\n    <div ng-show=\"showWarning\">\n      <p class=\"confirmMessage\">Are you sure?</p>\n        <md-button ng-click=\"$ctrl.remove($ctrl.info)\">Confirm Delete</md-button>\n        <md-button ng-click=\"showWarning=false\">Keep Photo</md-button>\n    </div>\n  </div>\n</span>\n";
+	module.exports = "<span ng-class=\"$ctrl.styles.list\">\n  <div class=\"item\">\n    <h2>{{$ctrl.info.title}}</h2>\n    <h3>{{$ctrl.info.description}}</h3>\n    <a ng-href=\"{{$ctrl.info.link}}\">VIEW PHOTO</a>\n    <div>\n      <md-button ng-click=\"showWarning=!showWarning\">Delete</md-button>\n      <md-button ng-hide=\"showUpdate\" ng-click=\"showUpdate=!showUpdate\">Edit</md-button>\n      <md-button ng-show=\"showUpdate\" ng-click=\"showUpdate=false\">Cancel Edit</md-button>\n    </div>\n    <!-- Update Form -->\n    <update-image-form ng-show=\"showUpdate\" showUpdate=\"$ctrl.showUpdate\" update=$ctrl.update info=$ctrl.info></update-image-form>\n    <!-- Warning message when deleting an image -->\n    <div ng-show=\"showWarning\">\n      <p class=\"confirmMessage\">Are you sure?</p>\n        <md-button class=\"md-warn\" ng-click=\"$ctrl.remove($ctrl.info)\">Confirm Delete</md-button>\n        <md-button ng-click=\"showWarning=false\">Keep Photo</md-button>\n    </div>\n  </div>\n</span>\n";
 
 /***/ },
 /* 27 */
@@ -20703,7 +20716,7 @@
 /* 30 */
 /***/ function(module, exports) {
 
-	module.exports = "<section ng-class=\"$ctrl.styles.updateImage\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Must be new information and not blank.</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container>\n      <input placeholder=\"Title\" ng-model=\"$ctrl.image.title\">\n    </md-input-container>\n    <md-input-container>\n      <input placeholder=\"Description\" ng-model=\"$ctrl.image.description\">\n    </md-input-container>\n    <md-input-container>\n      <input placeholder=\"Image URL\" ng-model=\"$ctrl.image.link\">\n    </md-input-container>\n    <div>\n      <md-button type=\"submit\">Send</md-button>\n    </div>\n  </form>\n</section>\n";
+	module.exports = "<section ng-class=\"$ctrl.styles.updateImage\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Must be new information and not blank.</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Title\" ng-model=\"$ctrl.image.title\">\n    </md-input-container>\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Description\" ng-model=\"$ctrl.image.description\">\n    </md-input-container>\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Image URL\" ng-model=\"$ctrl.image.link\">\n    </md-input-container>\n    <div>\n      <md-button type=\"submit\">Send</md-button>\n    </div>\n  </form>\n</section>\n";
 
 /***/ },
 /* 31 */
@@ -20723,62 +20736,11 @@
 	  value: true
 	});
 	
-	var _radioButtons = __webpack_require__(34);
-	
-	var _radioButtons2 = _interopRequireDefault(_radioButtons);
-	
-	var _radioButtons3 = __webpack_require__(35);
-	
-	var _radioButtons4 = _interopRequireDefault(_radioButtons3);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-	  template: _radioButtons2.default,
-	  controller: controller,
-	  bindings: {
-	    display: '='
-	  }
-	};
-	
-	
-	function controller($state) {
-	  this.styles = _radioButtons4.default;
-	  this.viewChange = function (viewState) {
-	    console.log(viewState);
-	    $state.go($state.current.name, { display: viewState });
-	  };
-	}
-
-/***/ },
-/* 34 */
-/***/ function(module, exports) {
-
-	module.exports = "<div ng-class=$ctrl.styles.radioButtons>\n  <md-radio-group ng-model=\"$ctrl.display\" layout=\"row\" layout-align=\"center center\">\n    <md-radio-button class=\"md-primary\" value=\"list\" aria-label=\"list\" ng-click=\"$ctrl.viewChange('list')\">\n      List\n    </md-radio-button>\n    <md-radio-button class=\"md-primary\" value=\"thumbnail\" aria-label=\"thumbnail\" ng-click=\"$ctrl.viewChange('thumbnail')\">\n      Thumbnail\n    </md-radio-button>\n    <md-radio-button class=\"md-primary\" value=\"gallery\" aria-label=\"gallery\" ng-click=\"$ctrl.viewChange('gallery')\">\n      Gallery\n    </md-radio-button>\n  </md-radio-group>\n</div>\n";
-
-/***/ },
-/* 35 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"radioButtons":"z2FNsF9wbpmZHvLN_Tv9k"};
-
-/***/ },
-/* 36 */,
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _thumbnail = __webpack_require__(38);
+	var _thumbnail = __webpack_require__(34);
 	
 	var _thumbnail2 = _interopRequireDefault(_thumbnail);
 	
-	var _thumbnail3 = __webpack_require__(39);
+	var _thumbnail3 = __webpack_require__(35);
 	
 	var _thumbnail4 = _interopRequireDefault(_thumbnail3);
 	
@@ -20795,20 +20757,71 @@
 	};
 
 /***/ },
-/* 38 */
+/* 34 */
 /***/ function(module, exports) {
 
 	module.exports = "<span ng-class=\"$ctrl.styles.thumbnail\">\n  <img ng-src=\"{{$ctrl.info.link}}\">\n</span>\n";
 
 /***/ },
-/* 39 */
+/* 35 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"thumbnail":"_3Em0oDAUzAWdRfSUcIoE1V"};
 
 /***/ },
-/* 40 */,
+/* 36 */,
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _appNav = __webpack_require__(38);
+	
+	var _appNav2 = _interopRequireDefault(_appNav);
+	
+	var _appNav3 = __webpack_require__(40);
+	
+	var _appNav4 = _interopRequireDefault(_appNav3);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _appNav4.default,
+	  controller: controller
+	};
+	
+	
+	controller.$inject = ['userService', '$state'];
+	
+	function controller(userService, $state) {
+	  this.styles = _appNav2.default;
+	  this.logout = function () {
+	    userService.logout();
+	    $state.go('welcome');
+	  };
+	  this.isAuthenticated = userService.isAuthenticated;
+	}
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"appNav":"_20NNA1WcEHt78El7mXAFvh"};
+
+/***/ },
+/* 39 */,
+/* 40 */
+/***/ function(module, exports) {
+
+	module.exports = "<nav ng-class=\"$ctrl.styles.appNav\">\n  <a ui-sref-active=\"active\" ui-sref=\"welcome\">Home</a>\n  <a ui-sref-active=\"active\" ui-sref=\"list-albums\">Albums</a>\n  <a ng-if=\"$ctrl.isAuthenticated()\" ng-click=\"$ctrl.logout()\">Logout</a>\n</nav>\n";
+
+/***/ },
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -20818,48 +20831,7 @@
 	  value: true
 	});
 	
-	var _appNav = __webpack_require__(42);
-	
-	var _appNav2 = _interopRequireDefault(_appNav);
-	
-	var _appNav3 = __webpack_require__(44);
-	
-	var _appNav4 = _interopRequireDefault(_appNav3);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-	  template: _appNav4.default,
-	  controller: function controller() {
-	    this.styles = _appNav2.default;
-	  }
-	};
-
-/***/ },
-/* 42 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"appNav":"_20NNA1WcEHt78El7mXAFvh"};
-
-/***/ },
-/* 43 */,
-/* 44 */
-/***/ function(module, exports) {
-
-	module.exports = "<nav ng-class=\"$ctrl.styles.appNav\">\n  <a ui-sref-active=\"active\" ui-sref=\"welcome\">Home</a>\n  <a ui-sref-active=\"active\" ui-sref=\"list-albums\">Albums</a>\n</nav>\n";
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _app = __webpack_require__(46);
+	var _app = __webpack_require__(42);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
@@ -20870,12 +20842,73 @@
 	};
 
 /***/ },
-/* 46 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = "<md-content>\n  <div layout=\"column\" layout-align=\"center center\" max-width=\"20%\">\n    <div>\n      <ui-view name=\"header\">\n      </ui-view>\n    </div>\n    <main>\n      <ui-view name=\"main\">\n        Loading...\n      </ui-view>\n      <!-- <album></album> -->\n      <!-- <list-albums></list-albums> -->\n      <!-- <welcome></welcome> -->\n    </main>\n  </div>\n</md-content>\n";
 
 /***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _signin = __webpack_require__(44);
+	
+	var _signin2 = _interopRequireDefault(_signin);
+	
+	__webpack_require__(45);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _signin2.default,
+	  bindings: {
+	    success: '&'
+	  },
+	  controller: controller
+	};
+	
+	
+	controller.$inject = ['userService'];
+	
+	function controller(userService) {
+	  var _this = this;
+	
+	  this.credentials = {
+	    username: '',
+	    password: ''
+	  };
+	
+	  this.authenticate = function () {
+	    return userService.signin(_this.credentials).then(function () {
+	      _this.success();
+	      return true;
+	    }).catch(function (error) {
+	      _this.error = error;
+	      return false;
+	    });
+	  };
+	}
+
+/***/ },
+/* 44 */
+/***/ function(module, exports) {
+
+	module.exports = "<h2>Sign in to view photos</h2>\n\t<form name=\"auth\" ng-submit=\"$ctrl.authenticate()\" layout=\"column\">\n\t\t<md-input-container class=\"md-accent\">\n\t\t\t<input placeholder=\"Username\" ng-model=\"$ctrl.credentials.username\">\n\t\t</md-input-container>\n\t\t<md-input-container class=\"md-accent\">\n\t\t\t <input placeholder=\"Password\" type=\"password\" ng-model=\"$ctrl.credentials.password\">\n\t\t</md-input-container>\n\t\t</md-dialog-content>\n\t\t<md-dialog-actions>\n\t\t\t<md-button type=\"submit\">Sign In</md-button>\n\t\t</md-dialog-actions>\n\t</form>\n<div class=\"error\" ng-if='$ctrl.error'>{{$ctrl.error.reason}}</div>\n";
+
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 46 */,
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -20885,11 +20918,94 @@
 	  value: true
 	});
 	
-	var _addAlbumForm = __webpack_require__(48);
+	var _signup = __webpack_require__(48);
+	
+	var _signup2 = _interopRequireDefault(_signup);
+	
+	__webpack_require__(49);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _signup2.default,
+	  bindings: {
+	    success: '&'
+	  },
+	  controller: controller
+	};
+	
+	
+	controller.$inject = ['userService'];
+	
+	function controller(userService) {
+	  var _this = this;
+	
+	  this.credentials = {
+	    username: '',
+	    password: ''
+	  };
+	
+	  this.authenticate = function () {
+	    return userService.signup(_this.credentials).then(function () {
+	      _this.success();
+	      return true;
+	    }).catch(function (error) {
+	      _this.error = error;
+	      return false;
+	    });
+	  };
+	}
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	module.exports = "<h2>Create new account</h2>\n\t<form name=\"auth\" ng-submit=\"$ctrl.authenticate()\" layout=\"column\">\n\t\t<md-input-container class=\"md-accent\">\n\t\t\t<input placeholder=\"Email\" ng-model=\"$ctrl.credentials.email\">\n\t\t</md-input-container>\n\t\t<md-input-container class=\"md-accent\">\n\t\t\t<input placeholder=\"Username\" ng-model=\"$ctrl.credentials.username\">\n\t\t</md-input-container>\n\t\t<md-input-container class=\"md-accent\">\n\t\t\t<input placeholder=\"Password\" type=\"password\" ng-model=\"$ctrl.credentials.password\">\n\t\t</md-input-container>\n\t\t</md-dialog-content>\n\t\t<md-dialog-actions>\n\t\t\t<md-button type=\"submit\">Sign Up</md-button>\n\t\t</md-dialog-actions>\n\t</form>\n<div class=\"error\" ng-if='$ctrl.error'>{{$ctrl.error.reason}}</div>\n";
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 50 */,
+/* 51 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  template: '\n\t<md-dialog-content>\n    <md-radio-group ng-model="$ctrl.action" layout="row">\n      <md-radio-button class="md-accent" ng-model="$ctrl.action" value="signin">\n          Signin\n      </md-radio-button>\n      <md-radio-button class="md-accent" ng-model="$ctrl.action" value="signup">\n          Signup\n      </md-radio-button>\n    </md-radio-group>\n\t<signin ng-if="$ctrl.action===\'signin\'" success="$ctrl.success()"></signin>\n\t<signup ng-if="$ctrl.action===\'signup\'" success="$ctrl.success()"></signup>\n  ',
+	  bindings: {
+	    success: '&'
+	  },
+	  controller: controller
+	};
+	
+	
+	function controller() {
+	  this.action = 'signin';
+	}
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _addAlbumForm = __webpack_require__(53);
 	
 	var _addAlbumForm2 = _interopRequireDefault(_addAlbumForm);
 	
-	var _addAlbumForm3 = __webpack_require__(49);
+	var _addAlbumForm3 = __webpack_require__(54);
 	
 	var _addAlbumForm4 = _interopRequireDefault(_addAlbumForm3);
 	
@@ -20929,21 +21045,21 @@
 	};
 
 /***/ },
-/* 48 */
+/* 53 */
 /***/ function(module, exports) {
 
-	module.exports = "<section ng-class=\"$ctrl.styles.addAlbum\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Please fill out all fields.</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container>\n      <input placeholder=\"Title\" ng-model=\"$ctrl.album.title\">\n    </md-input-container>\n    <md-button type=\"submit\">ADD</md-button>\n  </form>\n</section>\n";
+	module.exports = "<section ng-class=\"$ctrl.styles.addAlbum\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Please fill out all fields.</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Title\" ng-model=\"$ctrl.album.title\">\n    </md-input-container>\n    <md-button type=\"submit\">ADD</md-button>\n  </form>\n</section>\n";
 
 /***/ },
-/* 49 */
+/* 54 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"addAlbum":"l9fPrf9kpAtHYjvzvx25c"};
 
 /***/ },
-/* 50 */,
-/* 51 */
+/* 55 */,
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20952,11 +21068,11 @@
 	  value: true
 	});
 	
-	var _listAlbums = __webpack_require__(52);
+	var _listAlbums = __webpack_require__(57);
 	
 	var _listAlbums2 = _interopRequireDefault(_listAlbums);
 	
-	var _listAlbums3 = __webpack_require__(54);
+	var _listAlbums3 = __webpack_require__(59);
 	
 	var _listAlbums4 = _interopRequireDefault(_listAlbums3);
 	
@@ -21018,21 +21134,21 @@
 	}
 
 /***/ },
-/* 52 */
+/* 57 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"listAlbums":"_37FOYshd97XLxVXjHo_ZRG"};
 
 /***/ },
-/* 53 */,
-/* 54 */
+/* 58 */,
+/* 59 */
 /***/ function(module, exports) {
 
-	module.exports = "<div ng-class=$ctrl.styles.listAlbums>\n  <h1>Albums</h1>\n  <p>Click on the album name to see the pictures</p>\n<!-- List of albums -->\n  <section id=\"list\">\n      <div class=\"listItem\" ng-repeat=\"album in $ctrl.albums\">\n        <p>\n          <a ui-sref=\"view-album({albumId: album._id, display: 'list'})\">{{album.title}}</a>\n        </p>\n          <md-button ng-click=\"showWarning=!showWarning\">Delete</md-button>\n          <md-button ng-hide=\"showUpdate\" ng-click=\"showUpdate=!showUpdate\">Edit</md-button>\n          <md-button ng-show=\"showUpdate\" ng-click=\"showUpdate=false\">Cancel Edit</md-button>\n          <!-- Warning message when deleting an album -->\n          <div ng-show=\"showWarning\">\n            <p class=\"confirmMessage\">Are you sure?</p>\n              <md-button ng-click=\"$ctrl.remove(album._id)\">Confirm Delete</md-button>\n              <md-button ng-click=\"showWarning=false\">Keep Album</md-button>\n          </div>\n          <!-- Update album form -->\n          <div ng-show=\"showUpdate\">\n            <update-album-form update=\"$ctrl.update\" info=\"album\"></update-album-form>\n          </div>\n      </div>\n  </section>\n\n<!-- Add album form -->\n  <section>\n    <add-album-form add=$ctrl.add></add-album-form>\n  </section>\n</div>\n";
+	module.exports = "<div ng-class=$ctrl.styles.listAlbums>\n  <h1>Albums</h1>\n  <p>Click on the album name to see the pictures</p>\n<!-- List of albums -->\n  <section id=\"list\">\n      <div class=\"listItem\" ng-repeat=\"album in $ctrl.albums\">\n        <p>\n          <a ui-sref=\"view-album({albumId: album._id, display: 'list'})\">{{album.title}}</a>\n        </p>\n          <md-button ng-click=\"showWarning=!showWarning\">Delete</md-button>\n          <md-button ng-hide=\"showUpdate\" ng-click=\"showUpdate=!showUpdate\">Edit</md-button>\n          <md-button ng-show=\"showUpdate\" ng-click=\"showUpdate=false\">Cancel Edit</md-button>\n          <!-- Warning message when deleting an album -->\n          <div ng-show=\"showWarning\">\n            <p class=\"warningText\">Are you sure?</p>\n              <md-button class=\"md-warn\" ng-click=\"$ctrl.remove(album._id)\">Confirm Delete</md-button>\n              <md-button ng-click=\"showWarning=false\">Keep Album</md-button>\n          </div>\n          <!-- Update album form -->\n          <div ng-show=\"showUpdate\">\n            <update-album-form update=\"$ctrl.update\" info=\"album\"></update-album-form>\n          </div>\n      </div>\n  </section>\n\n<!-- Add album form -->\n  <section>\n    <add-album-form add=$ctrl.add></add-album-form>\n  </section>\n</div>\n";
 
 /***/ },
-/* 55 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21041,11 +21157,11 @@
 	  value: true
 	});
 	
-	var _updateAlbumForm = __webpack_require__(56);
+	var _updateAlbumForm = __webpack_require__(61);
 	
 	var _updateAlbumForm2 = _interopRequireDefault(_updateAlbumForm);
 	
-	var _updateAlbumForm3 = __webpack_require__(57);
+	var _updateAlbumForm3 = __webpack_require__(62);
 	
 	var _updateAlbumForm4 = _interopRequireDefault(_updateAlbumForm3);
 	
@@ -21085,21 +21201,21 @@
 	};
 
 /***/ },
-/* 56 */
+/* 61 */
 /***/ function(module, exports) {
 
-	module.exports = "<section ng-class=\"$ctrl.styles.updateAlbum\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Title is required and must be different</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container>\n      <input placeholder=\"Title\" ng-model=\"$ctrl.album.title\">\n    </md-input-container>\n    <md-button type=\"submit\">Send</md-button>\n  </form>\n</section>\n";
+	module.exports = "<section ng-class=\"$ctrl.styles.updateAlbum\">\n  <!-- Error Message -->\n  <div id=\"error\" ng-show=\"$ctrl.isInvalid\">\n    <p>Title is required and must be different</p>\n  </div>\n  <!-- Form -->\n  <form ng-submit=\"$ctrl.submit()\">\n    <md-input-container class=\"md-accent\">\n      <input placeholder=\"Title\" ng-model=\"$ctrl.album.title\">\n    </md-input-container>\n    <md-button type=\"submit\">Send</md-button>\n  </form>\n</section>\n";
 
 /***/ },
-/* 57 */
+/* 62 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"updateAlbum":"_3yAZViovEBzFWYBOo34SxC"};
 
 /***/ },
-/* 58 */,
-/* 59 */
+/* 63 */,
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21108,11 +21224,11 @@
 	  value: true
 	});
 	
-	var _welcome = __webpack_require__(60);
+	var _welcome = __webpack_require__(65);
 	
 	var _welcome2 = _interopRequireDefault(_welcome);
 	
-	var _welcome3 = __webpack_require__(61);
+	var _welcome3 = __webpack_require__(66);
 	
 	var _welcome4 = _interopRequireDefault(_welcome3);
 	
@@ -21126,21 +21242,21 @@
 	};
 
 /***/ },
-/* 60 */
+/* 65 */
 /***/ function(module, exports) {
 
-	module.exports = "<div ng-class=\"$ctrl.styles.welcome\">\n  <h1>Photo Album Application</h1>\n  <h2><a href=\"http://whatamidoingwithmy.life\" target=\"_blank\"/>By Danielle Heberling</a></h2>\n  <p>\n    This is an application where users can create, read, update, and delete both photo albums and individual photos within the album.\n  </p>\n  <div>\n    <p>\n      Full stack JavaScript application using MongoDB, Express, AngularJS, Node.js\n    </p>\n    <h3>\n      <a href=\"https://github.com/deeheber/image-gallery\">Source code</a>\n    </h3>\n  </div>\n  <p>\n    I hope you enjoy!\n  </p>\n</div>\n";
+	module.exports = "<div ng-class=\"$ctrl.styles.welcome\">\n  <h1>Photo Album Application</h1>\n  <h2><a href=\"http://whatamidoingwithmy.life\" target=\"_blank\"/>By Danielle Heberling</a></h2>\n  <p>\n    This is an application where users can create, read, update, and delete both photo albums and individual photos within the album.\n  </p>\n  <div>\n    <p>\n      Full stack JavaScript application using MongoDB, Express, AngularJS, Node.js\n    </p>\n    <h3>\n      <a href=\"https://github.com/deeheber/image-gallery/tree/lab7\" target=\"_blank\">Source code</a>\n    </h3>\n  </div>\n  <p>\n    I hope you enjoy!\n  </p>\n</div>\n";
 
 /***/ },
-/* 61 */
+/* 66 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"welcome":"_23XnJNGIuxwbbctNa1oBpu"};
 
 /***/ },
-/* 62 */,
-/* 63 */
+/* 67 */,
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21164,7 +21280,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// this is a webpack specific require construct
-	var reqContext = __webpack_require__(64);
+	var reqContext = __webpack_require__(69);
 	
 	var services = _angular2.default.module('services', []);
 	
@@ -21176,12 +21292,14 @@
 	exports.default = services.name;
 
 /***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./album-service.js": 65,
-		"./image-service.js": 66
+		"./album-service.js": 70,
+		"./image-service.js": 71,
+		"./token-service.js": 72,
+		"./user-service.js": 73
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -21194,11 +21312,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 64;
+	webpackContext.id = 69;
 
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21253,7 +21371,7 @@
 	}
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21313,7 +21431,80 @@
 	}
 
 /***/ },
-/* 67 */
+/* 72 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = tokenService;
+	tokenService.$inject = ['$window'];
+	
+	var TOKEN_NAME = 'token';
+	
+	function tokenService($window) {
+	
+	  return {
+	    get: function get() {
+	      return $window.localStorage.getItem(TOKEN_NAME);
+	    },
+	    set: function set(token) {
+	      $window.localStorage.setItem(TOKEN_NAME, token);
+	    },
+	    remove: function remove() {
+	      $window.localStorage.removeItem(TOKEN_NAME);
+	    }
+	  };
+	}
+
+/***/ },
+/* 73 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = userService;
+	userService.$inject = ['tokenService', '$http', 'apiUrl'];
+	
+	function userService(token, $http, apiUrl) {
+	
+	  var current = token.get();
+	  if (current) {
+	    $http.get(apiUrl + '/verify').catch(function () {
+	      return token.remove();
+	    });
+	  }
+	
+	  function credential(endpoint) {
+	    return function (credentials) {
+	      return $http.post(apiUrl + '/' + endpoint, credentials).then(function (result) {
+	        token.set(result.data.token);
+	      }).catch(function (err) {
+	        throw err.data;
+	      });
+	    };
+	  }
+	
+	  return {
+	    isAuthenticated: function isAuthenticated() {
+	      return !!token.get();
+	    },
+	    logout: function logout() {
+	      token.remove();
+	    },
+	
+	    signin: credential('signin'),
+	    signup: credential('signup')
+	  };
+	}
+
+/***/ },
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21322,26 +21513,26 @@
 	__webpack_require__(1);
 	
 	// Load Angular and dependent libs
-	__webpack_require__(68);
-	__webpack_require__(70);
+	__webpack_require__(75);
+	__webpack_require__(77);
 	
 	// Now load Angular Material
-	__webpack_require__(72);
+	__webpack_require__(79);
 	
 	// Export namespace
 	module.exports = 'ngMaterial';
 
 /***/ },
-/* 68 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	__webpack_require__(69);
+	__webpack_require__(76);
 	module.exports = 'ngAnimate';
 
 /***/ },
-/* 69 */
+/* 76 */
 /***/ function(module, exports) {
 
 	'use strict';/**
@@ -22791,16 +22982,16 @@
 	noop=angular.noop;copy=angular.copy;extend=angular.extend;jqLite=angular.element;forEach=angular.forEach;isArray=angular.isArray;isString=angular.isString;isObject=angular.isObject;isUndefined=angular.isUndefined;isDefined=angular.isDefined;isFunction=angular.isFunction;isElement=angular.isElement;}).directive('ngAnimateSwap',ngAnimateSwapDirective).directive('ngAnimateChildren',$$AnimateChildrenDirective).factory('$$rAFScheduler',$$rAFSchedulerFactory).provider('$$animateQueue',$$AnimateQueueProvider).provider('$$animation',$$AnimationProvider).provider('$animateCss',$AnimateCssProvider).provider('$$animateCssDriver',$$AnimateCssDriverProvider).provider('$$animateJs',$$AnimateJsProvider).provider('$$animateJsDriver',$$AnimateJsDriverProvider);})(window,window.angular);
 
 /***/ },
-/* 70 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	__webpack_require__(71);
+	__webpack_require__(78);
 	module.exports = 'ngAria';
 
 /***/ },
-/* 71 */
+/* 78 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23194,7 +23385,7 @@
 	})(window, window.angular);
 
 /***/ },
-/* 72 */
+/* 79 */
 /***/ function(module, exports) {
 
 	"use strict";var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};/*!
@@ -33442,7 +33633,1057 @@
 	scope.$on('$destroy',function(){if(observer){observer.disconnect();}});}};}MdTabsDummyWrapper.$inject=["$mdUtil"];})();(function(){"use strict";angular.module('material.components.tabs').directive('mdTabsTemplate',MdTabsTemplate);function MdTabsTemplate($compile,$mdUtil){return{restrict:'A',link:link,scope:{template:'=mdTabsTemplate',connected:'=?mdConnectedIf',compileScope:'=mdScope'},require:'^?mdTabs'};function link(scope,element,attr,ctrl){if(!ctrl)return;var compileScope=ctrl.enableDisconnect?scope.compileScope.$new():scope.compileScope;element.html(scope.template);$compile(element.contents())(compileScope);return $mdUtil.nextTick(handleScope);function handleScope(){scope.$watch('connected',function(value){value===false?disconnect():reconnect();});scope.$on('$destroy',reconnect);}function disconnect(){if(ctrl.enableDisconnect)$mdUtil.disconnectScope(compileScope);}function reconnect(){if(ctrl.enableDisconnect)$mdUtil.reconnectScope(compileScope);}}}MdTabsTemplate.$inject=["$compile","$mdUtil"];})();(function(){angular.module("material.core").constant("$MD_THEME_CSS","md-autocomplete.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  md-autocomplete.md-THEME_NAME-theme[disabled]:not([md-floating-label]) {    background: '{{background-100}}'; }  md-autocomplete.md-THEME_NAME-theme button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete.md-THEME_NAME-theme button:after {    background: '{{background-600-0.3}}'; }.md-autocomplete-suggestions-container.md-THEME_NAME-theme {  background: '{{background-A100}}'; }  .md-autocomplete-suggestions-container.md-THEME_NAME-theme li {    color: '{{background-900}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li .highlight {      color: '{{background-600}}'; }    .md-autocomplete-suggestions-container.md-THEME_NAME-theme li:hover, .md-autocomplete-suggestions-container.md-THEME_NAME-theme li.selected {      background: '{{background-200}}'; }md-backdrop {  background-color: '{{background-900-0.0}}'; }  md-backdrop.md-opaque.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-list-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }.md-button.md-THEME_NAME-theme:not([disabled]):hover {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-focused {  background-color: '{{background-500-0.2}}'; }.md-button.md-THEME_NAME-theme:not([disabled]).md-icon-button:hover {  background-color: transparent; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }  .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {    color: '{{primary-contrast}}';    background-color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]) md-icon {      color: '{{primary-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover {      background-color: '{{primary-600}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]).md-focused {      background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-primary:not([disabled]) md-icon {    color: '{{primary-color}}'; }.md-button.md-THEME_NAME-theme.md-fab {  background-color: '{{accent-color}}';  color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]) .md-icon {    color: '{{accent-contrast}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover {    background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-fab:not([disabled]).md-focused {    background-color: '{{accent-A700}}'; }.md-button.md-THEME_NAME-theme.md-raised {  color: '{{background-900}}';  background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]) md-icon {    color: '{{background-900}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover {    background-color: '{{background-50}}'; }  .md-button.md-THEME_NAME-theme.md-raised:not([disabled]).md-focused {    background-color: '{{background-200}}'; }.md-button.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }  .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {    color: '{{warn-contrast}}';    background-color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]) md-icon {      color: '{{warn-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover {      background-color: '{{warn-600}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]).md-focused {      background-color: '{{warn-600}}'; }  .md-button.md-THEME_NAME-theme.md-warn:not([disabled]) md-icon {    color: '{{warn-color}}'; }.md-button.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }  .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {    color: '{{accent-contrast}}';    background-color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]) md-icon, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]) md-icon {      color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover {      background-color: '{{accent-A700}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]).md-focused, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]).md-focused {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-accent:not([disabled]) md-icon {    color: '{{accent-color}}'; }.md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled], .md-button.md-THEME_NAME-theme.md-accent[disabled], .md-button.md-THEME_NAME-theme.md-warn[disabled] {  color: '{{foreground-3}}';  cursor: default; }  .md-button.md-THEME_NAME-theme[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-raised[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-fab[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-accent[disabled] md-icon, .md-button.md-THEME_NAME-theme.md-warn[disabled] md-icon {    color: '{{foreground-3}}'; }.md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {  background-color: '{{foreground-4}}'; }.md-button.md-THEME_NAME-theme[disabled] {  background-color: transparent; }._md a.md-THEME_NAME-theme:not(.md-button).md-primary {  color: '{{primary-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-primary:hover {    color: '{{primary-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-accent {  color: '{{accent-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-accent:hover {    color: '{{accent-A700}}'; }._md a.md-THEME_NAME-theme:not(.md-button).md-warn {  color: '{{warn-color}}'; }  ._md a.md-THEME_NAME-theme:not(.md-button).md-warn:hover {    color: '{{warn-700}}'; }md-card.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-hue-1}}';  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }  md-card.md-THEME_NAME-theme md-card-header md-card-avatar md-icon {    color: '{{background-color}}';    background-color: '{{foreground-3}}'; }  md-card.md-THEME_NAME-theme md-card-header md-card-header-text .md-subhead {    color: '{{foreground-2}}'; }  md-card.md-THEME_NAME-theme md-card-title md-card-title-text:not(:only-child) .md-subhead {    color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-A700}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not(.md-checked) .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{accent-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary:not(.md-checked) .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-indeterminate[disabled] .md-container {  color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ink-ripple {  color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn:not(.md-checked) .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled]:not(.md-checked) .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon:after {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-label {  color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme .md-chips {  box-shadow: 0 1px '{{foreground-4}}'; }  md-chips.md-THEME_NAME-theme .md-chips.md-focused {    box-shadow: 0 2px '{{primary-color}}'; }  md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input {    color: '{{foreground-1}}'; }    md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input:-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-moz-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input:-ms-input-placeholder {      color: '{{foreground-3}}'; }    md-chips.md-THEME_NAME-theme .md-chips .md-chip-input-container input::-webkit-input-placeholder {      color: '{{foreground-3}}'; }md-chips.md-THEME_NAME-theme md-chip {  background: '{{background-300}}';  color: '{{background-800}}'; }  md-chips.md-THEME_NAME-theme md-chip md-icon {    color: '{{background-700}}'; }  md-chips.md-THEME_NAME-theme md-chip.md-focused {    background: '{{primary-color}}';    color: '{{primary-contrast}}'; }    md-chips.md-THEME_NAME-theme md-chip.md-focused md-icon {      color: '{{primary-contrast}}'; }  md-chips.md-THEME_NAME-theme md-chip._md-chip-editing {    background: transparent;    color: '{{background-800}}'; }md-chips.md-THEME_NAME-theme md-chip-remove .md-button md-icon path {  fill: '{{background-500}}'; }.md-contact-suggestion span.md-contact-email {  color: '{{background-400}}'; }md-content.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-default}}'; }/** Theme styles for mdCalendar. */.md-calendar.md-THEME_NAME-theme {  background: '{{background-A100}}';  color: '{{background-A200-0.87}}'; }  .md-calendar.md-THEME_NAME-theme tr:last-child td {    border-bottom-color: '{{background-200}}'; }.md-THEME_NAME-theme .md-calendar-day-header {  background: '{{background-300}}';  color: '{{background-A200-0.87}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {  border: 1px solid '{{primary-500}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled {  color: '{{primary-500-0.6}}'; }.md-calendar-date.md-focus .md-THEME_NAME-theme .md-calendar-date-selection-indicator, .md-THEME_NAME-theme .md-calendar-date-selection-indicator:hover {  background: '{{background-300}}'; }.md-THEME_NAME-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator,.md-THEME_NAME-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {  background: '{{primary-500}}';  color: '{{primary-500-contrast}}';  border-color: transparent; }.md-THEME_NAME-theme .md-calendar-date-disabled,.md-THEME_NAME-theme .md-calendar-month-label-disabled {  color: '{{background-A200-0.435}}'; }/** Theme styles for mdDatepicker. */.md-THEME_NAME-theme .md-datepicker-input {  color: '{{foreground-1}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-moz-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  .md-THEME_NAME-theme .md-datepicker-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-input-container {  border-bottom-color: '{{foreground-4}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {    border-bottom-color: '{{primary-color}}'; }    .md-accent .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {      border-bottom-color: '{{accent-color}}'; }    .md-warn .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-focused {      border-bottom-color: '{{warn-A700}}'; }  .md-THEME_NAME-theme .md-datepicker-input-container.md-datepicker-invalid {    border-bottom-color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-calendar-pane {  border-color: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button .md-datepicker-expand-triangle {  border-top-color: '{{foreground-3}}'; }.md-THEME_NAME-theme .md-datepicker-triangle-button:hover .md-datepicker-expand-triangle {  border-top-color: '{{foreground-2}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  color: '{{primary-color}}'; }.md-THEME_NAME-theme .md-datepicker-open.md-accent .md-datepicker-calendar-icon, .md-accent .md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  color: '{{accent-color}}'; }.md-THEME_NAME-theme .md-datepicker-open.md-warn .md-datepicker-calendar-icon, .md-warn .md-THEME_NAME-theme .md-datepicker-open .md-datepicker-calendar-icon {  color: '{{warn-A700}}'; }.md-THEME_NAME-theme .md-datepicker-open .md-datepicker-input-container,.md-THEME_NAME-theme .md-datepicker-input-mask-opaque {  background: '{{background-hue-1}}'; }.md-THEME_NAME-theme .md-datepicker-calendar {  background: '{{background-A100}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-1}}';  color: '{{foreground-1}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions, md-dialog.md-THEME_NAME-theme.md-content-overflow md-dialog-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }.layout-row > md-divider.md-THEME_NAME-theme,.layout-xs-row > md-divider.md-THEME_NAME-theme, .layout-gt-xs-row > md-divider.md-THEME_NAME-theme,.layout-sm-row > md-divider.md-THEME_NAME-theme, .layout-gt-sm-row > md-divider.md-THEME_NAME-theme,.layout-md-row > md-divider.md-THEME_NAME-theme, .layout-gt-md-row > md-divider.md-THEME_NAME-theme,.layout-lg-row > md-divider.md-THEME_NAME-theme, .layout-gt-lg-row > md-divider.md-THEME_NAME-theme,.layout-xl-row > md-divider.md-THEME_NAME-theme {  border-right-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme {  color: '{{foreground-2}}'; }  md-icon.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  md-icon.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  md-icon.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label,md-input-container.md-THEME_NAME-theme .md-placeholder {  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme label.md-required:after {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme .md-input-messages-animation, md-input-container.md-THEME_NAME-theme .md-input-message-animation {  color: '{{warn-A700}}'; }  md-input-container.md-THEME_NAME-theme .md-input-messages-animation .md-char-counter, md-input-container.md-THEME_NAME-theme .md-input-message-animation .md-char-counter {    color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input, md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-resized .md-input {  border-color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent md-icon {  color: '{{accent-color}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label,md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn md-icon {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label,md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input-message-animation,md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-A700}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled],[disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h3, md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text h4,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h3,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text h4 {  color: '{{foreground-1}}'; }md-list.md-THEME_NAME-theme md-list-item.md-2-line .md-list-item-text p,md-list.md-THEME_NAME-theme md-list-item.md-3-line .md-list-item-text p {  color: '{{foreground-2}}'; }md-list.md-THEME_NAME-theme .md-proxy-focus.md-focused div.md-no-style {  background-color: '{{background-100}}'; }md-list.md-THEME_NAME-theme md-list-item .md-avatar-icon {  background-color: '{{foreground-3}}';  color: '{{background-color}}'; }md-list.md-THEME_NAME-theme md-list-item > md-icon {  color: '{{foreground-2}}'; }  md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight {    color: '{{primary-color}}'; }    md-list.md-THEME_NAME-theme md-list-item > md-icon.md-highlight.md-accent {      color: '{{accent-color}}'; }md-menu-content.md-THEME_NAME-theme {  background-color: '{{background-A100}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-item {    color: '{{background-A200-0.87}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item md-icon {      color: '{{background-A200-0.54}}'; }    md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] {      color: '{{background-A200-0.25}}'; }      md-menu-content.md-THEME_NAME-theme md-menu-item .md-button[disabled] md-icon {        color: '{{background-A200-0.25}}'; }  md-menu-content.md-THEME_NAME-theme md-menu-divider {    background-color: '{{background-A200-0.11}}'; }md-menu-bar.md-THEME_NAME-theme > button.md-button {  color: '{{foreground-2}}';  border-radius: 2px; }md-menu-bar.md-THEME_NAME-theme md-menu.md-open > button, md-menu-bar.md-THEME_NAME-theme md-menu > button:focus {  outline: none;  background: '{{background-200}}'; }md-menu-bar.md-THEME_NAME-theme.md-open:not(.md-keyboard-mode) md-menu:hover > button {  background-color: '{{ background-500-0.2}}'; }md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:hover,md-menu-bar.md-THEME_NAME-theme:not(.md-keyboard-mode):not(.md-open) md-menu button:focus {  background: transparent; }md-menu-content.md-THEME_NAME-theme .md-menu > .md-button:after {  color: '{{background-A200-0.54}}'; }md-menu-content.md-THEME_NAME-theme .md-menu.md-open > .md-button {  background-color: '{{ background-500-0.2}}'; }md-toolbar.md-THEME_NAME-theme.md-menu-toolbar {  background-color: '{{background-A100}}';  color: '{{background-A200}}'; }  md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler {    background-color: '{{primary-color}}';    color: '{{background-A100-0.87}}'; }    md-toolbar.md-THEME_NAME-theme.md-menu-toolbar md-toolbar-filler md-icon {      color: '{{background-A100-0.87}}'; }md-nav-bar.md-THEME_NAME-theme .md-nav-bar {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-nav-bar.md-THEME_NAME-theme .md-button._md-nav-button.md-unselected {  color: '{{foreground-2}}'; }md-nav-bar.md-THEME_NAME-theme md-nav-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }.md-panel {  background-color: '{{background-900-0.0}}'; }  .md-panel._md-panel-backdrop.md-THEME_NAME-theme {    background-color: '{{background-900-1.0}}'; }md-progress-circular.md-THEME_NAME-theme path {  stroke: '{{primary-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-warn path {  stroke: '{{warn-color}}'; }md-progress-circular.md-THEME_NAME-theme.md-accent path {  stroke: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient(\"{{warn-100}}\" 0%, \"{{warn-100}}\" 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient(\"{{accent-100}}\" 0%, \"{{accent-100}}\" 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-A700}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-primary .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-on,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-off,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn.md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-checked .md-ink-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-group.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple, md-radio-group.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]) .md-warn .md-container .md-ripple,md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-group.md-THEME_NAME-theme[disabled],md-radio-button.md-THEME_NAME-theme[disabled] {  color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-off,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {    border-color: '{{foreground-3}}'; }  md-radio-group.md-THEME_NAME-theme[disabled] .md-container .md-on,  md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {    border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme .md-checked .md-ink-ripple {  color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-primary .md-checked:not([disabled]) .md-ink-ripple, md-radio-group.md-THEME_NAME-theme .md-checked:not([disabled]).md-primary .md-ink-ripple {  color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme .md-checked.md-primary .md-ink-ripple {  color: '{{warn-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked .md-container:before {  background-color: '{{accent-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-primary .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-primary .md-container:before {  background-color: '{{primary-color-0.26}}'; }md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty).md-warn .md-checked .md-container:before,md-radio-group.md-THEME_NAME-theme.md-focused:not(:empty) .md-checked.md-warn .md-container:before {  background-color: '{{warn-color-0.26}}'; }md-input-container md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {  color: '{{warn-A700}}'; }md-input-container:not(.md-input-focused):not(.md-input-invalid) md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {  color: '{{foreground-3}}'; }md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme .md-select-value {  color: '{{primary-color}}'; }  md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder {    color: '{{primary-color}}'; }md-input-container.md-input-invalid md-select.md-THEME_NAME-theme .md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-input-container.md-input-invalid md-select.md-THEME_NAME-theme.md-no-underline .md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  border-bottom-color: transparent;  background-image: linear-gradient(to right, \"{{foreground-3}}\" 0%, \"{{foreground-3}}\" 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, \"{{foreground-3}}\" 100%); }md-select.md-THEME_NAME-theme .md-select-value {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme .md-select-value span:first-child:after {    color: '{{warn-A700}}'; }md-select.md-THEME_NAME-theme.md-no-underline .md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme.ng-invalid.ng-touched .md-select-value {  color: '{{warn-A700}}' !important;  border-bottom-color: '{{warn-A700}}' !important; }md-select.md-THEME_NAME-theme.ng-invalid.ng-touched.md-no-underline .md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-value.md-select-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-no-underline .md-select-value {  border-bottom-color: transparent !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-value {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-value {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-value {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-value.md-select-placeholder {    color: '{{foreground-3}}'; }md-select-menu.md-THEME_NAME-theme md-content {  background: '{{background-A100}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-optgroup {    color: '{{background-600-0.87}}'; }  md-select-menu.md-THEME_NAME-theme md-content md-option {    color: '{{background-900-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[disabled] .md-text {      color: '{{background-400-0.87}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):focus, md-select-menu.md-THEME_NAME-theme md-content md-option:not([disabled]):hover {      background: '{{background-200}}'; }    md-select-menu.md-THEME_NAME-theme md-content md-option[selected] {      color: '{{primary-500}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected]:focus {        color: '{{primary-600}}'; }      md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent {        color: '{{accent-color}}'; }        md-select-menu.md-THEME_NAME-theme md-content md-option[selected].md-accent:focus {          color: '{{accent-A700}}'; }.md-checkbox-enabled.md-THEME_NAME-theme .md-ripple {  color: '{{primary-600}}'; }.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ripple {  color: '{{background-600}}'; }.md-checkbox-enabled.md-THEME_NAME-theme .md-ink-ripple {  color: '{{foreground-2}}'; }.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-ink-ripple {  color: '{{primary-color-0.87}}'; }.md-checkbox-enabled.md-THEME_NAME-theme:not(.md-checked) .md-icon {  border-color: '{{foreground-2}}'; }.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-icon {  background-color: '{{primary-color-0.87}}'; }.md-checkbox-enabled.md-THEME_NAME-theme[selected].md-focused .md-container:before {  background-color: '{{primary-color-0.26}}'; }.md-checkbox-enabled.md-THEME_NAME-theme[selected] .md-icon:after {  border-color: '{{primary-contrast-0.87}}'; }.md-checkbox-enabled.md-THEME_NAME-theme .md-indeterminate[disabled] .md-container {  color: '{{foreground-3}}'; }.md-checkbox-enabled.md-THEME_NAME-theme md-option .md-text {  color: '{{background-900-0.87}}'; }md-sidenav.md-THEME_NAME-theme, md-sidenav.md-THEME_NAME-theme md-content {  background-color: '{{background-hue-1}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  color: '{{background-contrast}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  background-color: '{{accent-A200-0.2}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-color}}';  background-color: '{{background-color}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-color}}';  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme.md-min .md-focus-ring {  background-color: '{{foreground-3-0.38}}'; }md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-thumb:after {  background-color: '{{background-contrast}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme.md-min[md-discrete] .md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme.md-min[md-discrete][md-vertical] .md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme[md-vertical] .md-sign:after {  border-top-color: transparent;  border-left-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-focus-ring {  background-color: '{{warn-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn[md-vertical] .md-sign:after {  border-top-color: transparent;  border-left-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-focus-ring {  background-color: '{{primary-200-0.38}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary[md-vertical] .md-sign:after {  border-top-color: transparent;  border-left-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after, md-slider.md-THEME_NAME-theme[disabled][md-discrete] .md-thumb:after {  background-color: '{{foreground-3}}';  border-color: transparent; }md-slider.md-THEME_NAME-theme[disabled][readonly] .md-sign {  background-color: '{{background-400}}'; }  md-slider.md-THEME_NAME-theme[disabled][readonly] .md-sign:after {    border-top-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly][md-vertical] .md-sign:after {  border-top-color: transparent;  border-left-color: '{{background-400}}'; }md-slider.md-THEME_NAME-theme[disabled][readonly] .md-disabled-thumb {  border-color: transparent;  background-color: transparent; }md-slider-container[disabled] > *:first-child:not(md-slider),md-slider-container[disabled] > *:last-child:not(md-slider) {  color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-default}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-ink-ripple {  color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-focused .md-thumb:before {  background-color: '{{accent-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-ink-ripple {  color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary.md-focused .md-thumb:before {  background-color: '{{primary-color-0.26}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-ink-ripple {  color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn.md-focused .md-thumb:before {  background-color: '{{warn-color-0.26}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled], md-tabs.md-THEME_NAME-theme .md-tab[disabled] md-icon {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-active md-icon, md-tabs.md-THEME_NAME-theme .md-tab.md-focused, md-tabs.md-THEME_NAME-theme .md-tab.md-focused md-icon {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focused {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-A100}}'; }md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-accent > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-primary > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-tabs.md-THEME_NAME-theme.md-warn > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{primary-color}}'; }  md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{primary-100}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{primary-contrast}}'; }    md-toolbar > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{primary-contrast-0.1}}'; }md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{accent-color}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{accent-A100}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{accent-contrast}}'; }    md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{accent-contrast-0.1}}'; }  md-toolbar.md-accent > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {    color: '{{primary-600-1}}';    background: '{{primary-600-1}}'; }md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper {  background-color: '{{warn-color}}'; }  md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {    color: '{{warn-100}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-active md-icon, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused, md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused md-icon {      color: '{{warn-contrast}}'; }    md-toolbar.md-warn > md-tabs.md-THEME_NAME-theme > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]).md-focused {      background: '{{warn-contrast-0.1}}'; }md-toast.md-THEME_NAME-theme .md-toast-content {  background-color: #323232;  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-toast-content .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight {      color: '{{accent-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-primary {        color: '{{primary-color}}'; }      md-toast.md-THEME_NAME-theme .md-toast-content .md-button.md-highlight.md-warn {        color: '{{warn-color}}'; }md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) md-icon {    color: '{{primary-contrast}}';    fill: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar) .md-button[disabled] md-icon {    color: '{{primary-contrast-0.26}}';    fill: '{{primary-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-ink-ripple {      color: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent md-icon {      color: '{{accent-contrast}}';      fill: '{{accent-contrast}}'; }    md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-accent .md-button[disabled] md-icon {      color: '{{accent-contrast-0.26}}';      fill: '{{accent-contrast-0.26}}'; }  md-toolbar.md-THEME_NAME-theme:not(.md-menu-toolbar).md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-content {    background-color: '{{foreground-2}}'; }/*  Only used with Theme processes */html.md-THEME_NAME-theme, body.md-THEME_NAME-theme {  color: '{{foreground-1}}';  background-color: '{{background-color}}'; }");})();})(window,window.angular);;window.ngMaterial={version:{full:"1.1.0"}};
 
 /***/ },
-/* 73 */
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	__webpack_require__(81);
+	module.exports = 'ngMessages';
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * @license AngularJS v1.5.8
+	 * (c) 2010-2016 Google, Inc. http://angularjs.org
+	 * License: MIT
+	 */
+	(function (window, angular) {
+	  'use strict';
+	
+	  var forEach;
+	  var isArray;
+	  var isString;
+	  var jqLite;
+	
+	  /**
+	   * @ngdoc module
+	   * @name ngMessages
+	   * @description
+	   *
+	   * The `ngMessages` module provides enhanced support for displaying messages within templates
+	   * (typically within forms or when rendering message objects that return key/value data).
+	   * Instead of relying on JavaScript code and/or complex ng-if statements within your form template to
+	   * show and hide error messages specific to the state of an input field, the `ngMessages` and
+	   * `ngMessage` directives are designed to handle the complexity, inheritance and priority
+	   * sequencing based on the order of how the messages are defined in the template.
+	   *
+	   * Currently, the ngMessages module only contains the code for the `ngMessages`, `ngMessagesInclude`
+	   * `ngMessage` and `ngMessageExp` directives.
+	   *
+	   * # Usage
+	   * The `ngMessages` directive allows keys in a key/value collection to be associated with a child element
+	   * (or 'message') that will show or hide based on the truthiness of that key's value in the collection. A common use
+	   * case for `ngMessages` is to display error messages for inputs using the `$error` object exposed by the
+	   * {@link ngModel ngModel} directive.
+	   *
+	   * The child elements of the `ngMessages` directive are matched to the collection keys by a `ngMessage` or
+	   * `ngMessageExp` directive. The value of these attributes must match a key in the collection that is provided by
+	   * the `ngMessages` directive.
+	   *
+	   * Consider the following example, which illustrates a typical use case of `ngMessages`. Within the form `myForm` we
+	   * have a text input named `myField` which is bound to the scope variable `field` using the {@link ngModel ngModel}
+	   * directive.
+	   *
+	   * The `myField` field is a required input of type `email` with a maximum length of 15 characters.
+	   *
+	   * ```html
+	   * <form name="myForm">
+	   *   <label>
+	   *     Enter text:
+	   *     <input type="email" ng-model="field" name="myField" required maxlength="15" />
+	   *   </label>
+	   *   <div ng-messages="myForm.myField.$error" role="alert">
+	   *     <div ng-message="required">Please enter a value for this field.</div>
+	   *     <div ng-message="email">This field must be a valid email address.</div>
+	   *     <div ng-message="maxlength">This field can be at most 15 characters long.</div>
+	   *   </div>
+	   * </form>
+	   * ```
+	   *
+	   * In order to show error messages corresponding to `myField` we first create an element with an `ngMessages` attribute
+	   * set to the `$error` object owned by the `myField` input in our `myForm` form.
+	   *
+	   * Within this element we then create separate elements for each of the possible errors that `myField` could have.
+	   * The `ngMessage` attribute is used to declare which element(s) will appear for which error - for example,
+	   * setting `ng-message="required"` specifies that this particular element should be displayed when there
+	   * is no value present for the required field `myField` (because the key `required` will be `true` in the object
+	   * `myForm.myField.$error`).
+	   *
+	   * ### Message order
+	   *
+	   * By default, `ngMessages` will only display one message for a particular key/value collection at any time. If more
+	   * than one message (or error) key is currently true, then which message is shown is determined by the order of messages
+	   * in the HTML template code (messages declared first are prioritised). This mechanism means the developer does not have
+	   * to prioritise messages using custom JavaScript code.
+	   *
+	   * Given the following error object for our example (which informs us that the field `myField` currently has both the
+	   * `required` and `email` errors):
+	   *
+	   * ```javascript
+	   * <!-- keep in mind that ngModel automatically sets these error flags -->
+	   * myField.$error = { required : true, email: true, maxlength: false };
+	   * ```
+	   * The `required` message will be displayed to the user since it appears before the `email` message in the DOM.
+	   * Once the user types a single character, the `required` message will disappear (since the field now has a value)
+	   * but the `email` message will be visible because it is still applicable.
+	   *
+	   * ### Displaying multiple messages at the same time
+	   *
+	   * While `ngMessages` will by default only display one error element at a time, the `ng-messages-multiple` attribute can
+	   * be applied to the `ngMessages` container element to cause it to display all applicable error messages at once:
+	   *
+	   * ```html
+	   * <!-- attribute-style usage -->
+	   * <div ng-messages="myForm.myField.$error" ng-messages-multiple>...</div>
+	   *
+	   * <!-- element-style usage -->
+	   * <ng-messages for="myForm.myField.$error" multiple>...</ng-messages>
+	   * ```
+	   *
+	   * ## Reusing and Overriding Messages
+	   * In addition to prioritization, ngMessages also allows for including messages from a remote or an inline
+	   * template. This allows for generic collection of messages to be reused across multiple parts of an
+	   * application.
+	   *
+	   * ```html
+	   * <script type="text/ng-template" id="error-messages">
+	   *   <div ng-message="required">This field is required</div>
+	   *   <div ng-message="minlength">This field is too short</div>
+	   * </script>
+	   *
+	   * <div ng-messages="myForm.myField.$error" role="alert">
+	   *   <div ng-messages-include="error-messages"></div>
+	   * </div>
+	   * ```
+	   *
+	   * However, including generic messages may not be useful enough to match all input fields, therefore,
+	   * `ngMessages` provides the ability to override messages defined in the remote template by redefining
+	   * them within the directive container.
+	   *
+	   * ```html
+	   * <!-- a generic template of error messages known as "my-custom-messages" -->
+	   * <script type="text/ng-template" id="my-custom-messages">
+	   *   <div ng-message="required">This field is required</div>
+	   *   <div ng-message="minlength">This field is too short</div>
+	   * </script>
+	   *
+	   * <form name="myForm">
+	   *   <label>
+	   *     Email address
+	   *     <input type="email"
+	   *            id="email"
+	   *            name="myEmail"
+	   *            ng-model="email"
+	   *            minlength="5"
+	   *            required />
+	   *   </label>
+	   *   <!-- any ng-message elements that appear BEFORE the ng-messages-include will
+	   *        override the messages present in the ng-messages-include template -->
+	   *   <div ng-messages="myForm.myEmail.$error" role="alert">
+	   *     <!-- this required message has overridden the template message -->
+	   *     <div ng-message="required">You did not enter your email address</div>
+	   *
+	   *     <!-- this is a brand new message and will appear last in the prioritization -->
+	   *     <div ng-message="email">Your email address is invalid</div>
+	   *
+	   *     <!-- and here are the generic error messages -->
+	   *     <div ng-messages-include="my-custom-messages"></div>
+	   *   </div>
+	   * </form>
+	   * ```
+	   *
+	   * In the example HTML code above the message that is set on required will override the corresponding
+	   * required message defined within the remote template. Therefore, with particular input fields (such
+	   * email addresses, date fields, autocomplete inputs, etc...), specialized error messages can be applied
+	   * while more generic messages can be used to handle other, more general input errors.
+	   *
+	   * ## Dynamic Messaging
+	   * ngMessages also supports using expressions to dynamically change key values. Using arrays and
+	   * repeaters to list messages is also supported. This means that the code below will be able to
+	   * fully adapt itself and display the appropriate message when any of the expression data changes:
+	   *
+	   * ```html
+	   * <form name="myForm">
+	   *   <label>
+	   *     Email address
+	   *     <input type="email"
+	   *            name="myEmail"
+	   *            ng-model="email"
+	   *            minlength="5"
+	   *            required />
+	   *   </label>
+	   *   <div ng-messages="myForm.myEmail.$error" role="alert">
+	   *     <div ng-message="required">You did not enter your email address</div>
+	   *     <div ng-repeat="errorMessage in errorMessages">
+	   *       <!-- use ng-message-exp for a message whose key is given by an expression -->
+	   *       <div ng-message-exp="errorMessage.type">{{ errorMessage.text }}</div>
+	   *     </div>
+	   *   </div>
+	   * </form>
+	   * ```
+	   *
+	   * The `errorMessage.type` expression can be a string value or it can be an array so
+	   * that multiple errors can be associated with a single error message:
+	   *
+	   * ```html
+	   *   <label>
+	   *     Email address
+	   *     <input type="email"
+	   *            ng-model="data.email"
+	   *            name="myEmail"
+	   *            ng-minlength="5"
+	   *            ng-maxlength="100"
+	   *            required />
+	   *   </label>
+	   *   <div ng-messages="myForm.myEmail.$error" role="alert">
+	   *     <div ng-message-exp="'required'">You did not enter your email address</div>
+	   *     <div ng-message-exp="['minlength', 'maxlength']">
+	   *       Your email must be between 5 and 100 characters long
+	   *     </div>
+	   *   </div>
+	   * ```
+	   *
+	   * Feel free to use other structural directives such as ng-if and ng-switch to further control
+	   * what messages are active and when. Be careful, if you place ng-message on the same element
+	   * as these structural directives, Angular may not be able to determine if a message is active
+	   * or not. Therefore it is best to place the ng-message on a child element of the structural
+	   * directive.
+	   *
+	   * ```html
+	   * <div ng-messages="myForm.myEmail.$error" role="alert">
+	   *   <div ng-if="showRequiredError">
+	   *     <div ng-message="required">Please enter something</div>
+	   *   </div>
+	   * </div>
+	   * ```
+	   *
+	   * ## Animations
+	   * If the `ngAnimate` module is active within the application then the `ngMessages`, `ngMessage` and
+	   * `ngMessageExp` directives will trigger animations whenever any messages are added and removed from
+	   * the DOM by the `ngMessages` directive.
+	   *
+	   * Whenever the `ngMessages` directive contains one or more visible messages then the `.ng-active` CSS
+	   * class will be added to the element. The `.ng-inactive` CSS class will be applied when there are no
+	   * messages present. Therefore, CSS transitions and keyframes as well as JavaScript animations can
+	   * hook into the animations whenever these classes are added/removed.
+	   *
+	   * Let's say that our HTML code for our messages container looks like so:
+	   *
+	   * ```html
+	   * <div ng-messages="myMessages" class="my-messages" role="alert">
+	   *   <div ng-message="alert" class="some-message">...</div>
+	   *   <div ng-message="fail" class="some-message">...</div>
+	   * </div>
+	   * ```
+	   *
+	   * Then the CSS animation code for the message container looks like so:
+	   *
+	   * ```css
+	   * .my-messages {
+	   *   transition:1s linear all;
+	   * }
+	   * .my-messages.ng-active {
+	   *   // messages are visible
+	   * }
+	   * .my-messages.ng-inactive {
+	   *   // messages are hidden
+	   * }
+	   * ```
+	   *
+	   * Whenever an inner message is attached (becomes visible) or removed (becomes hidden) then the enter
+	   * and leave animation is triggered for each particular element bound to the `ngMessage` directive.
+	   *
+	   * Therefore, the CSS code for the inner messages looks like so:
+	   *
+	   * ```css
+	   * .some-message {
+	   *   transition:1s linear all;
+	   * }
+	   *
+	   * .some-message.ng-enter {}
+	   * .some-message.ng-enter.ng-enter-active {}
+	   *
+	   * .some-message.ng-leave {}
+	   * .some-message.ng-leave.ng-leave-active {}
+	   * ```
+	   *
+	   * {@link ngAnimate Click here} to learn how to use JavaScript animations or to learn more about ngAnimate.
+	   */
+	  angular.module('ngMessages', [], function initAngularHelpers() {
+	    // Access helpers from angular core.
+	    // Do it inside a `config` block to ensure `window.angular` is available.
+	    forEach = angular.forEach;
+	    isArray = angular.isArray;
+	    isString = angular.isString;
+	    jqLite = angular.element;
+	  })
+	
+	  /**
+	   * @ngdoc directive
+	   * @module ngMessages
+	   * @name ngMessages
+	   * @restrict AE
+	   *
+	   * @description
+	   * `ngMessages` is a directive that is designed to show and hide messages based on the state
+	   * of a key/value object that it listens on. The directive itself complements error message
+	   * reporting with the `ngModel` $error object (which stores a key/value state of validation errors).
+	   *
+	   * `ngMessages` manages the state of internal messages within its container element. The internal
+	   * messages use the `ngMessage` directive and will be inserted/removed from the page depending
+	   * on if they're present within the key/value object. By default, only one message will be displayed
+	   * at a time and this depends on the prioritization of the messages within the template. (This can
+	   * be changed by using the `ng-messages-multiple` or `multiple` attribute on the directive container.)
+	   *
+	   * A remote template can also be used to promote message reusability and messages can also be
+	   * overridden.
+	   *
+	   * {@link module:ngMessages Click here} to learn more about `ngMessages` and `ngMessage`.
+	   *
+	   * @usage
+	   * ```html
+	   * <!-- using attribute directives -->
+	   * <ANY ng-messages="expression" role="alert">
+	   *   <ANY ng-message="stringValue">...</ANY>
+	   *   <ANY ng-message="stringValue1, stringValue2, ...">...</ANY>
+	   *   <ANY ng-message-exp="expressionValue">...</ANY>
+	   * </ANY>
+	   *
+	   * <!-- or by using element directives -->
+	   * <ng-messages for="expression" role="alert">
+	   *   <ng-message when="stringValue">...</ng-message>
+	   *   <ng-message when="stringValue1, stringValue2, ...">...</ng-message>
+	   *   <ng-message when-exp="expressionValue">...</ng-message>
+	   * </ng-messages>
+	   * ```
+	   *
+	   * @param {string} ngMessages an angular expression evaluating to a key/value object
+	   *                 (this is typically the $error object on an ngModel instance).
+	   * @param {string=} ngMessagesMultiple|multiple when set, all messages will be displayed with true
+	   *
+	   * @example
+	   * <example name="ngMessages-directive" module="ngMessagesExample"
+	   *          deps="angular-messages.js"
+	   *          animations="true" fixBase="true">
+	   *   <file name="index.html">
+	   *     <form name="myForm">
+	   *       <label>
+	   *         Enter your name:
+	   *         <input type="text"
+	   *                name="myName"
+	   *                ng-model="name"
+	   *                ng-minlength="5"
+	   *                ng-maxlength="20"
+	   *                required />
+	   *       </label>
+	   *       <pre>myForm.myName.$error = {{ myForm.myName.$error | json }}</pre>
+	   *
+	   *       <div ng-messages="myForm.myName.$error" style="color:maroon" role="alert">
+	   *         <div ng-message="required">You did not enter a field</div>
+	   *         <div ng-message="minlength">Your field is too short</div>
+	   *         <div ng-message="maxlength">Your field is too long</div>
+	   *       </div>
+	   *     </form>
+	   *   </file>
+	   *   <file name="script.js">
+	   *     angular.module('ngMessagesExample', ['ngMessages']);
+	   *   </file>
+	   * </example>
+	   */
+	  .directive('ngMessages', ['$animate', function ($animate) {
+	    var ACTIVE_CLASS = 'ng-active';
+	    var INACTIVE_CLASS = 'ng-inactive';
+	
+	    return {
+	      require: 'ngMessages',
+	      restrict: 'AE',
+	      controller: ['$element', '$scope', '$attrs', function ($element, $scope, $attrs) {
+	        var ctrl = this;
+	        var latestKey = 0;
+	        var nextAttachId = 0;
+	
+	        this.getAttachId = function getAttachId() {
+	          return nextAttachId++;
+	        };
+	
+	        var messages = this.messages = {};
+	        var renderLater, cachedCollection;
+	
+	        this.render = function (collection) {
+	          collection = collection || {};
+	
+	          renderLater = false;
+	          cachedCollection = collection;
+	
+	          // this is true if the attribute is empty or if the attribute value is truthy
+	          var multiple = isAttrTruthy($scope, $attrs.ngMessagesMultiple) || isAttrTruthy($scope, $attrs.multiple);
+	
+	          var unmatchedMessages = [];
+	          var matchedKeys = {};
+	          var messageItem = ctrl.head;
+	          var messageFound = false;
+	          var totalMessages = 0;
+	
+	          // we use != instead of !== to allow for both undefined and null values
+	          while (messageItem != null) {
+	            totalMessages++;
+	            var messageCtrl = messageItem.message;
+	
+	            var messageUsed = false;
+	            if (!messageFound) {
+	              forEach(collection, function (value, key) {
+	                if (!messageUsed && truthy(value) && messageCtrl.test(key)) {
+	                  // this is to prevent the same error name from showing up twice
+	                  if (matchedKeys[key]) return;
+	                  matchedKeys[key] = true;
+	
+	                  messageUsed = true;
+	                  messageCtrl.attach();
+	                }
+	              });
+	            }
+	
+	            if (messageUsed) {
+	              // unless we want to display multiple messages then we should
+	              // set a flag here to avoid displaying the next message in the list
+	              messageFound = !multiple;
+	            } else {
+	              unmatchedMessages.push(messageCtrl);
+	            }
+	
+	            messageItem = messageItem.next;
+	          }
+	
+	          forEach(unmatchedMessages, function (messageCtrl) {
+	            messageCtrl.detach();
+	          });
+	
+	          unmatchedMessages.length !== totalMessages ? $animate.setClass($element, ACTIVE_CLASS, INACTIVE_CLASS) : $animate.setClass($element, INACTIVE_CLASS, ACTIVE_CLASS);
+	        };
+	
+	        $scope.$watchCollection($attrs.ngMessages || $attrs['for'], ctrl.render);
+	
+	        // If the element is destroyed, proactively destroy all the currently visible messages
+	        $element.on('$destroy', function () {
+	          forEach(messages, function (item) {
+	            item.message.detach();
+	          });
+	        });
+	
+	        this.reRender = function () {
+	          if (!renderLater) {
+	            renderLater = true;
+	            $scope.$evalAsync(function () {
+	              if (renderLater) {
+	                cachedCollection && ctrl.render(cachedCollection);
+	              }
+	            });
+	          }
+	        };
+	
+	        this.register = function (comment, messageCtrl) {
+	          var nextKey = latestKey.toString();
+	          messages[nextKey] = {
+	            message: messageCtrl
+	          };
+	          insertMessageNode($element[0], comment, nextKey);
+	          comment.$$ngMessageNode = nextKey;
+	          latestKey++;
+	
+	          ctrl.reRender();
+	        };
+	
+	        this.deregister = function (comment) {
+	          var key = comment.$$ngMessageNode;
+	          delete comment.$$ngMessageNode;
+	          removeMessageNode($element[0], comment, key);
+	          delete messages[key];
+	          ctrl.reRender();
+	        };
+	
+	        function findPreviousMessage(parent, comment) {
+	          var prevNode = comment;
+	          var parentLookup = [];
+	
+	          while (prevNode && prevNode !== parent) {
+	            var prevKey = prevNode.$$ngMessageNode;
+	            if (prevKey && prevKey.length) {
+	              return messages[prevKey];
+	            }
+	
+	            // dive deeper into the DOM and examine its children for any ngMessage
+	            // comments that may be in an element that appears deeper in the list
+	            if (prevNode.childNodes.length && parentLookup.indexOf(prevNode) === -1) {
+	              parentLookup.push(prevNode);
+	              prevNode = prevNode.childNodes[prevNode.childNodes.length - 1];
+	            } else if (prevNode.previousSibling) {
+	              prevNode = prevNode.previousSibling;
+	            } else {
+	              prevNode = prevNode.parentNode;
+	              parentLookup.push(prevNode);
+	            }
+	          }
+	        }
+	
+	        function insertMessageNode(parent, comment, key) {
+	          var messageNode = messages[key];
+	          if (!ctrl.head) {
+	            ctrl.head = messageNode;
+	          } else {
+	            var match = findPreviousMessage(parent, comment);
+	            if (match) {
+	              messageNode.next = match.next;
+	              match.next = messageNode;
+	            } else {
+	              messageNode.next = ctrl.head;
+	              ctrl.head = messageNode;
+	            }
+	          }
+	        }
+	
+	        function removeMessageNode(parent, comment, key) {
+	          var messageNode = messages[key];
+	
+	          var match = findPreviousMessage(parent, comment);
+	          if (match) {
+	            match.next = messageNode.next;
+	          } else {
+	            ctrl.head = messageNode.next;
+	          }
+	        }
+	      }]
+	    };
+	
+	    function isAttrTruthy(scope, attr) {
+	      return isString(attr) && attr.length === 0 || //empty attribute
+	      truthy(scope.$eval(attr));
+	    }
+	
+	    function truthy(val) {
+	      return isString(val) ? val.length : !!val;
+	    }
+	  }])
+	
+	  /**
+	   * @ngdoc directive
+	   * @name ngMessagesInclude
+	   * @restrict AE
+	   * @scope
+	   *
+	   * @description
+	   * `ngMessagesInclude` is a directive with the purpose to import existing ngMessage template
+	   * code from a remote template and place the downloaded template code into the exact spot
+	   * that the ngMessagesInclude directive is placed within the ngMessages container. This allows
+	   * for a series of pre-defined messages to be reused and also allows for the developer to
+	   * determine what messages are overridden due to the placement of the ngMessagesInclude directive.
+	   *
+	   * @usage
+	   * ```html
+	   * <!-- using attribute directives -->
+	   * <ANY ng-messages="expression" role="alert">
+	   *   <ANY ng-messages-include="remoteTplString">...</ANY>
+	   * </ANY>
+	   *
+	   * <!-- or by using element directives -->
+	   * <ng-messages for="expression" role="alert">
+	   *   <ng-messages-include src="expressionValue1">...</ng-messages-include>
+	   * </ng-messages>
+	   * ```
+	   *
+	   * {@link module:ngMessages Click here} to learn more about `ngMessages` and `ngMessage`.
+	   *
+	   * @param {string} ngMessagesInclude|src a string value corresponding to the remote template.
+	   */
+	  .directive('ngMessagesInclude', ['$templateRequest', '$document', '$compile', function ($templateRequest, $document, $compile) {
+	
+	    return {
+	      restrict: 'AE',
+	      require: '^^ngMessages', // we only require this for validation sake
+	      link: function link($scope, element, attrs) {
+	        var src = attrs.ngMessagesInclude || attrs.src;
+	        $templateRequest(src).then(function (html) {
+	          if ($scope.$$destroyed) return;
+	
+	          if (isString(html) && !html.trim()) {
+	            // Empty template - nothing to compile
+	            replaceElementWithMarker(element, src);
+	          } else {
+	            // Non-empty template - compile and link
+	            $compile(html)($scope, function (contents) {
+	              element.after(contents);
+	              replaceElementWithMarker(element, src);
+	            });
+	          }
+	        });
+	      }
+	    };
+	
+	    // Helpers
+	    function replaceElementWithMarker(element, src) {
+	      // A comment marker is placed for debugging purposes
+	      var comment = $compile.$$createComment ? $compile.$$createComment('ngMessagesInclude', src) : $document[0].createComment(' ngMessagesInclude: ' + src + ' ');
+	      var marker = jqLite(comment);
+	      element.after(marker);
+	
+	      // Don't pollute the DOM anymore by keeping an empty directive element
+	      element.remove();
+	    }
+	  }])
+	
+	  /**
+	   * @ngdoc directive
+	   * @name ngMessage
+	   * @restrict AE
+	   * @scope
+	   *
+	   * @description
+	   * `ngMessage` is a directive with the purpose to show and hide a particular message.
+	   * For `ngMessage` to operate, a parent `ngMessages` directive on a parent DOM element
+	   * must be situated since it determines which messages are visible based on the state
+	   * of the provided key/value map that `ngMessages` listens on.
+	   *
+	   * More information about using `ngMessage` can be found in the
+	   * {@link module:ngMessages `ngMessages` module documentation}.
+	   *
+	   * @usage
+	   * ```html
+	   * <!-- using attribute directives -->
+	   * <ANY ng-messages="expression" role="alert">
+	   *   <ANY ng-message="stringValue">...</ANY>
+	   *   <ANY ng-message="stringValue1, stringValue2, ...">...</ANY>
+	   * </ANY>
+	   *
+	   * <!-- or by using element directives -->
+	   * <ng-messages for="expression" role="alert">
+	   *   <ng-message when="stringValue">...</ng-message>
+	   *   <ng-message when="stringValue1, stringValue2, ...">...</ng-message>
+	   * </ng-messages>
+	   * ```
+	   *
+	   * @param {expression} ngMessage|when a string value corresponding to the message key.
+	   */
+	  .directive('ngMessage', ngMessageDirectiveFactory())
+	
+	  /**
+	   * @ngdoc directive
+	   * @name ngMessageExp
+	   * @restrict AE
+	   * @priority 1
+	   * @scope
+	   *
+	   * @description
+	   * `ngMessageExp` is a directive with the purpose to show and hide a particular message.
+	   * For `ngMessageExp` to operate, a parent `ngMessages` directive on a parent DOM element
+	   * must be situated since it determines which messages are visible based on the state
+	   * of the provided key/value map that `ngMessages` listens on.
+	   *
+	   * @usage
+	   * ```html
+	   * <!-- using attribute directives -->
+	   * <ANY ng-messages="expression">
+	   *   <ANY ng-message-exp="expressionValue">...</ANY>
+	   * </ANY>
+	   *
+	   * <!-- or by using element directives -->
+	   * <ng-messages for="expression">
+	   *   <ng-message when-exp="expressionValue">...</ng-message>
+	   * </ng-messages>
+	   * ```
+	   *
+	   * {@link module:ngMessages Click here} to learn more about `ngMessages` and `ngMessage`.
+	   *
+	   * @param {expression} ngMessageExp|whenExp an expression value corresponding to the message key.
+	   */
+	  .directive('ngMessageExp', ngMessageDirectiveFactory());
+	
+	  function ngMessageDirectiveFactory() {
+	    return ['$animate', function ($animate) {
+	      return {
+	        restrict: 'AE',
+	        transclude: 'element',
+	        priority: 1, // must run before ngBind, otherwise the text is set on the comment
+	        terminal: true,
+	        require: '^^ngMessages',
+	        link: function link(scope, element, attrs, ngMessagesCtrl, $transclude) {
+	          var commentNode = element[0];
+	
+	          var records;
+	          var staticExp = attrs.ngMessage || attrs.when;
+	          var dynamicExp = attrs.ngMessageExp || attrs.whenExp;
+	          var assignRecords = function assignRecords(items) {
+	            records = items ? isArray(items) ? items : items.split(/[\s,]+/) : null;
+	            ngMessagesCtrl.reRender();
+	          };
+	
+	          if (dynamicExp) {
+	            assignRecords(scope.$eval(dynamicExp));
+	            scope.$watchCollection(dynamicExp, assignRecords);
+	          } else {
+	            assignRecords(staticExp);
+	          }
+	
+	          var currentElement, messageCtrl;
+	          ngMessagesCtrl.register(commentNode, messageCtrl = {
+	            test: function test(name) {
+	              return contains(records, name);
+	            },
+	            attach: function attach() {
+	              if (!currentElement) {
+	                $transclude(function (elm, newScope) {
+	                  $animate.enter(elm, null, element);
+	                  currentElement = elm;
+	
+	                  // Each time we attach this node to a message we get a new id that we can match
+	                  // when we are destroying the node later.
+	                  var $$attachId = currentElement.$$attachId = ngMessagesCtrl.getAttachId();
+	
+	                  // in the event that the element or a parent element is destroyed
+	                  // by another structural directive then it's time
+	                  // to deregister the message from the controller
+	                  currentElement.on('$destroy', function () {
+	                    if (currentElement && currentElement.$$attachId === $$attachId) {
+	                      ngMessagesCtrl.deregister(commentNode);
+	                      messageCtrl.detach();
+	                    }
+	                    newScope.$destroy();
+	                  });
+	                });
+	              }
+	            },
+	            detach: function detach() {
+	              if (currentElement) {
+	                var elm = currentElement;
+	                currentElement = null;
+	                $animate.leave(elm);
+	              }
+	            }
+	          });
+	        }
+	      };
+	    }];
+	
+	    function contains(collection, key) {
+	      if (collection) {
+	        return isArray(collection) ? collection.indexOf(key) >= 0 : collection.hasOwnProperty(key);
+	      }
+	    }
+	  }
+	})(window, window.angular);
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {'use strict';
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	/*!
+	 * State-based routing for AngularJS
+	 * @version v1.0.0-beta.1
+	 * @link https://ui-router.github.io
+	 * @license MIT License, http://www.opensource.org/licenses/MIT
+	 */
+	(function webpackUniversalModuleDefinition(root, factory) {
+		if (( false ? 'undefined' : _typeof(exports)) === 'object' && ( false ? 'undefined' : _typeof(module)) === 'object') module.exports = factory();else if (true) !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') exports["angular-ui-router"] = factory();else root["angular-ui-router"] = factory();
+	})(undefined, function () {
+		return (/******/function (modules) {
+				// webpackBootstrap
+				/******/ // The module cache
+				/******/var installedModules = {};
+				/******/
+				/******/ // The require function
+				/******/function __webpack_require__(moduleId) {
+					/******/
+					/******/ // Check if module is in cache
+					/******/if (installedModules[moduleId])
+						/******/return installedModules[moduleId].exports;
+					/******/
+					/******/ // Create a new module (and put it into the cache)
+					/******/var module = installedModules[moduleId] = {
+						/******/exports: {},
+						/******/id: moduleId,
+						/******/loaded: false
+						/******/ };
+					/******/
+					/******/ // Execute the module function
+					/******/modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+					/******/
+					/******/ // Flag the module as loaded
+					/******/module.loaded = true;
+					/******/
+					/******/ // Return the exports of the module
+					/******/return module.exports;
+					/******/
+				}
+				/******/
+				/******/
+				/******/ // expose the modules object (__webpack_modules__)
+				/******/__webpack_require__.m = modules;
+				/******/
+				/******/ // expose the module cache
+				/******/__webpack_require__.c = installedModules;
+				/******/
+				/******/ // __webpack_public_path__
+				/******/__webpack_require__.p = "";
+				/******/
+				/******/ // Load entry module and return exports
+				/******/return __webpack_require__(0);
+				/******/
+			}(
+			/************************************************************************/
+			/******/[
+			/* 0 */
+			/***/function (module, exports) {
+	
+				"use strict";
+				/**
+	    * An event broadcast on `$rootScope` when the state transition **begins**.
+	    *
+	    * You can use `event.preventDefault()`
+	    * to prevent the transition from happening and then the transition promise will be
+	    * rejected with a `'transition prevented'` value.
+	    *
+	    * Additional arguments to the event handler are provided:
+	    * - `toState`: the Transition Target state
+	    * - `toParams`: the Transition Target Params
+	    * - `fromState`: the state the transition is coming from
+	    * - `fromParams`: the parameters from the state the transition is coming from
+	    * - `options`: any Transition Options
+	    * - `$transition$`: the [[Transition]]
+	    *
+	    * @example
+	    * ```
+	    *
+	    * $rootScope.$on('$stateChangeStart', function(event, transition) {
+	    *   event.preventDefault();
+	    *   // transitionTo() promise will be rejected with
+	    *   // a 'transition prevented' error
+	    * })
+	    * ```
+	    *
+	    * @deprecated use [[TransitionService.onStart]]
+	    * @event $stateChangeStart
+	    */
+	
+				var $stateChangeStart;
+				/**
+	    * An event broadcast on `$rootScope` if a transition is **cancelled**.
+	    *
+	    * Additional arguments to the event handler are provided:
+	    * - `toState`: the Transition Target state
+	    * - `toParams`: the Transition Target Params
+	    * - `fromState`: the state the transition is coming from
+	    * - `fromParams`: the parameters from the state the transition is coming from
+	    * - `options`: any Transition Options
+	    * - `$transition$`: the [[Transition]] that was cancelled
+	    *
+	    * @deprecated
+	    * @event $stateChangeCancel
+	    */
+				var $stateChangeCancel;
+				/**
+	    *
+	    * An event broadcast on `$rootScope` once the state transition is **complete**.
+	    *
+	    * Additional arguments to the event handler are provided:
+	    * - `toState`: the Transition Target state
+	    * - `toParams`: the Transition Target Params
+	    * - `fromState`: the state the transition is coming from
+	    * - `fromParams`: the parameters from the state the transition is coming from
+	    * - `options`: any Transition Options
+	    * - `$transition$`: the [[Transition]] that just succeeded
+	    *
+	    * @deprecated use [[TransitionService.onStart]] and [[Transition.promise]], or [[Transition.onSuccess]]
+	    * @event $stateChangeSuccess
+	    */
+				var $stateChangeSuccess;
+				/**
+	    * An event broadcast on `$rootScope` when an **error occurs** during transition.
+	    *
+	    * It's important to note that if you
+	    * have any errors in your resolve functions (javascript errors, non-existent services, etc)
+	    * they will not throw traditionally. You must listen for this $stateChangeError event to
+	    * catch **ALL** errors.
+	    *
+	    * Additional arguments to the event handler are provided:
+	    * - `toState`: the Transition Target state
+	    * - `toParams`: the Transition Target Params
+	    * - `fromState`: the state the transition is coming from
+	    * - `fromParams`: the parameters from the state the transition is coming from
+	    * - `error`: The reason the transition errored.
+	    * - `options`: any Transition Options
+	    * - `$transition$`: the [[Transition]] that errored
+	    *
+	    * @deprecated use [[TransitionService.onStart]] and [[Transition.promise]], or [[Transition.onError]]
+	    * @event $stateChangeError
+	    */
+				var $stateChangeError;
+				/**
+	    * An event broadcast on `$rootScope` when a requested state **cannot be found** using the provided state name.
+	    *
+	    * The event is broadcast allowing any handlers a single chance to deal with the error (usually by
+	    * lazy-loading the unfound state). A `TargetState` object is passed to the listener handler,
+	    * you can see its properties in the example. You can use `event.preventDefault()` to abort the
+	    * transition and the promise returned from `transitionTo()` will be rejected with a
+	    * `'transition aborted'` error.
+	    *
+	    * Additional arguments to the event handler are provided:
+	    * - `unfoundState` Unfound State information. Contains: `to, toParams, options` properties.
+	    * - `fromState`: the state the transition is coming from
+	    * - `fromParams`: the parameters from the state the transition is coming from
+	    * - `options`: any Transition Options
+	    * @example
+	    *
+	    * <pre>
+	    * // somewhere, assume lazy.state has not been defined
+	    * $state.go("lazy.state", { a: 1, b: 2 }, { inherit: false });
+	    *
+	    * // somewhere else
+	    * $scope.$on('$stateNotFound', function(event, transition) {
+	    * function(event, unfoundState, fromState, fromParams){
+	    *     console.log(unfoundState.to); // "lazy.state"
+	    *     console.log(unfoundState.toParams); // {a:1, b:2}
+	    *     console.log(unfoundState.options); // {inherit:false} + default options
+	    * });
+	    * </pre>
+	    *
+	    * @deprecated use [[StateProvider.onInvalid]] // TODO: Move to [[StateService.onInvalid]]
+	    * @event $stateNotFound
+	    */
+				var $stateNotFound;
+				(function () {
+					var isFunction = angular.isFunction,
+					    isString = angular.isString;
+					function applyPairs(memo, keyValTuple) {
+						var key, value;
+						if (Array.isArray(keyValTuple)) key = keyValTuple[0], value = keyValTuple[1];
+						if (!isString(key)) throw new Error("invalid parameters to applyPairs");
+						memo[key] = value;
+						return memo;
+					}
+					function stateChangeStartHandler($transition$) {
+						if (!$transition$.options().notify || !$transition$.valid() || $transition$.ignored()) return;
+						var $injector = $transition$.injector().native;
+						var $stateEvents = $injector.get('$stateEvents');
+						var $rootScope = $injector.get('$rootScope');
+						var $state = $injector.get('$state');
+						var $urlRouter = $injector.get('$urlRouter');
+						var enabledEvents = $stateEvents.provider.enabled();
+						var toParams = $transition$.params("to");
+						var fromParams = $transition$.params("from");
+						if (enabledEvents.$stateChangeSuccess) {
+							var startEvent = $rootScope.$broadcast('$stateChangeStart', $transition$.to(), toParams, $transition$.from(), fromParams, $transition$.options(), $transition$);
+							if (startEvent.defaultPrevented) {
+								if (enabledEvents.$stateChangeCancel) {
+									$rootScope.$broadcast('$stateChangeCancel', $transition$.to(), toParams, $transition$.from(), fromParams, $transition$.options(), $transition$);
+								}
+								//Don't update and resync url if there's been a new transition started. see issue #2238, #600
+								if ($state.transition == null) $urlRouter.update();
+								return false;
+							}
+							$transition$.promise.then(function () {
+								$rootScope.$broadcast('$stateChangeSuccess', $transition$.to(), toParams, $transition$.from(), fromParams, $transition$.options(), $transition$);
+							});
+						}
+						if (enabledEvents.$stateChangeError) {
+							$transition$.promise["catch"](function (error) {
+								if (error && (error.type === 2 /* RejectType.SUPERSEDED */ || error.type === 3 /* RejectType.ABORTED */)) return;
+								var evt = $rootScope.$broadcast('$stateChangeError', $transition$.to(), toParams, $transition$.from(), fromParams, error, $transition$.options(), $transition$);
+								if (!evt.defaultPrevented) {
+									$urlRouter.update();
+								}
+							});
+						}
+					}
+					stateNotFoundHandler.$inject = ['$to$', '$from$', '$state', '$rootScope', '$urlRouter'];
+					function stateNotFoundHandler($to$, $from$, $state, $rootScope, $urlRouter) {
+						var redirect = { to: $to$.identifier(), toParams: $to$.params(), options: $to$.options() };
+						var e = $rootScope.$broadcast('$stateNotFound', redirect, $from$.state(), $from$.params());
+						if (e.defaultPrevented || e.retry) $urlRouter.update();
+						function redirectFn() {
+							return $state.target(redirect.to, redirect.toParams, redirect.options);
+						}
+						if (e.defaultPrevented) {
+							return false;
+						} else if (e.retry || !!$state.get(redirect.to)) {
+							return e.retry && isFunction(e.retry.then) ? e.retry.then(redirectFn) : redirectFn();
+						}
+					}
+					$StateEventsProvider.$inject = ['$stateProvider'];
+					function $StateEventsProvider($stateProvider) {
+						$StateEventsProvider.prototype.instance = this;
+						var runtime = false;
+						var allEvents = ['$stateChangeStart', '$stateNotFound', '$stateChangeSuccess', '$stateChangeError'];
+						var enabledStateEvents = allEvents.map(function (e) {
+							return [e, true];
+						}).reduce(applyPairs, {});
+						function assertNotRuntime() {
+							if (runtime) throw new Error("Cannot enable events at runtime (use $stateEventsProvider");
+						}
+						/**
+	      * Enables the deprecated UI-Router 0.2.x State Events
+	      * [ '$stateChangeStart', '$stateNotFound', '$stateChangeSuccess', '$stateChangeError' ]
+	      */
+						this.enable = function () {
+							var events = [];
+							for (var _i = 0; _i < arguments.length; _i++) {
+								events[_i - 0] = arguments[_i];
+							}
+							assertNotRuntime();
+							if (!events || !events.length) events = allEvents;
+							events.forEach(function (event) {
+								return enabledStateEvents[event] = true;
+							});
+						};
+						/**
+	      * Disables the deprecated UI-Router 0.2.x State Events
+	      * [ '$stateChangeStart', '$stateNotFound', '$stateChangeSuccess', '$stateChangeError' ]
+	      */
+						this.disable = function () {
+							var events = [];
+							for (var _i = 0; _i < arguments.length; _i++) {
+								events[_i - 0] = arguments[_i];
+							}
+							assertNotRuntime();
+							if (!events || !events.length) events = allEvents;
+							events.forEach(function (event) {
+								return delete enabledStateEvents[event];
+							});
+						};
+						this.enabled = function () {
+							return enabledStateEvents;
+						};
+						this.$get = $get;
+						$get.$inject = ['$transitions'];
+						function $get($transitions) {
+							runtime = true;
+							if (enabledStateEvents["$stateNotFound"]) $stateProvider.onInvalid(stateNotFoundHandler);
+							if (enabledStateEvents.$stateChangeStart) $transitions.onBefore({}, stateChangeStartHandler, { priority: 1000 });
+							return {
+								provider: $StateEventsProvider.prototype.instance
+							};
+						}
+					}
+					angular.module('ui.router.state.events', ['ui.router.state']).provider("$stateEvents", $StateEventsProvider).run(['$stateEvents', function ($stateEvents) {}]);
+				})();
+	
+				/***/
+			}
+			/******/])
+		);
+	});
+	;
+	//# sourceMappingURL=stateEvents.js.map
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)(module)))
+
+/***/ },
+/* 83 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -33467,6 +34708,9 @@
 	    }
 	  }).state('list-albums', {
 	    url: '/albums',
+	    data: {
+	      requiresAuth: true
+	    },
 	    views: {
 	      header: {
 	        component: 'appNav'
@@ -33477,6 +34721,9 @@
 	    }
 	  }).state('view-album', {
 	    url: '/album/:albumId?display',
+	    data: {
+	      requiresAuth: true
+	    },
 	    params: { display: { dynamic: true } },
 	    resolve: {
 	      albumId: ['$stateParams', function (params) {
@@ -33500,17 +34747,101 @@
 	}
 
 /***/ },
-/* 74 */
+/* 84 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 75 */,
-/* 76 */
+/* 85 */,
+/* 86 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 87 */,
+/* 88 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = configHttp;
+	configHttp.$inject = ['$httpProvider'];
+	
+	function configHttp($httpProvider) {
+	  $httpProvider.interceptors.push(interceptor);
+	}
+	
+	interceptor.$inject = ['$window', 'tokenService', '$state'];
+	
+	function interceptor($window, tokenService, $state) {
+	
+	  return {
+	    request: function request(config) {
+	      config.headers = config.headers || {};
+	
+	      var token = tokenService.get();
+	
+	      if (token) {
+	        config.headers.Authorization = 'Bearer ' + token;
+	      }
+	
+	      return config;
+	    },
+	    responseError: function responseError(response) {
+	      if (response.status >= 400 && response.status < 500) {
+	        tokenService.remove();
+	        $state.go('home');
+	      }
+	      return Promise.reject(response);
+	    }
+	  };
+	}
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = auth;
+	
+	var _angular = __webpack_require__(1);
+	
+	var _angular2 = _interopRequireDefault(_angular);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	auth.$inject = ['$rootScope', 'userService', '$mdDialog', '$state'];
+	
+	function auth($rootScope, userService, $mdDialog, $state) {
+	
+	  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+	    if (toState.data && toState.data.requiresAuth && !userService.isAuthenticated()) {
+	      event.preventDefault();
+	
+	      $mdDialog.show({
+	        parent: _angular2.default.element(document.body),
+	        template: '<md-dialog><user-auth success="success()"></user-auth></md-dialog>',
+	        controller: ['$scope', function ($scope) {
+	          $scope.success = function () {
+	            $mdDialog.hide();
+	            return $state.go(toState.name, toParams);
+	          };
+	        }],
+	        clickOutsideToClose: true,
+	        escapeToClose: true
+	      });
+	    }
+	  });
+	}
 
 /***/ }
 /******/ ]);
