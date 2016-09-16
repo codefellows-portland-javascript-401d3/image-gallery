@@ -1,6 +1,6 @@
 
 
-describe('images', () => {
+describe('heroes', () => {
 
   const heroesService = {};
   const $mdDialog = {};
@@ -15,7 +15,7 @@ describe('images', () => {
   }));
 
   it('has has a value for view', () => {
-    const component = $component('images');
+    const component = $component('heroes');
     const view = component.view;
     assert.isOk(view);
   });
@@ -27,9 +27,20 @@ describe('images', () => {
     heroesService.add = image => {
       images.push(image);
     };
-    const component = $component('images');
+    const component = $component('heroes');
     component.add(newPic);
     assert.deepEqual(component.images, images);
+  });
+
+  it('removes the selected pic', () => {
+    const images = [{_id: 0, title: 'Wonder Woman', url: 'blah.com', description: 'Diana Prince'}];
+    const newImages = [];
+    heroesService.remove = () => {
+      this.images.pop();
+    };
+    const component = $component('heroes');
+    component.remove();
+    assert.deepEqual(component.images, newImages);
   });
 
 });

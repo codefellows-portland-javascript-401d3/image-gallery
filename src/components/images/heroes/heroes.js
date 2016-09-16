@@ -1,4 +1,4 @@
-import template from './images.html';
+import template from './heroes.html';
 
 export default {
   template,
@@ -21,6 +21,16 @@ function controller($mdDialog, heroesService) {
     heroesService.add(newPic)
       .then(addedPic => {
         this.images.push(addedPic);
+      })
+      .catch(err => console.log(err));
+  };
+
+  this.remove = imageId => {
+    heroesService.remove(imageId)
+      .then(() => {
+        heroesService.getAll()
+          .then(heroes => this.images = heroes)
+          .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   };

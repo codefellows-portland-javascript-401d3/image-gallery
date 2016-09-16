@@ -11,6 +11,7 @@
       <full-pic ng-if="$ctrl.view === 'full'" image="image"></full-pic>
       <text-pic ng-if="$ctrl.view === 'text'" image="image"></text-pic>
       <thumb-pic ng-if="$ctrl.view === 'thumb'" image="image"></thumb-pic>
+      <md-button ng-click="$ctrl.remove(image._id)">Delete Image</md-button>
     </li>
   </ul>
 </div>
