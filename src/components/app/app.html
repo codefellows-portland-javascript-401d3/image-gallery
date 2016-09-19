@@ -14,7 +14,11 @@
     </select>
   </section>
 
-  <section class="row twelve columns">
+  <ui-view name="header"></ui-view>
+  <ui-view name="main"></ui-view>
+  <ui-view name="footer"></ui-view>
+  
+  <!--<section class="row twelve columns">
     <div ng-show="$ctrl.list">
       <h3>Showing {{$ctrl.galleryName}}</h3>
       <button ng-click="$ctrl.toggleImageForm()">New Image</button>
@@ -42,4 +46,4 @@
       <add-gallery-form submit-gallery="$ctrl.submitGallery" galleries="$ctrl.galleries"></add-gallery-form>
     </div>
   </section>
-</div>
+</div>-->

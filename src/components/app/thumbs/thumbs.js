@@ -8,5 +8,6 @@ export default {
   },
   controller: function() {
     this.styles = styles;
+    console.log('images:',this.images);
   }
 };

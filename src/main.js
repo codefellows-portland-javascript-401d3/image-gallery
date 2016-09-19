@@ -1,13 +1,12 @@
 import angular from 'angular';
 import app from './app';
+import routes from './routes';
 import 'skeleton-css/css/normalize.css';
 import 'skeleton-css/css/skeleton.css';
 import './scss/main.scss';
 
-const module = angular.module(app);
+app.config(routes);
 
-// .run(['$rootScope', function() {}]); // this is an init method that could be used if we had init data
+app.value('apiUrl', process.env.API_URL || '/api'); // This is like a mini-service that just holds a primitive value.
 
-module.value('apiUrl', process.env.API_URL || '/api'); // This is like a mini-service that just holds a primitive value.
-
-angular.bootstrap(document, [app]);
+angular.bootstrap(document, [app.name]);
