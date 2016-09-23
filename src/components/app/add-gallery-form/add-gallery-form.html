@@ -1,19 +1,26 @@
-<div class="add-gallery-form">
+<div class="add-gallery-form outline">
   <h3>Add New Gallery</h3>
   <form>
-    <div>
-      <label>Name:</label>
-      <input ng-model="$ctrl.gallery.name">
-    </div>
-    <div>
-      <label>Description:</label>
-      <input ng-model="$ctrl.gallery.description">
-    </div>
+    <table>
+      <tr>
+        <td>
+          <label>Name:</label>
+          <input ng-model="$ctrl.gallery.name">
+        </td>
+        <td>
+          <label>Description:</label>
+          <input ng-model="$ctrl.gallery.description">
+        </td>
+        <td>
+          <button ng-click="$ctrl.submit()" class="add-gallery-button">Submit</button>
+        </td>
+      </tr>
+    </table>
   </form>
-  <button ng-click="$ctrl.submit()" class="add-gallery-button">Submit</button>
   <div id="add-result" ng-show="$ctrl.result">{{$ctrl.message}}</div>
 </div>
-<section class="row twelve columns">
+<section class="row twelve columns outline">
+  <h3>Current Gallery List</h3>
   <table class="u-full-width">
     <thead>
       <tr>

@@ -1,49 +1,40 @@
 <div class="container">
 
-  <h1 class="twelve columns">Image Gallery</h1>
-
+  <section class="row" >
+    <div class="four columns">
+      <h4>Image Gallery</h4>
+    </div>
+    <div class="u-pull-right">
+      <button class="button-primary" ui-sref="home">Home</button>
+      <button class="button-primary" ng-click="$ctrl.navSelect('list')">List View</button>
+      <button class="button-primary" ng-click="$ctrl.navSelect('thumbs')">Thumbnails</button>
+      <button class="button-primary" ng-click="$ctrl.navSelect('full')">Full Images</button>
+    </div>
+  </section>
   <section class="row twelve columns">
-    <button class="button-primary" ng-click="$ctrl.chooseFrame('list')">List View</button>
-    <button class="button-primary" ng-click="$ctrl.chooseFrame('thumb')">Thumbnails</button>
-    <button class="button-primary" ng-click="$ctrl.chooseFrame('full')">Full Images</button>
-    <button class="button-primary" ng-click="$ctrl.chooseFrame('addImageForm')">Add Image</button>
-    <button class="button-primary" ng-click="$ctrl.chooseFrame('addGalleryForm')">Add Gallery</button>
     <select ng-model="$ctrl.gallery" ng-change="$ctrl.selectGallery()">
       <option value="all">{{$ctrl.defaulChoiceText}}</option>
       <option ng-repeat="gallery in $ctrl.galleries" value="{{gallery._id}}">{{gallery.name}}</option>
     </select>
+    <button class="button-primary" ng-click="$ctrl.toggleImageForm()">Add Image To Database</button>
+    <button class="button-primary" ng-click="$ctrl.toggleNewGallerySubForm()">Start A New Gallery</button>
+    <button class="button-primary" ng-click="$ctrl.toggleImageToGalleryForm()">Add Image To A Gallery</button>
+  </section>
+  
+  <section class="row twelve columns" ng-show="$ctrl.addImageSubForm">
+    <add-image-form submit-image="$ctrl.submitImage"></add-image-form>
+  </section>
+  <section class="row twelve columns" ng-show="$ctrl.newGallerySubForm">
+    <add-gallery-form submit-gallery="$ctrl.submitGallery" galleries="$ctrl.galleries"></add-gallery-form>
+  </section>
+  <section class="row twelve columns" ng-show="$ctrl.addImageToGallerySubForm">
+    <add-image-to-gallery-form submit-gallery="$ctrl.submitGallery" galleries="$ctrl.galleries"></add-gallery-form>
   </section>
 
-  <ui-view name="header"></ui-view>
-  <ui-view name="main"></ui-view>
-  <ui-view name="footer"></ui-view>
-  
-  <!--<section class="row twelve columns">
-    <div ng-show="$ctrl.list">
-      <h3>Showing {{$ctrl.galleryName}}</h3>
-      <button ng-click="$ctrl.toggleImageForm()">New Image</button>
-      <button ng-show="$ctrl.galleryChosen" ng-click="$ctrl.toggleGallerySubForm()">Add Image to Gallery</button>
-      <div ng-show="$ctrl.addImageSubForm">
-        <add-image-form submit-image="$ctrl.submitImage"></add-image-form>
-      </div>
-      <div ng-show="$ctrl.addImageToGallerySubForm">
-        <add-image-to-gallery images="$ctrl.images" gallery="$ctrl.gallery" submit-image="$ctrl.addImageToGallery"></add-image-to-gallery>
-      </div>
-      <text-list images="$ctrl.images" remove-image="$ctrl.removeImage"></text-list>
-    </div>
-    <div ng-show="$ctrl.thumb">
-      <h3>Showing {{$ctrl.galleryName}}</h3>
-      <thumbs images="$ctrl.images"></thumbs>
-    </div>
-    <div ng-show="$ctrl.full">
-      <h3>Showing {{$ctrl.galleryName}}</h3>
-      <images images="$ctrl.images"></images>
-    </div>
-    <div ng-show="$ctrl.addImageForm">
-      <add-image-form submit-image="$ctrl.submitImage"></add-image-form>
-    </div>
-    <div ng-show="$ctrl.addGalleryForm">
-      <add-gallery-form submit-gallery="$ctrl.submitGallery" galleries="$ctrl.galleries"></add-gallery-form>
-    </div>
+  <!--<ui-view name="header"></ui-view>-->
+  <section class="row twelve columns">
+    <ui-view></ui-view>
   </section>
-</div>-->
+  <!--<ui-view name="footer"></ui-view>-->
+
+</div>

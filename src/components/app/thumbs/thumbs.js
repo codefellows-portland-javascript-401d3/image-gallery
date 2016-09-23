@@ -6,8 +6,10 @@ export default {
   bindings: {
     images: '='
   },
-  controller: function() {
-    this.styles = styles;
-    console.log('images:',this.images);
-  }
+  controller
+};
+
+// controller.$inject = ['imageService', 'galleryService'];
+function controller() {
+  this.styles = styles;
 };

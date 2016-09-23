@@ -3,71 +3,72 @@ configRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
 export default function configRoutes($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-    .state('home', {
-      url: '/',
-      views: {
-        // header: {
-        //   component: 'homeHeader'
-        // },
-        main: {
-          template: '<h1>Welcome to Geoff\'s Image gallery app!</h1>'
-        }
-      }
-    })
-    .state('list', {
-      url: '/list',
-      resolve: {
-        images: getImages
-      },
-      views: {
-        // header: {
-        //   component: 'homeHeader'
-        // },
-        main: {
-          component: 'textList'
-        }
-      }
-    })
-    .state('thumbs', {
-      url: '/thumbs',
-      resolve: {
-        images: getImages
-      },
-      views: {
-        main: {
-          template: '<h1>template for thumbs</h1>'
-        }
-      }
-    })
-    // .state('lists', {
-    //   url: '/todos?display',
-    //   params: { display: { dynamic: true } },
-    //   resolve: {
-    //     display: [ '$stateParams', p => p.display || 'list' ]
-    //   },
-    //   views: {
-    //     main: {
-    //       component: 'lists'
-    //     }
-    //   }
-    // })
-    // .state('list', {
-    //   url: '/todos/:listId?display',
-    //   params: { display: { dynamic: true } },
-    //   resolve: {
-    //     todoListId: ['$stateParams', p => p.listId],
-    //     display: ['$stateParams', p => p.display || 'list']
-    //   },
-    //   views: {
-    //     header: {
-    //       component: 'displayHeader'
-    //     },
-    //     main: {
-    //       component: 'todoList'
-    //     }
-    //   }
-    // })
-    ;
+  .state('home', {
+    url: '/',
+    template: '<h1>Welcome to Geoff\'s Image gallery app!</h1>'
+  })
+  .state('gallerylist', {
+    url: '/list/:gallery',
+    resolve: {
+      images: getImages,
+      removeImage: removeGalleryImage
+    },
+    params: {
+      path: 'list'
+    },
+    component: 'textList'
+  })
+  .state('list', {
+    url: '/list',
+    resolve: {
+      images: getImages
+    },
+    params: {
+      path: 'list',
+    },
+    component: 'textList'
+  })
+  .state('gallerythumbs', {
+    url: '/thumbs/:gallery',
+    resolve: {
+      images: getImages
+    },
+    params: {
+      path: 'thumbs'
+    },
+    component: 'thumbs'
+  })
+  .state('thumbs', {
+    url: '/thumbs',
+    resolve: {
+      images: getImages
+    },
+    params: {
+      path: 'thumbs'
+    },
+    component: 'thumbs'
+  })
+  .state('galleryfull', {
+    url: '/full/:gallery',
+    resolve: {
+      images: getImages
+    },
+    params: {
+      path: 'full'
+    },
+    component: 'images'
+  })
+  .state('full', {
+    url: '/full',
+    resolve: {
+      images: getImages
+    },
+    params: {
+      path: 'full'
+    },
+    component: 'images'
+  })
+  ;
 
   $urlRouterProvider.otherwise('/');
 }
@@ -79,4 +80,13 @@ const getImages =
     } else {
       return galleryService.getById($stateParams.gallery);
     }
+  }];
+
+const removeGalleryImage = 
+  ['galleryService', (galleryService) => {
+    return function(galleryId, image) {
+      galleryService.removeImage(galleryId, image._id)
+      .then( result => this.images = result.images )
+      .catch( err => console.log(err) );
+    };
   }];

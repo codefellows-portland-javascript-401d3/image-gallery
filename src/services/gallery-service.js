@@ -10,7 +10,7 @@ export default function listService($http, apiUrl) {
 
     getById(galleryId) {
       return $http.get(`${apiUrl}/galleries/${galleryId}`)
-      .then( response => response.data );
+      .then( response => response.data.images );
     },
 
     add(gallery) {

@@ -6,32 +6,40 @@ export default {
   controller
 };
 
-controller.$inject = ['imageService', 'galleryService'];
-function controller(imageService, galleryService) {
+controller.$inject = ['imageService', 'galleryService', '$state', '$stateParams'];
+function controller(imageService, galleryService, $state, $stateParams) {
   this.styles = styles;
 
-  this.chooseFrame = selection => {
-    this.list = false;
-    this.thumb = false;
-    this.full = false;
-    this.addImageForm = false;
-    this.addGalleryForm = false;
-    this[selection] = true;
+// Navigation methods
+
+  this.navSelect = target => {
+    if(!this.gallery || this.gallery === 'all') {
+      console.log(`State target: ${target}`);
+      $state.go(`${target}`);
+    } else {    
+      $state.go('gallery' + target, {gallery: this.gallery});
+    }
   };
 
-  this.chooseFrame('list'); // init value
-  
   this.toggleImageForm = () => {
     this.addImageSubForm = !this.addImageSubForm;
-    if(this.addImageToGallerySubForm && this.addImageSubForm) this.addImageToGallerySubForm = false;
+    this.newGallerySubForm = false;
+    this.addImageToGallerySubForm = false;
   };
 
-  this.toggleGallerySubForm = () => {
+  this.toggleNewGallerySubForm = () => {
+    this.addImageSubForm = false;
+    this.newGallerySubForm = !this.newGallerySubForm;
+    this.addImageToGallerySubForm = false;
+  };
+
+  this.toggleImageToGalleryForm = () => {
+    this.addImageSubForm = false;
+    this.newGallerySubForm = false;
     this.addImageToGallerySubForm = !this.addImageToGallerySubForm;
-    if(this.addImageToGallerySubForm && this.addImageSubForm) this.addImageSubForm = false;
   };
 
-// handling image methods
+  // handling image methods
   this.getImages = () => {
     if(this.gallery === 'all') {
       imageService.getAll()
@@ -44,8 +52,10 @@ function controller(imageService, galleryService) {
     } else {
       galleryService.getById(this.gallery)
       .then( gallery => {
+        console.log('Gallery loaded:', gallery.name);
         this.galleryName = `"${gallery.name}" Gallery`;
         this.images = gallery.images;
+        console.log('this.images:',this.images);
         this.galleryChosen = true;
       })
       .catch( err => console.log(err) );
@@ -74,7 +84,7 @@ function controller(imageService, galleryService) {
     }
   };
 
-// Handling gallery methods //
+  // Handling gallery methods //
 
   // This method just gets all the gallery names
   this.getGalleries = () => {
@@ -84,26 +94,38 @@ function controller(imageService, galleryService) {
   };
   this.getGalleries(); // init on load
 
-  this.gallery = 'all'; // init on load
-
-  // This method controls the top option text and gets the images for the current gallery
-  this.selectGallery = () => {
+  // This method controls the top option text
+  this.populateGalleryList = () => {
     if(this.gallery != 'all') {
       this.defaulChoiceText = 'All Images';
     } else {
       this.defaulChoiceText = 'Gallery Select';
     }
-    this.getImages();
   };
-  this.selectGallery(); // init on load
+  this.gallery = 'all'; // init on load
+  this.populateGalleryList(); // init on load
 
+  // This method changes state for gallery selections
+  this.selectGallery = () => {
+    this.populateGalleryList();
+    const path = $stateParams.path || 'list';    
+    if(this.gallery != 'all') {
+      $state.go('gallery' + path, {gallery: this.gallery});
+    } else {
+      $state.go(path);
+    }
+  };
+  
   this.submitGallery = data => {
     galleryService.add(data)
-    .then( () => this.getGalleries() )
+    .then( () => {
+      this.getGalleries();
+    })
     .catch( response => {
       console.log('Error adding gallery:',response);
       this.result = true;
       this.message = 'Error: ' + response;
     });
   };
+
 };
