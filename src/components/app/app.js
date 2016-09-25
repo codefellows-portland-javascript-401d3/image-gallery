@@ -10,7 +10,7 @@ controller.$inject = ['imageService', 'galleryService', '$state', '$stateParams'
 function controller(imageService, galleryService, $state, $stateParams) {
   this.styles = styles;
 
-// Navigation methods
+  // Navigation methods
 
   this.navSelect = target => {
     if(!this.gallery || this.gallery === 'all') {
@@ -73,6 +73,9 @@ function controller(imageService, galleryService, $state, $stateParams) {
   };
 
   this.removeImage = image => {
+    this.gallery = this.gallery || $stateParams.gallery;
+    console.log('this.gallery',this.gallery);
+
     if(this.galleryChosen) {
       galleryService.removeImage(this.gallery, image._id)
       .then( result => this.images = result.images )

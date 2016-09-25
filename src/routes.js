@@ -11,7 +11,8 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
     url: '/list/:gallery',
     resolve: {
       images: getImages,
-      removeImage: removeGalleryImage
+      removeImage: removeGalleryImage,
+      gallery: resolveGallery
     },
     params: {
       path: 'list'
@@ -89,4 +90,9 @@ const removeGalleryImage =
       .then( result => this.images = result.images )
       .catch( err => console.log(err) );
     };
+  }];
+
+const resolveGallery = 
+  ['$stateParams', ($stateParams) => {
+    return $stateParams.gallery;
   }];

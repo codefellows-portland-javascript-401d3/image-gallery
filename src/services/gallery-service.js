@@ -34,8 +34,7 @@ export default function listService($http, apiUrl) {
           images.push(image);
           return $http.put(`${apiUrl}/galleries/${gallery}`, {images});
         } else {
-          console.log('That image is already in the gallery.');
-          return response;
+          return { data: {message: 'That image is already in the gallery.'} };
         }
       })
       .then( response => {
@@ -44,7 +43,7 @@ export default function listService($http, apiUrl) {
       .catch( err => {
         console.log('error updating gallery');
         console.log(err);
-        next(err);
+        return err;
       });
     },
 
