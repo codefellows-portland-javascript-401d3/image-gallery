@@ -95,7 +95,7 @@ function controller(imageService, galleryService, $state, $stateParams) {
     .then( galleries => this.galleries = galleries )
     .catch( err => console.log(err) );
   };
-  this.getGalleries(); // init on load
+  // this.getGalleries(); // init on load?
 
   // This method controls the top option text
   this.populateGalleryList = () => {
@@ -105,8 +105,8 @@ function controller(imageService, galleryService, $state, $stateParams) {
       this.defaulChoiceText = 'Gallery Select';
     }
   };
-  this.gallery = 'all'; // init on load
-  this.populateGalleryList(); // init on load
+  // this.gallery = 'all'; // init on load
+  // this.populateGalleryList(); // init on load
 
   // This method changes state for gallery selections
   this.selectGallery = () => {
