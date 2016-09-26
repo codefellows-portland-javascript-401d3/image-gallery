@@ -6,12 +6,15 @@
     </div>
     <div class="u-pull-right">
       <button class="button-primary" ui-sref="home">Home</button>
-      <button class="button-primary" ng-click="$ctrl.navSelect('list')">List View</button>
-      <button class="button-primary" ng-click="$ctrl.navSelect('thumbs')">Thumbnails</button>
-      <button class="button-primary" ng-click="$ctrl.navSelect('full')">Full Images</button>
+      <button ng-show="$ctrl.navbar" class="button-primary" ng-click="$ctrl.navSelect('list')">List View</button>
+      <button ng-show="$ctrl.navbar" class="button-primary" ng-click="$ctrl.navSelect('thumbs')">Thumbnails</button>
+      <button ng-show="$ctrl.navbar" class="button-primary" ng-click="$ctrl.navSelect('full')">Full Images</button>
+      <button ng-show="$ctrl.navbar" class="button-primary" ng-click="$ctrl.logout()">Logout</button>
+      <button ng-show="!$ctrl.navbar" class="button-primary" ng-click="$ctrl.navSelect('login')">Log In</button>
     </div>
   </section>
-  <section class="row twelve columns">
+
+  <section ng-show="$ctrl.navbar" class="row twelve columns">
     <select ng-model="$ctrl.gallery" ng-change="$ctrl.selectGallery()">
       <option value="all">{{$ctrl.defaulChoiceText}}</option>
       <option ng-repeat="gallery in $ctrl.galleries" value="{{gallery._id}}">{{gallery.name}}</option>
@@ -20,7 +23,6 @@
     <button class="button-primary" ng-click="$ctrl.toggleNewGallerySubForm()">Start A New Gallery</button>
     <button class="button-primary" ng-click="$ctrl.toggleImageToGalleryForm()">Add Image To A Gallery</button>
   </section>
-  
   <section class="row twelve columns" ng-show="$ctrl.addImageSubForm">
     <add-image-form submit-image="$ctrl.submitImage"></add-image-form>
   </section>

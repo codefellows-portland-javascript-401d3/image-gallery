@@ -7,12 +7,20 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
     url: '/',
     template: '<h1>Welcome to Geoff\'s Image gallery app!</h1>'
   })
+  .state('login', {
+    url: '/login',
+    component: 'login'
+  })
   .state('gallerylist', {
     url: '/list/:gallery',
+    data: {
+      requiresAuth: true
+    },
     resolve: {
       images: getImages,
       removeImage: removeGalleryImage,
-      gallery: resolveGallery
+      gallery: resolveGallery,
+      navbar: resolveLoggedIn
     },
     params: {
       path: 'list'
@@ -21,8 +29,12 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
   })
   .state('list', {
     url: '/list',
+    data: {
+      requiresAuth: true
+    },
     resolve: {
-      images: getImages
+      images: getImages,
+      navbar: resolveLoggedIn
     },
     params: {
       path: 'list',
@@ -31,8 +43,12 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
   })
   .state('gallerythumbs', {
     url: '/thumbs/:gallery',
+    data: {
+      requiresAuth: true
+    },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'thumbs'
@@ -41,8 +57,12 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
   })
   .state('thumbs', {
     url: '/thumbs',
+    data: {
+      requiresAuth: true
+    },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'thumbs'
@@ -51,8 +71,12 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
   })
   .state('galleryfull', {
     url: '/full/:gallery',
+    data: {
+      requiresAuth: true
+    },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'full'
@@ -61,8 +85,12 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
   })
   .state('full', {
     url: '/full',
+    data: {
+      requiresAuth: true
+    },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'full'
@@ -95,4 +123,9 @@ const removeGalleryImage =
 const resolveGallery = 
   ['$stateParams', ($stateParams) => {
     return $stateParams.gallery;
+  }];
+
+const resolveLoggedIn = 
+  ['userService', (userService) => {
+    return userService.isAuthenticated();
   }];
