@@ -1,11 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const EnvironmentPlugin = require( 'webpack' ).EnvironmentPlugin;
+const EnvironmentPlugin = require('webpack').EnvironmentPlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js',
   output: {
-    path: './server/public',
+    path: '../deploy/public',
     filename: 'bundle.js'
   },
   devtool: 'source-map',

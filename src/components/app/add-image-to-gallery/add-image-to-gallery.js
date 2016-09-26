@@ -24,7 +24,14 @@ function controller(imageService,galleryService) {
   this.submit = () => {
     if(!this.imgageSelected) return;
     galleryService.update(this.gallery, this.imgageSelected)
-    .then( result => this.images = result.images )
+    .then( result => {
+      if(result.images) {
+        this.images = result.imageList;
+        this.message = '';
+      } else {
+        this.message = result.message;
+      }
+    })
     .catch( err => console.log(err) );    
     resetForm();
   };

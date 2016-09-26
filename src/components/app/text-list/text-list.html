@@ -15,7 +15,7 @@
       <td><img class="thumb-pic" ng-src="{{image.url}}"></td>
       <td>{{image.title}}</td>  
       <td>{{image.description}}</td>
-      <td><button ng-click="$ctrl.removeImage(image)">X</button></td>
+      <td><button ng-click="$ctrl.removeImage($ctrl.gallery,image)">X</button></td>
     </tr>
   </tbody>
 </table>
