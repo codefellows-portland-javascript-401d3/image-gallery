@@ -6,8 +6,8 @@ export default {
   controller
 };
 
-controller.$inject = ['userService'];
-function controller(userService) {
+controller.$inject = ['userService', '$state'];
+function controller(userService, $state) {
   this.styles = styles;
   this.user = {
     name: '',
@@ -17,11 +17,13 @@ function controller(userService) {
 
   this.login = () => {
     return userService.login(this.user)
-      .then( result =>{
-        console.log('Login successful. Result:',result);
+      .then( () =>{
+        this.navbar = true; 
+        $state.go('list');
         return true;
       })
       .catch( error => {
+        this.navbar = false; 
         console.log('Error logging in:',error);
         return false;
       });
@@ -29,8 +31,8 @@ function controller(userService) {
 
   this.signup = () => {
     return userService.signup(this.user)
-      .then( result =>{
-        console.log('Signup successful. Result:',result);
+      .then( () =>{
+        $state.go('list');
         return true;
       })
       .catch( error =>{

@@ -6,9 +6,15 @@ export default {
   controller
 };
 
-controller.$inject = ['imageService', 'galleryService', '$state', '$stateParams'];
-function controller(imageService, galleryService, $state, $stateParams) {
+controller.$inject = ['imageService', 'galleryService', '$state', '$stateParams', 'userService'];
+function controller(imageService, galleryService, $state, $stateParams, userService) {
   this.styles = styles;
+  let loggedIn = userService.isAuthenticated();
+  if(loggedIn) {
+    this.navbar = true; 
+  } else {
+    this.navbar = false;
+  }
 
   // Navigation methods
 
@@ -37,6 +43,12 @@ function controller(imageService, galleryService, $state, $stateParams) {
     this.addImageSubForm = false;
     this.newGallerySubForm = false;
     this.addImageToGallerySubForm = !this.addImageToGallerySubForm;
+  };
+
+  this.logout = () => {
+    userService.logout();
+    this.navbar = false;
+    $state.go('home');
   };
 
   // handling image methods
@@ -95,7 +107,7 @@ function controller(imageService, galleryService, $state, $stateParams) {
     .then( galleries => this.galleries = galleries )
     .catch( err => console.log(err) );
   };
-  // this.getGalleries(); // init on load?
+  if(loggedIn) this.getGalleries(); // init on load?
 
   // This method controls the top option text
   this.populateGalleryList = () => {
@@ -105,8 +117,8 @@ function controller(imageService, galleryService, $state, $stateParams) {
       this.defaulChoiceText = 'Gallery Select';
     }
   };
-  // this.gallery = 'all'; // init on load
-  // this.populateGalleryList(); // init on load
+  if(loggedIn) this.gallery = 'all'; // init on load
+  if(loggedIn) this.populateGalleryList(); // init on load
 
   // This method changes state for gallery selections
   this.selectGallery = () => {

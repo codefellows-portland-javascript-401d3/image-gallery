@@ -19,7 +19,8 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
     resolve: {
       images: getImages,
       removeImage: removeGalleryImage,
-      gallery: resolveGallery
+      gallery: resolveGallery,
+      navbar: resolveLoggedIn
     },
     params: {
       path: 'list'
@@ -32,7 +33,8 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
       requiresAuth: true
     },
     resolve: {
-      images: getImages
+      images: getImages,
+      navbar: resolveLoggedIn
     },
     params: {
       path: 'list',
@@ -45,7 +47,8 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
       requiresAuth: true
     },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'thumbs'
@@ -58,7 +61,8 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
       requiresAuth: true
     },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'thumbs'
@@ -71,7 +75,8 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
       requiresAuth: true
     },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'full'
@@ -84,7 +89,8 @@ export default function configRoutes($stateProvider, $urlRouterProvider) {
       requiresAuth: true
     },
     resolve: {
-      images: getImages
+      images: getImages,
+      loggedIn: resolveLoggedIn
     },
     params: {
       path: 'full'
@@ -117,4 +123,9 @@ const removeGalleryImage =
 const resolveGallery = 
   ['$stateParams', ($stateParams) => {
     return $stateParams.gallery;
+  }];
+
+const resolveLoggedIn = 
+  ['userService', (userService) => {
+    return userService.isAuthenticated();
   }];
