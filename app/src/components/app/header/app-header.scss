@@ -1,0 +1,18 @@
+:local(.appheader) {
+  text-align: center;
+  a {
+    color: cornflowerblue;
+    margin: 15px;
+    &:hover {
+      color: chocolate;
+      text-decoration: none;
+    }
+  }
+
+  .displays {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 25px;
+  }
+}

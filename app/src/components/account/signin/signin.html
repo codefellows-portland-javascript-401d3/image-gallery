@@ -1,0 +1,33 @@
+<section>
+  <h3>Sign In Below</h3>
+  <form name="auth" ng-submit="auth.$valid && $ctrl.authenticate()"
+        novalidate>
+      <md-input-container>
+          <label>Username:</label>
+          <input
+              name="username"
+              required
+              ng-model="$ctrl.credentials.username"/>
+          <div ng-messages="auth.username.$error" role="alert">
+              <div ng-message="required">A username is required</div>
+          </div>
+      </md-input-container>
+      <md-input-container>
+          <label>Password:</label>
+          <input
+              name="password"
+              required
+              ng-model="$ctrl.credentials.password">
+            <div ng-messages="auth.password.$error" role="alert">
+                <ng-message when="required">A password is required</ng-message>
+            </div>
+      </md-input-container>
+      <md-dialog-actions>
+        <md-button type="submit" class="md-primary">Sign In!</md-button>
+      </md-dialog-actions>
+      <md-dialog-actions>
+        <md-button ng-click="$ctrl.cancel()" class="md-primary">Cancel</md-button>
+      </md-dialog-actions>
+  </form>
+  <div class="error" ng-if="$ctrl.error">{{$ctrl.error.reason}}</div>
+</section>

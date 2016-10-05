@@ -7,6 +7,11 @@ export default function albumService ($http, apiUrl) {
         .then(response => response.data);
     },
 
+    getAlbumsbyUser (userId) {
+      return $http.get(`${apiUrl}/albums/${userId}`)
+        .then(response => response.data);
+    },
+
     add (album) {
       return $http.post(`${apiUrl}/albums`, album)
         .then(response => response.data);

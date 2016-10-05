@@ -12,8 +12,13 @@ export default function imageService ($http, apiUrl) {
         .then(response => response.data);
     },
 
-    add (image) {
-      return $http.post(`${apiUrl}/images`, image)
+    getByAlbum (albumId) {
+      return $http.get(`${apiUrl}/images/album/${albumId}`)
+        .then(response => response.data);
+    },
+
+    add (albumId, image) {
+      return $http.post(`${apiUrl}/images/${albumId}`, image)
         .then(response => response.data);
     },
 

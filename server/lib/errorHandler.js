@@ -1,4 +1,4 @@
-function errorHandler (err, req, res, next) {
+function errorHandler (err, req, res) {
   if (req.method !== 'POST' && req.method !== 'GET' && req.method !== 'PUT' && req.method !== 'DELETE') {
     res.status(405).send({error: 'That action is not supported here.'});
   } else {

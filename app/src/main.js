@@ -1,9 +1,13 @@
 import angular from 'angular';
-import myApp from './app';
-// import routes from './routes';
+import app from './app';
+import auth from './auth';
+import routes from './routes';
+import http from './http';
 import './scss/main.scss';
 
-// app.config(routes);
+app.config(http);
+app.config(routes);
+app.run(auth);
 
 // if we wanted to turn on caching across the board...
 // (only applies to gets)
@@ -14,4 +18,4 @@ const module = angular.module(myApp);
 
 module.value('apiUrl', process.env.API_URL || '/api');
 
-angular.bootstrap( document, [myApp] );
+angular.bootstrap( document, [app.name] );

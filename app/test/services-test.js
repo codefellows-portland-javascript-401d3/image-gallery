@@ -1,15 +1,17 @@
 /* globals angular, chai */
 const assert = chai.assert;
 
-describe('image components', function() {
+describe('services', function() {
   let $httpBackend = null;
   let imageService = null;
+  let albumService = null;
 
   beforeEach(angular.mock.module('services', {apiUrl: '/api'}));
 
-  beforeEach(angular.mock.inject( (_imageService_, _$httpBackend_) => {
+  beforeEach(angular.mock.inject( (_imageService_, _albumService_, _$httpBackend_) => {
     $httpBackend = _$httpBackend_;
     imageService = _imageService_;
+    albumService = _albumService_;
   }));
 
   afterEach(() => {
@@ -80,12 +82,13 @@ describe('image components', function() {
 
     const newImage = {title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
     const mockReturnObject = {_v: 0, title: 'My Dog', url: 'http://someUrl.com', description: 'Description!'};
+    const id = '123';
 
     $httpBackend
-      .expectPOST('/api/images', newImage)
+      .expectPOST(`/api/images/${id}`, newImage)
       .respond(mockReturnObject);
 
-    imageService.add(newImage)
+    imageService.add(id, newImage)
       .then(addedImage => {
         assert.deepEqual(addedImage, mockReturnObject);
         done();
@@ -94,5 +97,14 @@ describe('image components', function() {
 
     $httpBackend.flush();
   });
+
+  // it('image service GET by album', done => {
+  //   done();
+  // });
+  //
+  // //need more album service tests
+  // it('album service GET all albums', done => {
+  //   done();
+  // });
 
 });

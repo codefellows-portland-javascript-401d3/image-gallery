@@ -1,1 +1,11 @@
-<h1>Albums</h1>
+<section>
+  <p ng-if="!$ctrl.albums">You have not added albums yet.</p>
+  <ul>
+    <li ng-repeat="album in $ctrl.albums">
+      <a ui-sref="images({albumId: album._id, albumName: album.name})">{{album.name}}</a>
+    </li>
+  </ul>
+  <button ng-click="$ctrl.addButton = 'save'" ng-show="$ctrl.addButton === 'add'">Add Album</button>
+
+  <new-album add="$ctrl.add" add-button="$ctrl.addButton" ng-if="$ctrl.addButton === 'save'"></new-album>
+</section>

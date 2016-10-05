@@ -17,6 +17,10 @@ const Image = new Schema({
   vote: {
     type: Number,
     default: 0
+  },
+  album: {
+    type: Schema.Types.ObjectId,
+    ref: 'Album'
   }
 }, {
   timestamps: true
@@ -30,6 +34,14 @@ Image.statics.changeVote = function (id, vote) {
         image.vote++;
       } else { image.vote--;}
       return image.save();
+    });
+};
+
+Image.statics.findByAlbum = function (albumId) {
+  return this.find({album: albumId})
+    .then(images => {
+      if (!images) throw {status: 400, message: 'No images in that album.'};
+      return images;
     });
 };
 
