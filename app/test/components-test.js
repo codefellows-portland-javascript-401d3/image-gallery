@@ -4,6 +4,7 @@ const assert = chai.assert;
 describe('App Components', function() {
 
   const imageSvc = {};
+
   const $state = {
     params: {}
   };
@@ -95,6 +96,16 @@ describe('App Components', function() {
     assert.deepEqual(component.images.length, 1);
     component.remove(component.images[0]);
     assert.deepEqual(component.images.length, 0);
+  });
+
+  it('the images component initializes with $ctrl.view set to list', () => {
+    const images = [];
+    imageSvc.getAll = () => {
+      return Promise.resolve(images);
+    };
+    const component = $component('images', null, ({imageService: imageSvc}));
+
+    assert.equal(component.view, 'list');
   });
 
   it('images component properly calls imageService vote function', function() {

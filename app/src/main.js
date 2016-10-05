@@ -14,7 +14,8 @@ app.run(auth);
 // app.config( [ '$httpProvider', function( $httpProvider ) {
 //     $httpProvider.defaults.config = true;
 // }]);
+const module = angular.module(myApp);
 
-app.value('apiUrl', process.env.API_URL || '/api');
+module.value('apiUrl', process.env.API_URL || '/api');
 
 angular.bootstrap( document, [app.name] );

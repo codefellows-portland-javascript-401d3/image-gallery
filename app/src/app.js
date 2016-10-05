@@ -3,7 +3,7 @@ import angularMaterial from 'angular-material';
 import 'angular-material/angular-material.css';
 import components from './components';
 import services from './services';
-import router from 'angular-ui-router';
+// import router from 'angular-ui-router';
 import messages from 'angular-messages';
 //need this for old $stateChanged events
 import 'angular-ui-router/release/stateEvents';
